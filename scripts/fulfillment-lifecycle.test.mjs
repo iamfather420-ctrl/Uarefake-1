@@ -93,3 +93,19 @@ test("concurrent human authorizations produce one authorization and one state tr
   assert.equal(jobRows.rows[0].status, "READY_TO_BUILD");
   assert.equal(jobRows.rows[0].authorization_id, authRows.rows[0].id);
 });
+
+test("failed or revoked jobs do not block a fresh retry", async () => {
+  const db = await setup();
+  await db.query(
+    `insert into fulfillment_jobs
+      (id, entitlement_id, user_id, sku, status, authorization_id, artifact_sha256, artifact_uri, failure_code, created_at, updated_at)
+     values ('jit-failed', 'ent-1', 'user-1', 'daisy-parai', 'FAILED', null, null, null, 'BUILDER_ERROR', 2, 2)`,
+  );
+  const retry = await db.query(
+    `insert into fulfillment_jobs
+      (id, entitlement_id, user_id, sku, status, authorization_id, artifact_sha256, artifact_uri, failure_code, created_at, updated_at)
+     values ('jit-retry', 'ent-1', 'user-1', 'daisy-parai', 'WAITING_AUTH', null, null, null, null, 3, 3)
+     returning id`,
+  );
+  assert.equal(retry.rows[0].id, "jit-retry");
+});
