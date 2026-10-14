@@ -17,7 +17,6 @@ jobs:
     env:
       # Intentionally blank: CI must never apply deploy-time migrations to Neon.
       DATABASE_URL: ""
-      VITE_AUTH_ENABLED: "true"
     steps:
       - name: Checkout
         uses: actions/checkout@v4
