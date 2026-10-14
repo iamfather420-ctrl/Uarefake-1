@@ -7,6 +7,13 @@ create table if not exists checkpoints (
   created_at bigint not null
 );
 
+-- Upgrade databases where checkpoints predates this migration. CREATE TABLE IF
+-- NOT EXISTS does not add columns to an existing table, which caused deploys to
+-- fail when the following index referenced target_id. This is additive and safe
+-- for existing rows; new recovery-drill rows always supply target_id explicitly.
+alter table checkpoints
+  add column if not exists target_id text;
+
 create table if not exists failures (
   id text primary key,
   checkpoint_id text not null,
