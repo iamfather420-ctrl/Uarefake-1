@@ -82,6 +82,7 @@ export const requestJitFulfillment = createServerFn({ method: "POST" })
       const prior = await sql<{ id: string; status: string }>`
         select id, status from fulfillment_jobs
         where entitlement_id = ${entitlement.id}
+          and user_id = ${context.userId}
           and status not in ('FAILED','REVOKED')
         order by created_at desc limit 1`;
       if (prior[0]) {
@@ -97,6 +98,7 @@ export const authorizeJitFulfillment = createServerFn({ method: "POST" })
   .validator((input: { jobId: string; scope: string; ttlSeconds?: number }) => {
     if (!input || typeof input.jobId !== "string" || input.jobId.length < 3 || input.jobId.length > 160) throw new Error("Invalid job identifier.");
     if (typeof input.scope !== "string" || !/^[a-z0-9:*._-]{1,160}$/i.test(input.scope)) throw new Error("Invalid authorization scope.");
+    if (input.scope !== "jit:build") throw new Error("JIT fulfillment authorization scope must be jit:build.");
     const ttlSeconds = input.ttlSeconds ?? 900;
     if (!Number.isInteger(ttlSeconds) || ttlSeconds < 60 || ttlSeconds > 3600) throw new Error("Authorization TTL must be 60–3600 seconds.");
     return { ...input, ttlSeconds };
@@ -121,6 +123,7 @@ export const authorizeJitFulfillment = createServerFn({ method: "POST" })
         where j.id = ${data.jobId}
           and j.status = 'WAITING_AUTH'
           and e.status = 'ACTIVE'
+          and e.user_id = j.user_id
         for update of j
       ),
       auth as (
@@ -155,9 +158,10 @@ export const authorizeJitFulfillment = createServerFn({ method: "POST" })
 export const inspectJitBuilderReadiness = createServerFn({ method: "GET" })
   .middleware([authMiddleware])
   .handler(async () => ({
-    ready: Boolean(process.env.SOLVEX_JIT_BUILDER_URL && process.env.SOLVEX_JIT_BUILDER_TOKEN),
+    // Configuration is not runtime verification; no builder adapter is wired yet.
+    ready: false,
     status: process.env.SOLVEX_JIT_BUILDER_URL && process.env.SOLVEX_JIT_BUILDER_TOKEN
       ? "BUILDER_CONFIGURED_NOT_RUNTIME_VERIFIED"
       : "EXTERNAL_BUILDER_REQUIRED",
-    note: "A request or authorization is not proof of a built, integrity-checked, or distributed artifact.",
+    note: "No builder adapter is wired in this repository. Configuration alone is not readiness, and no artifact is claimed as built, integrity-checked, or distributed.",
   }));
