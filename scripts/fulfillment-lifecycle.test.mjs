@@ -109,3 +109,44 @@ test("failed or revoked jobs do not block a fresh retry", async () => {
   );
   assert.equal(retry.rows[0].id, "jit-retry");
 });
+
+test("seeded VERIFIED labels without proof, oracle, and replay receipts are not promotable", async () => {
+  const db = await setup();
+  await db.exec(`create table proof_bundles (
+    id text primary key,
+    subject_id text not null,
+    verification_status text not null,
+    claim_hash text not null,
+    implementation_hash text,
+    verifier_identity text not null,
+    formal_proofs_json text not null,
+    independent_oracles_json text not null,
+    replay_results_json text not null
+  )`);
+  await db.query(
+    `insert into proof_bundles
+      (id, subject_id, verification_status, claim_hash, implementation_hash, verifier_identity, formal_proofs_json, independent_oracles_json, replay_results_json)
+     values
+      ('PB-SEEDED', 'DH-I-001', 'VERIFIED', 'claim-hash', 'implementation-hash', 'UAREFAKE-CATALOG-SEED', '[]', '[]', '[]'),
+      ('PB-REAL', 'DH-S-001', 'VERIFIED', 'claim-hash', 'implementation-hash', 'independent-z3-wasm-4.12.2', '[{"proof":"receipt"}]', '[{"oracle":"independent"}]', '[{"replay":"passed"}]')`,
+  );
+  const promotable = (id, subjectId) => db.query(
+    `select id from proof_bundles
+     where id = $1
+       and subject_id = $2
+       and verification_status = 'VERIFIED'
+       and nullif(claim_hash, '') is not null
+       and nullif(implementation_hash, '') is not null
+       and verifier_identity <> 'UAREFAKE-CATALOG-SEED'
+       and case when jsonb_typeof(formal_proofs_json::jsonb) = 'array'
+         then jsonb_array_length(formal_proofs_json::jsonb) > 0 else false end
+       and case when jsonb_typeof(independent_oracles_json::jsonb) = 'array'
+         then jsonb_array_length(independent_oracles_json::jsonb) > 0 else false end
+       and case when jsonb_typeof(replay_results_json::jsonb) = 'array'
+         then jsonb_array_length(replay_results_json::jsonb) > 0 else false end
+     limit 1`,
+    [id, subjectId],
+  );
+  assert.equal((await promotable("PB-SEEDED", "DH-I-001")).rows.length, 0);
+  assert.equal((await promotable("PB-REAL", "DH-S-001")).rows.length, 1);
+});
