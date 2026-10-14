@@ -57,8 +57,29 @@ export const requestJitFulfillment = createServerFn({ method: "POST" })
       throw new Error("Active entitlement required. No distribution request was created.");
     }
     const product = productBySku(entitlement.sku);
-    if (!product || product.evidence !== "VERIFIED") {
-      throw new Error("Product evidence is not eligible for JIT distribution.");
+    if (!product) {
+      throw new Error("Unknown product SKU; JIT distribution is blocked.");
+    }
+    // Catalog labels and seeded status rows are not proof. Promotion requires a
+    // matching live proof bundle with actual proof, oracle, and replay evidence.
+    const proofBundles = await sql<{ id: string }>`
+      select id
+      from proof_bundles
+      where id = ${product.proofBundle}
+        and subject_id = ${product.solutionId}
+        and verification_status = 'VERIFIED'
+        and nullif(claim_hash, '') is not null
+        and nullif(implementation_hash, '') is not null
+        and verifier_identity <> 'UAREFAKE-CATALOG-SEED'
+        and case when jsonb_typeof(formal_proofs_json::jsonb) = 'array'
+          then jsonb_array_length(formal_proofs_json::jsonb) > 0 else false end
+        and case when jsonb_typeof(independent_oracles_json::jsonb) = 'array'
+          then jsonb_array_length(independent_oracles_json::jsonb) > 0 else false end
+        and case when jsonb_typeof(replay_results_json::jsonb) = 'array'
+          then jsonb_array_length(replay_results_json::jsonb) > 0 else false end
+      limit 1`;
+    if (product.evidence !== "VERIFIED" || !proofBundles[0]) {
+      throw new Error("Product lacks promoted catalog status and reproducible proof/oracle/replay evidence; JIT distribution is blocked.");
     }
     // The partial unique index plus ON CONFLICT makes retries safe when two
     // requests race. The INSERT rechecks ACTIVE status in the same statement.
