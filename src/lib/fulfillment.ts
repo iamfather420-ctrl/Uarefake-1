@@ -105,22 +105,50 @@ export const authorizeJitFulfillment = createServerFn({ method: "POST" })
     if (!authorizerIds().has(context.userId)) throw new Error("Human-root authorization denied. Caller is not in SOLVEX_AUTHORIZER_USER_IDS.");
     const { getSql } = await import("@/lib/db");
     const sql = await getSql();
-    const rows = await sql<{ id: string; entitlement_id: string; user_id: string; sku: string; status: string }>`
-      select j.id, j.entitlement_id, j.user_id, j.sku, j.status
-      from fulfillment_jobs j
-      join entitlements e on e.id = j.entitlement_id
-      where j.id = ${data.jobId} and j.status = 'WAITING_AUTH' and e.status = 'ACTIVE'
-      limit 1`;
-    const job = rows[0];
-    if (!job) throw new Error("Job is not awaiting authorization or its entitlement is inactive.");
     const authorizationId = id("authz");
     const timestamp = now();
     const expiresAt = timestamp + data.ttlSeconds * 1000;
-    await sql`insert into fulfillment_authorizations (id, job_id, authorized_by, scope, expires_at, revoked_at, created_at)
-      values (${authorizationId}, ${job.id}, ${context.userId}, ${data.scope}, ${expiresAt}, null, ${timestamp})`;
-    await sql`update fulfillment_jobs set status = 'READY_TO_BUILD', authorization_id = ${authorizationId}, updated_at = ${timestamp}
-      where id = ${job.id} and status = 'WAITING_AUTH'`;
-    return { ok: true as const, jobId: job.id, authorizationId, status: "READY_TO_BUILD" as const, expiresAt };
+
+    // One statement makes authorization insertion and state transition atomic.
+    // The row lock ensures concurrent authorizers cannot both authorize one job.
+    const authorized = await sql<{
+      job_id: string; authorization_id: string; status: string; expires_at: number;
+    }>`
+      with candidate as (
+        select j.id
+        from fulfillment_jobs j
+        join entitlements e on e.id = j.entitlement_id
+        where j.id = ${data.jobId}
+          and j.status = 'WAITING_AUTH'
+          and e.status = 'ACTIVE'
+        for update of j
+      ),
+      auth as (
+        insert into fulfillment_authorizations
+          (id, job_id, authorized_by, scope, expires_at, revoked_at, created_at)
+        select ${authorizationId}, candidate.id, ${context.userId}, ${data.scope}, ${expiresAt}, null, ${timestamp}
+        from candidate
+        returning id, job_id, expires_at
+      ),
+      updated as (
+        update fulfillment_jobs j
+        set status = 'READY_TO_BUILD', authorization_id = auth.id, updated_at = ${timestamp}
+        from auth
+        where j.id = auth.job_id and j.status = 'WAITING_AUTH'
+        returning j.id, j.status
+      )
+      select updated.id as job_id, auth.id as authorization_id, updated.status, auth.expires_at
+      from updated
+      join auth on auth.job_id = updated.id`;
+    const result = authorized[0];
+    if (!result) throw new Error("Job is not awaiting authorization or its entitlement is inactive.");
+    return {
+      ok: true as const,
+      jobId: result.job_id,
+      authorizationId: result.authorization_id,
+      status: "READY_TO_BUILD" as const,
+      expiresAt: result.expires_at,
+    };
   });
 
 /** No artifact is claimed as distributed until a real, configured builder exists. */
