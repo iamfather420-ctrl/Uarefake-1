@@ -7,7 +7,7 @@ import {
   listMyEntitlements,
   listMyFulfillmentJobs,
   requestJitFulfillment,
-} from "@/lib/fulfillment.server";
+} from "@/lib/fulfillment";
 import { productBySku } from "@/lib/catalog";
 
 export const Route = createFileRoute("/fulfillment")({ component: FulfillmentPage });
