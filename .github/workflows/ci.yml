@@ -28,11 +28,13 @@ jobs:
           cache: npm
       - name: Install locked dependencies
         run: npm ci
+      # TanStack Router regenerates routeTree.gen.ts during Vite build.
+      # Build first so typecheck sees the same generated route types as deploy.
+      - name: Production build (database migrations must skip without DATABASE_URL)
+        run: npm run build
       - name: TypeScript
         run: npm run typecheck
       - name: Tests (including fulfillment concurrency)
         run: npm test
       - name: Lint
         run: npm run lint
-      - name: Production build (database migrations must skip without DATABASE_URL)
-        run: npm run build
