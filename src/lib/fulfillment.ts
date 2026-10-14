@@ -60,18 +60,35 @@ export const requestJitFulfillment = createServerFn({ method: "POST" })
     if (!product || product.evidence !== "VERIFIED") {
       throw new Error("Product evidence is not eligible for JIT distribution.");
     }
-    const prior = await sql<{ id: string; status: string }>`
-      select id, status from fulfillment_jobs
-      where entitlement_id = ${entitlement.id}
-        and status not in ('FAILED','REVOKED')
-      order by created_at desc limit 1`;
-    if (prior[0]) return { ok: true as const, jobId: prior[0].id, status: prior[0].status, reused: true };
-    const jobId = id("jit");
-    const timestamp = now();
-    await sql`insert into fulfillment_jobs
-      (id, entitlement_id, user_id, sku, status, authorization_id, artifact_sha256, artifact_uri, failure_code, created_at, updated_at)
-      values (${jobId}, ${entitlement.id}, ${context.userId}, ${entitlement.sku}, 'WAITING_AUTH', null, null, null, null, ${timestamp}, ${timestamp})`;
-    return { ok: true as const, jobId, status: "WAITING_AUTH" as const, reused: false };
+    // The partial unique index plus ON CONFLICT makes retries safe when two
+    // requests race. The INSERT rechecks ACTIVE status in the same statement.
+    for (let attempt = 0; attempt < 2; attempt += 1) {
+      const jobId = id("jit");
+      const timestamp = now();
+      const created = await sql<{ id: string; status: string }>`
+        insert into fulfillment_jobs
+          (id, entitlement_id, user_id, sku, status, authorization_id, artifact_sha256, artifact_uri, failure_code, created_at, updated_at)
+        select ${jobId}, e.id, ${context.userId}, e.sku, 'WAITING_AUTH', null, null, null, null, ${timestamp}, ${timestamp}
+        from entitlements e
+        where e.id = ${entitlement.id}
+          and e.user_id = ${context.userId}
+          and e.status = 'ACTIVE'
+        on conflict (entitlement_id) where status not in ('FAILED','REVOKED') do nothing
+        returning id, status`;
+      if (created[0]) {
+        return { ok: true as const, jobId: created[0].id, status: created[0].status, reused: false };
+      }
+
+      const prior = await sql<{ id: string; status: string }>`
+        select id, status from fulfillment_jobs
+        where entitlement_id = ${entitlement.id}
+          and status not in ('FAILED','REVOKED')
+        order by created_at desc limit 1`;
+      if (prior[0]) {
+        return { ok: true as const, jobId: prior[0].id, status: prior[0].status, reused: true };
+      }
+    }
+    throw new Error("Fulfillment state changed concurrently. Refresh and retry.");
   });
 
 /** Human-root authorization is an explicit server-side allowlist, never a client boolean. */
