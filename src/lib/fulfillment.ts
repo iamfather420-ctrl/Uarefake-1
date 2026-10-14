@@ -1,7 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { authMiddleware } from "@/lib/auth/middleware";
 import { productBySku } from "@/lib/catalog";
-import { getSql } from "@/lib/db";
 
 const id = (prefix: string) => `${prefix}_${crypto.randomUUID()}`;
 const now = () => Date.now();
@@ -14,6 +13,7 @@ function authorizerIds(): Set<string> {
 export const listMyEntitlements = createServerFn({ method: "GET" })
   .middleware([authMiddleware])
   .handler(async ({ context }) => {
+    const { getSql } = await import("@/lib/db");
     const sql = await getSql();
     return sql<{
       id: string; order_id: string; sku: string; status: string;
@@ -26,6 +26,7 @@ export const listMyEntitlements = createServerFn({ method: "GET" })
 export const listMyFulfillmentJobs = createServerFn({ method: "GET" })
   .middleware([authMiddleware])
   .handler(async ({ context }) => {
+    const { getSql } = await import("@/lib/db");
     const sql = await getSql();
     return sql<{
       id: string; entitlement_id: string; sku: string; status: string;
@@ -45,6 +46,7 @@ export const requestJitFulfillment = createServerFn({ method: "POST" })
     return input;
   })
   .handler(async ({ data, context }) => {
+    const { getSql } = await import("@/lib/db");
     const sql = await getSql();
     const entitlements = await sql<{ id: string; sku: string; status: string }>`
       select id, sku, status from entitlements
@@ -84,6 +86,7 @@ export const authorizeJitFulfillment = createServerFn({ method: "POST" })
   })
   .handler(async ({ data, context }) => {
     if (!authorizerIds().has(context.userId)) throw new Error("Human-root authorization denied. Caller is not in SOLVEX_AUTHORIZER_USER_IDS.");
+    const { getSql } = await import("@/lib/db");
     const sql = await getSql();
     const rows = await sql<{ id: string; entitlement_id: string; user_id: string; sku: string; status: string }>`
       select j.id, j.entitlement_id, j.user_id, j.sku, j.status
