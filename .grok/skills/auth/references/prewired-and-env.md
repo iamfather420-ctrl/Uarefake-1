@@ -48,7 +48,9 @@ these in a file you create):
 | `BETTER_AUTH_SECRET` | server | signs this app's own sessions (process-stable fallback in preview; survives HMR) |
 | `GROK_AUTH_ISSUER` | server | the shared broker (defaults to `https://auth.grok.me`) |
 | `GROK_AUTH_CLIENT_ID` / `GROK_AUTH_CLIENT_SECRET` | server | per-app client (falls back to the preview client) |
-| `DATABASE_URL` | server | when deployed, Better Auth persists here (preview persists to the embedded PGLite — same DB as app data) |
+| `APP_DATABASE_URL` | server | optional least-privilege runtime connection for app queries and Better Auth; falls back to `DATABASE_URL` until configured |
+| `MIGRATION_DATABASE_URL` | deploy-time | optional schema-migration connection with DDL privileges; falls back to `DATABASE_URL` |
+| `DATABASE_URL` | server / deploy-time | legacy-compatible fallback and migration connection until runtime and migration credentials are split |
 
 Never expose a non-`VITE_` var to the client. The preview client id/secret live
 server-only in `src/lib/auth/preview.ts`.
