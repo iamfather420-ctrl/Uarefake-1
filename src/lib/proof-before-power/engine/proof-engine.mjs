@@ -228,7 +228,7 @@ export function buildReceipt({ action, proof, execution, recovery }) {
     tenant: action.tenant,
     environment: action.environment,
     targets: action.targetIds,
-    obligations: proof.obligations.map((o) => ({ id: o.id, result: o.result })),
+    obligations: proof.obligations.map((/** @type {Record<string, any>} */ o) => ({ id: o.id, result: o.result })),
     authorization: action.auth ? { actor: action.auth.actor, commitment: action.auth.commitment, token: action.auth.token } : null,
     execution: execution || null,
     recovery: recovery || null,
