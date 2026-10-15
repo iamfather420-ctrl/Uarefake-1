@@ -36,7 +36,7 @@ const context = {
   },
 };
 
-// A valid-looking deterministic demo token must not authorize an actual tool.
+// A deterministic demo token is not trusted authorization.
 const deniedDemoToken = daisyAct(
   "Update account acct_demo_014 status in the demo tenant sandbox, with checkpoint and inverse.",
   context,
@@ -44,24 +44,25 @@ const deniedDemoToken = daisyAct(
 );
 assert.equal(deniedDemoToken.toolRan, false);
 assert.equal(deniedDemoToken.gate.proceed, false);
-assert.equal(deniedDemoToken.gate.proof.trustBoundary, "missing-host-verified-authorization");
+assert.equal(deniedDemoToken.gate.proof.trustBoundary, "production-authorization-not-wired");
 
-// The trusted authorization context is host-owned and must not be sourced from
-// user-controlled request fields. This unit test verifies the adapter boundary.
-const hostVerified = daisyAct(
+// Caller-supplied flags cannot manufacture the missing trusted server boundary.
+const forgedContext = daisyAct(
   "Update account acct_demo_014 status in the demo tenant sandbox, with checkpoint and inverse.",
   {
     ...context,
     host: {
       ...context.host,
       authorizationVerified: true,
-      authorizationIssuer: "test-idp",
+      authorizationIssuer: "attacker-controlled",
       tenantBound: true,
     },
   },
-  runner,
+  () => { throw new Error("Runner must never be invoked before trusted auth is wired."); },
 );
-assert.equal(hostVerified.toolRan, true);
+assert.equal(forgedContext.toolRan, false);
+assert.equal(forgedContext.gate.proceed, false);
+assert.equal(forgedContext.gate.proof.trustBoundary, "production-authorization-not-wired");
 
 const noRunner = daisyAct(
   "Update account acct_demo_014 status in the demo tenant sandbox, with checkpoint and inverse.",
@@ -78,7 +79,6 @@ const noRunner = daisyAct(
 assert.equal(noRunner.toolRan, false);
 assert.equal(noRunner.failClosed, true);
 
-
 const gatedUnsafe = runGatedTool(
   { name: "ACCOUNT_STATUS_UPDATE", input: "Update all production account statuses to suspended." },
   {},
@@ -94,5 +94,6 @@ const gatedMissingRunner = runGatedTool(
 );
 assert.equal(gatedMissingRunner.ran, false);
 assert.equal(gatedMissingRunner.failClosed, true);
+assert.equal(gatedMissingRunner.gate.proof.trustBoundary, "production-authorization-not-wired");
 
-console.log("Daisy Haminja gate tests passed; demo tokens denied, unsafe actions refused, missing runners fail closed.");
+console.log("Daisy Haminja gate tests passed; caller-supplied auth claims and demo tokens cannot invoke tools.");
