@@ -41,9 +41,9 @@ export function DaisyPage() {
       const preflight = await evaluateDaisyProposal({ data: { prompt: q } });
       setStage("PROVE");
       if (preflight.ok) {
-        const passed = preflight.obligations.filter((item) => item.holds).length;
+        const passed = preflight.obligations.filter((item: { holds: boolean }) => item.holds).length;
         const total = preflight.obligations.length;
-        const failed = preflight.obligations.filter((item) => !item.holds).map((item) => item.id).join(", ");
+        const failed = preflight.obligations.filter((item: { holds: boolean }) => !item.holds).map((item: { id: string }) => item.id).join(", ");
         setMsgs((m) => [...m, {
           role: "daisy",
           text: `PROOF-BEFORE-POWER · ${preflight.policy} · ${preflight.decision}\\nObligations held: ${passed}/${total}\\nRefused obligations: ${failed || "none"}\\n${preflight.explanation}\\nExecution allowed: no.`,
