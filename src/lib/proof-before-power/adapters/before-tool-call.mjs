@@ -3,9 +3,10 @@ import { compileIntent, evaluate, rewriteSafe, POLICY } from "../engine/proof-en
 const RESERVED = ["auth", "host", "tenant", "environment", "productionGrant", "checkpoint", "inverseDefined", "targetIds", "targetCount"];
 
 /**
- * The host must supply authorization verified by a trusted server-side identity
- * provider. The demo engine's deterministic token is never sufficient to invoke
- * a tool. Callers must not construct this context from request/body fields.
+ * Advisory policy preflight only. This integration intentionally refuses every
+ * tool invocation until a trusted server-only identity/tenant authorization
+ * adapter is wired and independently verified. Values supplied through ctx
+ * are caller-controlled and MUST NOT be treated as proof of authorization.
  *
  * @param {Record<string, any>} call
  * @param {Record<string, any>} [ctx]
@@ -21,29 +22,19 @@ export function beforeToolCall(call, ctx = {}) {
   });
   const proof = evaluate(action, ctx.policy || POLICY, ctx.now || Date.now());
 
-  // The upstream PBP token is hash-based demo authorization, not a signature.
-  // Require a host-verified identity/authorization envelope before any action.
-  const trustedAuthorization =
-    host.authorizationVerified === true &&
-    typeof host.authorizationIssuer === "string" &&
-    host.authorizationIssuer.length > 0 &&
-    host.tenantBound === true;
-
-  if (rejected.length || !trustedAuthorization || proof.decision !== "ALLOW") {
-    return {
-      proceed: false,
-      action: null,
-      proof: {
-        ...proof,
-        decision: "REFUSE",
-        trustBoundary: trustedAuthorization ? "host-verified" : "missing-host-verified-authorization",
-      },
-      rejected,
-      safeRewrite: rewriteSafe(action),
-    };
-  }
-
-  return { proceed: true, action, proof, rejected: [] };
+  // No caller-supplied field can establish the trusted server authorization
+  // boundary. Keep the adapter non-executing until production auth is wired.
+  return {
+    proceed: false,
+    action: null,
+    proof: {
+      ...proof,
+      decision: "REFUSE",
+      trustBoundary: "production-authorization-not-wired",
+    },
+    rejected,
+    safeRewrite: rewriteSafe(action),
+  };
 }
 
 /**
