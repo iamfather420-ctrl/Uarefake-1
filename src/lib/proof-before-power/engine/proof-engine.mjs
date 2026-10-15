@@ -13,6 +13,7 @@ export const POLICY = {
   allowlist: ["ACCOUNT_STATUS_UPDATE"],
   demoTenant: "TENANT_ENTERPRISE_DEMO",
   maxBlast: 1,
+  allowProductionGrant: false,
   jitWindowMs: 120_000,
   theory:
     "executable(a) iff allowlisted(op) ∧ tenantBound ∧ envSafe ∧ blastBounded ∧ reversible ∧ authPresent ∧ authBinds(commitment) ∧ jitFresh",
@@ -20,11 +21,13 @@ export const POLICY = {
 
 const textEncoder = new TextEncoder();
 
+/** @param {number} x @param {number} n @returns {number} */
 function rotr(x, n) {
   return (x >>> n) | (x << (32 - n));
 }
 
 /** Pure SHA-256. Matches the NIST test vector for "abc". */
+/** @param {string | Uint8Array} input @returns {string} */
 export function sha256(input) {
   const bytes = typeof input === "string" ? textEncoder.encode(input) : input;
   const bitLen = bytes.length * 8;
@@ -74,6 +77,7 @@ export function sha256(input) {
   return [h0, h1, h2, h3, h4, h5, h6, h7].map((n) => n.toString(16).padStart(8, "0")).join("");
 }
 
+/** @param {any} value @returns {string} */
 export function canonical(value) {
   if (value === null || typeof value !== "object") return JSON.stringify(value);
   if (Array.isArray(value)) return `[${value.map(canonical).join(",")}]`;
@@ -81,6 +85,7 @@ export function canonical(value) {
   return `{${keys.map((k) => `${JSON.stringify(k)}:${canonical(value[k])}`).join(",")}}`;
 }
 
+/** @param {string} text @param {Record<string, any>} [overrides] @returns {Record<string, any>} */
 export function compileIntent(text, overrides = {}) {
   const raw = String(text || "").trim();
   const lower = raw.toLowerCase();
@@ -102,6 +107,7 @@ export function compileIntent(text, overrides = {}) {
   };
 }
 
+/** @param {Record<string, any>} action @returns {string} */
 export function commitmentOf(action) {
   return sha256(canonical({
     operation: action.operation,
@@ -115,21 +121,25 @@ export function commitmentOf(action) {
   }));
 }
 
+/** @param {{actor?: string, commitment: string, issuedAt?: number}} options */
 export function signAuthorization({ actor = "judge.demo", commitment, issuedAt = Date.now() }) {
   if (!commitment) throw new Error("Authorization must bind a commitment.");
   const token = `jit.${sha256(`${actor}|${commitment}|${issuedAt}`)}`;
   return { actor, issuedAt, commitment, token };
 }
 
+/** @param {any} auth @returns {boolean} */
 export function tokenMatches(auth) {
   if (!auth || !auth.token || !auth.actor || !auth.commitment || auth.issuedAt == null) return false;
   return auth.token === `jit.${sha256(`${auth.actor}|${auth.commitment}|${auth.issuedAt}`)}`;
 }
 
+/** @param {string} id @param {string} claim @param {boolean} holds @param {any} witness @param {any} counterexample @returns {Record<string, any>} */
 function row(id, claim, holds, witness, counterexample) {
   return { id, claim, result: holds ? "UNSAT" : "SAT", holds, witness, counterexample: holds ? null : counterexample };
 }
 
+/** @param {Record<string, any>} action @param {Record<string, any>} policy @param {number} [now] @returns {Record<string, any>} */
 export function evaluate(action, policy = POLICY, now = Date.now()) {
   const t0 = Date.now();
   const commitment = commitmentOf(action);
@@ -188,6 +198,7 @@ export function evaluate(action, policy = POLICY, now = Date.now()) {
   };
 }
 
+/** @param {Record<string, any>} action @returns {Record<string, any>} */
 export function rewriteSafe(action) {
   return {
     ...action,
@@ -204,6 +215,7 @@ export function rewriteSafe(action) {
   };
 }
 
+/** @param {{action: Record<string, any>, proof: Record<string, any>, execution?: any, recovery?: any}} input */
 export function buildReceipt({ action, proof, execution, recovery }) {
   const body = {
     schema: "UAF-RECEIPT.v2",
@@ -223,6 +235,7 @@ export function buildReceipt({ action, proof, execution, recovery }) {
   return { ...body, receiptHash: sha256(canonical(body)) };
 }
 
+/** @param {any} receipt @returns {Record<string, any>} */
 export function verifyReceipt(receipt) {
   if (!receipt || typeof receipt !== "object") return { ok: false, reason: "Receipt missing." };
   const { receiptHash, ...body } = receipt;
@@ -233,6 +246,7 @@ export function verifyReceipt(receipt) {
   return { ok: true, reason: "Receipt re-verified offline from canonical bytes. UI was not trusted.", receiptHash: actual };
 }
 
+/** @param {any} before @param {any} after @returns {Array<Record<string, any>>} */
 export function actionDiff(before, after) {
   const keys = ["operation", "tenant", "environment", "targetCount", "targetIds", "checkpoint", "inverseDefined", "productionGrant"];
   return keys.map((field) => ({
@@ -243,6 +257,7 @@ export function actionDiff(before, after) {
   }));
 }
 
+/** @param {string} label @param {any} payload @param {string} [previous] @returns {string} */
 export function stageSeal(label, payload, previous = "") {
   return sha256(canonical({ label, payload, previous }));
 }
@@ -258,6 +273,7 @@ const PLAIN = {
   JIT_FRESH: "The authorization is outside the JIT window.",
 };
 
+/** @param {any} proof @returns {Array<Record<string, string>>} */
 export function explainRefusal(proof) {
   if (!proof || proof.decision === "ALLOW") return [{ id: "CLEAR", plain: "Every obligation holds. Power is limited to this scope." }];
   return proof.counterexamples.map((item) => ({ id: item.obligation, plain: PLAIN[item.obligation] || "An obligation failed." }));
