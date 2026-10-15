@@ -170,6 +170,18 @@ async function createPgliteSql(): Promise<Sql> {
 let sqlPromise: Promise<Sql> | null = null;
 
 async function createSql(): Promise<Sql> {
+  // Production must never silently fall back to ephemeral in-memory storage.
+  // Vercel sets VERCEL_ENV during production builds and runtime; a missing
+  // DATABASE_URL is a deployment configuration failure, not a PGLite request.
+  if (
+    typeof window === "undefined" &&
+    process.env.VERCEL_ENV === "production" &&
+    !databaseUrl
+  ) {
+    throw new Error(
+      "[db] DATABASE_URL is required in the Vercel production environment; refusing the PGLite fallback.",
+    );
+  }
   if (typeof window !== "undefined") {
     throw new Error(
       "@/lib/db is server-only — call getSql() from a createServerFn handler " +
