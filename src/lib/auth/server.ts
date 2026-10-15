@@ -78,8 +78,8 @@ const authDisabled = env("VITE_AUTH_ENABLED") === "false";
 // otherwise fall back to the shared live-preview client, which the broker accepts
 // for any `*.grok-sandbox.com` callback (see `./preview`).
 const productionDeployment = env("VERCEL_ENV") === "production";
-const grokIssuer =
-  env("GROK_AUTH_ISSUER") ?? (productionDeployment ? undefined : GROK_ISSUER_DEFAULT);
+const configuredGrokIssuer = env("GROK_AUTH_ISSUER");
+const grokIssuer = configuredGrokIssuer ?? GROK_ISSUER_DEFAULT;
 // The shared preview OAuth client is ONLY for ephemeral sandbox previews. Never
 // let a production deployment inherit its shared client credentials.
 const grokClientId =
@@ -91,10 +91,10 @@ const grokClientSecret =
 export const authConfigured =
   !authDisabled &&
   Boolean(
-    grokIssuer &&
-      grokClientId &&
+    grokClientId &&
       grokClientSecret &&
-      (!productionDeployment || (env("BETTER_AUTH_SECRET") && env("BETTER_AUTH_URL"))),
+      (!productionDeployment ||
+        (configuredGrokIssuer && env("BETTER_AUTH_SECRET") && env("BETTER_AUTH_URL"))),
   );
 
 // This app's own Better Auth origin. When deployed the deployer injects the
