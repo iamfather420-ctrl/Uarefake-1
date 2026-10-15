@@ -1,0 +1,37 @@
+{
+  "proof_id": "PROOF-RECEIPT-DH-P-007",
+  "case_id": "DH-P-007",
+  "name": "Berry Paradox",
+  "domain": "KOLMOGOROV_COMPLEXITY",
+  "statement": "The smallest positive integer not definable in under eleven words.",
+  "formal_proposition": "Kolmogorov complexity bound: Integer N having complexity K(N) >= L cannot have description length < L.",
+  "assumptions": [
+    "Finite alphabet of description language",
+    "Bounded word length constraint L"
+  ],
+  "axioms": [
+    "Algorithmic information lower bound"
+  ],
+  "constraints": [
+    "L > 100",
+    "desc_len <= 50"
+  ],
+  "expected_result": "unsat",
+  "actual_result": "unsat",
+  "replay_result": "unsat",
+  "replay_match": true,
+  "verified": true,
+  "scope": "MODEL_VERIFIED_BOUNDED",
+  "solver": "z3-wasm",
+  "solver_version": "Microsoft Research Z3 WASM 5.2.0",
+  "execution_id": "dh_suite_1790883774548_x1etdi",
+  "commit_sha": "b992445d00e6f8e27bd0aeaf308ad2f17a64d142",
+  "contract_hash": "24a29ce7c8507e9ffafdd642c735346dc1dff2636f8d6e134f99393682fe4fce",
+  "source_hash": "c157569ff9a9ceb8b066c45e07780994cb7bd34d0ca54717badb0911951cd656",
+  "source_content_hash": "acacd64e3e442ee8be0f69d24bcfe82a6f2513d4fa952e32491397db7a0270f3",
+  "evidence_hash": "ff2b566eabcd70d7bbfcaccee377eece7c51c71613d34759bca90efee3ab666c",
+  "evidence_integrity": "PASS",
+  "source_integrity": "PASS",
+  "timestamp": "2026-10-01T19:42:56.386Z",
+  "duration_ms": 101.997
+}

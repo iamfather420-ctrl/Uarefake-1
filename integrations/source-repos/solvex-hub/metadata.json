@@ -1,0 +1,6 @@
+{
+  "name": "IdeaVault",
+  "description": "An automated idea scouter and evaluation platform that scours sources, assesses TAM and feasibility, and secures IP.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

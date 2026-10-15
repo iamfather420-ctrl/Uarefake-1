@@ -1,0 +1,36 @@
+{
+  "proof_id": "PROOF-RECEIPT-DH-P-008",
+  "case_id": "DH-P-008",
+  "name": "Richard Paradox",
+  "domain": "DEFINABILITY",
+  "statement": "Diagonalization over all definable real numbers.",
+  "formal_proposition": "If all definable reals in (0, 1) are enumerated, diagonal element r differs at the n-th position from the n-th definable real. Claiming r is in the enumeration is refutable.",
+  "assumptions": [
+    "Countable alphabet implies countable definitions",
+    "Diagonal construction differs at every index"
+  ],
+  "axioms": [
+    "Cantor diagonal inequality"
+  ],
+  "constraints": [
+    "k is a valid enumeration index"
+  ],
+  "expected_result": "unsat",
+  "actual_result": "unsat",
+  "replay_result": "unsat",
+  "replay_match": true,
+  "verified": true,
+  "scope": "MODEL_VERIFIED_AXIOMATIC",
+  "solver": "z3-wasm",
+  "solver_version": "Microsoft Research Z3 WASM 5.2.0",
+  "execution_id": "dh_suite_1790883774548_x1etdi",
+  "commit_sha": "b992445d00e6f8e27bd0aeaf308ad2f17a64d142",
+  "contract_hash": "a6beaf2656ad9a746bd0453fc0729f8b39c119425a51307b502d54ceaa68b732",
+  "source_hash": "0fefd37276eec1c14592a1e361a87bb2d0f603e7481e17b3ff6fdcb72b8f378f",
+  "source_content_hash": "acacd64e3e442ee8be0f69d24bcfe82a6f2513d4fa952e32491397db7a0270f3",
+  "evidence_hash": "256d2e8434106ce2dbc6061d73829c7fd36496e17d701e299f4a2409debc67cf",
+  "evidence_integrity": "PASS",
+  "source_integrity": "PASS",
+  "timestamp": "2026-10-01T19:42:56.501Z",
+  "duration_ms": 64.353
+}

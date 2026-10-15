@@ -1,0 +1,10 @@
+{
+  "sourceRepository": "iamfather420-ctrl/Uarefake-1",
+  "sourceBranch": "integration/cross-repo-purity-match-20261015",
+  "sourceCommit": "4565b39d12201197cfc01ed19010d49d9c906529",
+  "sourceSnapshotCount": 36,
+  "importedFileCount": 5563,
+  "importedBytes": 160201030,
+  "excluded": [".git metadata", ".agents workspace memory", ".buddy deployment workspace", ".gitconfig", "node_modules", ".env files", "credential/certificate files", "local database files", "dist/coverage", ".vercel output", "caches/toolchains", "Python bytecode", "temporary MCP results", "pasted-text attachments", ".node_modules.lock"],
+  "disposition": "Isolated source snapshots for provenance and compatibility review; not all source modules are wired into the root runtime."
+}
