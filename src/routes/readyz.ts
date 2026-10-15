@@ -11,11 +11,11 @@ export const Route = createFileRoute("/readyz")({
       GET: async () => {
         try {
           if (process.env.VERCEL_ENV === "production") {
-            if (
-              !process.env.APP_DATABASE_URL?.trim() &&
-              !process.env.DATABASE_URL?.trim()
-            ) {
-              throw new Error("APP_DATABASE_URL (runtime) is not configured");
+            if (!process.env.APP_DATABASE_URL?.trim()) {
+              throw new Error("APP_DATABASE_URL (least-privilege runtime) is not configured");
+            }
+            if (!process.env.AUTH_DATABASE_URL?.trim()) {
+              throw new Error("AUTH_DATABASE_URL (authentication storage) is not configured");
             }
             const { authConfigured } = await import("@/lib/auth/server");
             if (!authConfigured) {
