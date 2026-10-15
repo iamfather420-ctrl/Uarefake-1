@@ -196,6 +196,17 @@ function Home() {
           <ParaiStrip />
         </div>
       </section>
+
+      <section className="mx-auto max-w-6xl px-4 py-12">
+        <Link to="/evidence" className="group flex flex-col gap-3 rounded-xl border border-line bg-surface p-6 transition-colors hover:border-stamp/60 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <p className="font-mono text-2xs uppercase tracking-mark text-muted">Daisy Haminja · formal evidence</p>
+            <h2 className="mt-2 font-display text-2xl font-bold tracking-tight">Review the recorded 120-case corpus.</h2>
+            <p className="mt-2 max-w-2xl text-sm text-muted">Inspect original case records, assertion hashes, and replay flags. The dashboard clearly separates recorded claims from independently rerun verification.</p>
+          </div>
+          <span className="inline-flex shrink-0 items-center gap-2 font-mono text-xs uppercase tracking-wide">Open evidence <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" /></span>
+        </Link>
+      </section>
     </PageShell>
   );
 }
