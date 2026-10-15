@@ -11,7 +11,7 @@ const commitment = evaluate({ ...safe, auth: null }, POLICY, now).commitment;
 const auth = signAuthorization({ actor: "judge.demo", commitment, issuedAt: now });
 const allowed = evaluate({ ...safe, auth }, POLICY, now);
 assert.equal(allowed.decision, "ALLOW");
-assert.ok(allowed.obligations.every(row => row.result === "UNSAT"));
+assert.ok(allowed.obligations.every((/** @type {{ result: string }} */ row) => row.result === "UNSAT"));
 assert.equal(evaluate({ ...safe, auth: { ...auth, token: "jit.forged" } }, POLICY, now).decision, "REFUSE");
 assert.equal(evaluate({ ...safe, auth }, POLICY, now + POLICY.jitWindowMs + 1).decision, "REFUSE");
 const receipt = buildReceipt({ action: { ...safe, auth }, proof: allowed, execution: { status: "APPLIED" }, recovery: { status: "ROLLED_BACK" } });
