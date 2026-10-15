@@ -9,8 +9,7 @@ on:
     paths:
       - ".github/workflows/full-build-source-import.yml"
       - "integrated-sources/Full-Build/**"
-      - "src/routes/evidence.tsx"
-      - "src/routes/index.tsx"
+      - "docs/FULL-BUILD-SOURCE-INTEGRATION.md"
       - "eslint.config.mjs"
 
 permissions:
