@@ -5,11 +5,13 @@ on:
     branches:
       - integration/full-build-source-import-20261015
       - integration/package-merged-build-20261015
+      - integration/complete-source-snapshot-import-20261015
   pull_request:
     branches: [main]
     paths:
       - ".github/workflows/full-build-source-import.yml"
       - "integrated-sources/Full-Build/**"
+      - "integrations/source-repos/**"
       - "docs/FULL-BUILD-SOURCE-INTEGRATION.md"
       - "eslint.config.mjs"
 
@@ -109,7 +111,7 @@ jobs:
           EOF
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add integrated-sources/Full-Build eslint.config.mjs
+          git add integrated-sources/Full-Build integrations/source-repos eslint.config.mjs
           if ! git diff --cached --quiet; then
             git commit -m "build(integration): import pinned Full-Build source with provenance"
             git push origin "HEAD:${TARGET_BRANCH}"
