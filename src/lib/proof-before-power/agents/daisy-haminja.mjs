@@ -15,8 +15,8 @@ export function proposeToolCall(intent) {
 
 /**
  * @param {string} intent
- * @param {object} [ctx]
- * @param {((action: object) => unknown) | undefined} [toolRunner]
+ * @param {Record<string, any>} [ctx]
+ * @param {((action: Record<string, any>) => unknown) | undefined} [toolRunner]
  */
 export function daisyAct(intent, ctx = {}, toolRunner) {
   const toolCall = proposeToolCall(intent);
