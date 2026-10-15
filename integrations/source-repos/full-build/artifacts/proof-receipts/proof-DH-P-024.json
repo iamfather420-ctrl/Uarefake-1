@@ -1,0 +1,37 @@
+{
+  "proof_id": "PROOF-RECEIPT-DH-P-024",
+  "case_id": "DH-P-024",
+  "name": "Olbers Paradox",
+  "domain": "ASTROPHYSICS",
+  "statement": "In an infinite static universe, the night sky should be uniformly bright.",
+  "formal_proposition": "In infinite static Euclidean space with uniform star number density, integrated flux diverges. Conjunction of infinite static universe with finite sky flux is refutable.",
+  "assumptions": [
+    "Static infinite Euclidean universe",
+    "Uniform stellar luminosity density"
+  ],
+  "axioms": [
+    "Inverse-square light propagation",
+    "Spherical shell volume scaling r^2"
+  ],
+  "constraints": [
+    "static_universe is true"
+  ],
+  "expected_result": "unsat",
+  "actual_result": "unsat",
+  "replay_result": "unsat",
+  "replay_match": true,
+  "verified": true,
+  "scope": "MODEL_VERIFIED_AXIOMATIC",
+  "solver": "z3-wasm",
+  "solver_version": "Microsoft Research Z3 WASM 5.2.0",
+  "execution_id": "dh_suite_1790883774548_x1etdi",
+  "commit_sha": "b992445d00e6f8e27bd0aeaf308ad2f17a64d142",
+  "contract_hash": "55cb367b04bdae2ad8aa26ec0599d243a221c5f854674132127b4015613cc3ae",
+  "source_hash": "8a402c1c6e1f2393ff2b36ba22bbe5be61d92c8e8aa9fadbfcbbbf62b72164c9",
+  "source_content_hash": "acacd64e3e442ee8be0f69d24bcfe82a6f2513d4fa952e32491397db7a0270f3",
+  "evidence_hash": "0de5226c0c6b70c05d31e125b063fac428747bfa5435fc3fcb4dffa3387e95a6",
+  "evidence_integrity": "PASS",
+  "source_integrity": "PASS",
+  "timestamp": "2026-10-01T19:42:57.682Z",
+  "duration_ms": 57.242
+}

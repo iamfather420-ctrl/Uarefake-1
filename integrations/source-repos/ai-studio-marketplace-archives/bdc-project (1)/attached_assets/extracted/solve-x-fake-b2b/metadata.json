@@ -1,0 +1,6 @@
+{
+  "name": "SolveX B2B",
+  "description": "High-integrity autonomous enterprise foundry and B2B marketplace with automated fiscal compliance and SystemMilestone governance.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,1213 @@
+{
+  "commit_sha": "f3d2da33b5a32e07b5ab1cfb4bbf6b84ad7e8308",
+  "repository": "iamfather420-ctrl/Full-Build",
+  "branch": "main",
+  "case_count": 120,
+  "unique_ids": 120,
+  "matches": 120,
+  "replay_matches": 120,
+  "combined_root_sha256": "c458189112a93288eabbd1a29c90c0481949e23f8b88dcceed7e1b1d3f3c053a",
+  "hash_stable_across_runs": false,
+  "cases": [
+    {
+      "id": "DFRL-P-001",
+      "family": "DFRL",
+      "name": "Zeno's Achilles & The Tortoise",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "881361f678c593e8ae93ea0fe8440c21802b67942a4711bd0c0157d92ef1cced"
+    },
+    {
+      "id": "DFRL-P-002",
+      "family": "DFRL",
+      "name": "Russell's Antinomy",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "66beb1174f89ae5ef15d1ef34910370bebede1b83b0805b5e5b49960f34e6d26"
+    },
+    {
+      "id": "DFRL-P-003",
+      "family": "DFRL",
+      "name": "Barber Paradox (Russell Universal Restriction)",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "6d280731162ce6a69cd69024658d4ab00e81ea04ab31f13d1c41ad9c44d233d5"
+    },
+    {
+      "id": "DFRL-P-004",
+      "family": "DFRL",
+      "name": "Tarskian Liar Paradox",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "c873823cb6e2324432a832c033c7d840234ad766352808215f932aaca670455d"
+    },
+    {
+      "id": "DFRL-P-005",
+      "family": "DFRL",
+      "name": "Curry's Paradox (Unbounded Contraction)",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "362d03700368a9f602977e0227fe2a70d9590c8567668b9f3d193a0a733c9032"
+    },
+    {
+      "id": "DFRL-P-006",
+      "family": "DFRL",
+      "name": "NOPOT Inductive Decrement Ranking",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "41201ddd998d20d88aac414150ec574ed8f3ef5b2b426edbc8e64db6a4e6bad6"
+    },
+    {
+      "id": "DFRL-P-007",
+      "family": "DFRL",
+      "name": "Lamport Byzantine Agreement (3m+1)",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "e8591cac829e2ff8796587250da808bc75e085c79f90aeb3a909eefe1176682b"
+    },
+    {
+      "id": "DFRL-P-008",
+      "family": "DFRL",
+      "name": "Dirichlet Pigeonhole Collision Bound",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "0c7a1996caa530eb383ae5fe7f6d02613f7ab770693d65db8503ca467e387a2e"
+    },
+    {
+      "id": "DFRL-P-009",
+      "family": "DFRL",
+      "name": "Burali-Forti Ordinal Super-Maximality",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "69a1e50c7f8d576989b427c8983f2adb1c6f8cbfaa938976328746b00eb9c693"
+    },
+    {
+      "id": "DFRL-P-010",
+      "family": "DFRL",
+      "name": "Cantor's Cardinal Power Set Anomaly",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "9cb2dea08f0c596ce02b814181dc024b193fb4a36c6e9fa42fd986fe69339dad"
+    },
+    {
+      "id": "DFRL-P-011",
+      "family": "DFRL",
+      "name": "Berry Least Unnameable Integer",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "8f014524e42e83d762d150a7714624f99c76756b796f6e5f72a2c9d0285ace1b"
+    },
+    {
+      "id": "DFRL-P-012",
+      "family": "DFRL",
+      "name": "Grelling-Nelson Heterological Antinomy",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "5b061de3b9d6ce5f1fa7c1ed7450ed21fb105fe666fc1bbbc9515972ac0a9826"
+    },
+    {
+      "id": "DFRL-P-013",
+      "family": "DFRL",
+      "name": "Yablo's Non-Circular Sequence",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "5e197dba6414d416e23fa5bc4f00fe074eaae0117ba8d09ba8bcba0f7e3a98ea"
+    },
+    {
+      "id": "DFRL-P-014",
+      "family": "DFRL",
+      "name": "Zeno's Dichotomy (Runway Paradox)",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "421617998f784fc1890344d79fdb8785bf37fc086c5ba0f1d0e51ac4a951158a"
+    },
+    {
+      "id": "DFRL-P-015",
+      "family": "DFRL",
+      "name": "Zeno's Arrow at Rest",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "ad4a82d81b8332e4fe3551da9048fe803841abb2627e09124bf33f21c5893bba"
+    },
+    {
+      "id": "DFRL-P-016",
+      "family": "DFRL",
+      "name": "Ship of Theseus Identity Persistence",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "86a44fb8e0c20492bc7faea110733542842e0ebd46beda5886c436b784acaaa5"
+    },
+    {
+      "id": "DFRL-P-017",
+      "family": "DFRL",
+      "name": "Sorites Heap Boundary Paradox",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "9ba633365301705f4491ef4b5a06ba4dafda9baf58423731a1b58ffb06dd42ca"
+    },
+    {
+      "id": "DFRL-P-018",
+      "family": "DFRL",
+      "name": "Two Generals Communication Link",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "9b5a7778e4303728cf22a9c7dbf776154859f728292eb649a6b11fde7e9f5e14"
+    },
+    {
+      "id": "DFRL-P-019",
+      "family": "DFRL",
+      "name": "FLP Asynchronous Crash Failure",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "1a594f81f373b54bb0deffb370766a3a204ae82ef5b25a1ddce8985d8a09d379"
+    },
+    {
+      "id": "DFRL-P-020",
+      "family": "DFRL",
+      "name": "Banach-Tarski Non-Measurable Ball Decomposition",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "bd1eb60e956e0a5cdfcf6698d5dbb6c9aeeff0bf6a142b4126c8e425d8bb6928"
+    },
+    {
+      "id": "DFRL-P-021",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #021",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "1e06a26d423d13a174d6ce17d48bd8e36677d692cef845ae62dd74bbf43d11ab"
+    },
+    {
+      "id": "DFRL-P-022",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #022",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "7a8926d09c5083986caddafd7e524d389f7ad4f232fa40acf3cbd7b2926e521c"
+    },
+    {
+      "id": "DFRL-P-023",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #023",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "3982e4aa1293a22064a07e2c780cecaf687ba2eaac3bd57abedf6adaa5acecd2"
+    },
+    {
+      "id": "DFRL-P-024",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #024",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "35c27e5fed5b7ed914b37e270be3ceb8277c1dc97b7ee41dd0fcf9c67ab37d5f"
+    },
+    {
+      "id": "DFRL-P-025",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #025",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "dc78b1f126e088ad2496716041ec72443c1cf30a7e67d62e99c07a870a76a2ba"
+    },
+    {
+      "id": "DFRL-P-026",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #026",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "7f0fd10ba6cfb9da367daaf9de2b7fa98310158c0dafdcba0c5ccf409d0c431b"
+    },
+    {
+      "id": "DFRL-P-027",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #027",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "622d38e1d9282e9cbe5fa8646640f43804579a67df75b01367cbad8f3cbf46dd"
+    },
+    {
+      "id": "DFRL-P-028",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #028",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "b01049220ee77423b619aecd7e77f3cdbb19800998cac3bf7d0486fe5c223749"
+    },
+    {
+      "id": "DFRL-P-029",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #029",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "c08c846ba8e59b215b369589446f007440ea1969f4e1156fa7b794f98034755d"
+    },
+    {
+      "id": "DFRL-P-030",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #030",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "699712038a64ff28ba9f2ee3fcf7275fd261e5b4954d17ae932f6726418bf6ef"
+    },
+    {
+      "id": "DFRL-P-031",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #031",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "1f210e0b99d6c458c1a7d7a3b8bdde50613d25d01ea3fa74c9fd3c8052ceefa5"
+    },
+    {
+      "id": "DFRL-P-032",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #032",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "639dfc37df5b41a08ddcd0f3d242b932cd1c3c429f12fa443af103bb1f09728b"
+    },
+    {
+      "id": "DFRL-P-033",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #033",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "4b9ebb32bbce3b40a24af7d98265cf605f154c5be46f32dd002864f5fb3b2886"
+    },
+    {
+      "id": "DFRL-P-034",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #034",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "d174915882e68a07e45a5124774bff055b38bb07e29068e36d6674cebe4d15cf"
+    },
+    {
+      "id": "DFRL-P-035",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #035",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "519291802dc1860b908bb6a507f4182a6f0b693625c2dc93750332e467b7ed3f"
+    },
+    {
+      "id": "DFRL-P-036",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #036",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "3185ab25a8919588a63c7754256a232538fa0c4fcd0f3efff819bfcac9743519"
+    },
+    {
+      "id": "DFRL-P-037",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #037",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "eb29298f4c2d8d3a56506e451eb4c739c8e3345e026ae9ca761726d4ff27a465"
+    },
+    {
+      "id": "DFRL-P-038",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #038",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "73d70579b096ebb8771017e7691e75f73825785af6dabf1acea64f794fa4837a"
+    },
+    {
+      "id": "DFRL-P-039",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #039",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "e42915dd77f1be7db37612ebcc1ff4e77a18f5103f68a416f4fc5d4023e76583"
+    },
+    {
+      "id": "DFRL-P-040",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #040",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "d4cca7fe1654ab5c88ad89f826f1dc4d2c678bfeb9c41a5d13201eb4e25b1875"
+    },
+    {
+      "id": "DFRL-P-041",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #041",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "d5035308e35b79711d529674566c51f1ca0845b55ed5363d44a754ac304ef59e"
+    },
+    {
+      "id": "DFRL-P-042",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #042",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "d9259eff056cc361b3c50e366d99f38fb84fb0a4a3f5eef911f13aaf9c1396bd"
+    },
+    {
+      "id": "DFRL-P-043",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #043",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "4197de33ec088c9e7ce246a54277b02c692e4455b745b4b89f2b1134dc3df009"
+    },
+    {
+      "id": "DFRL-P-044",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #044",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "5c3bd68775761aaab90d1179f5e7ab9e820ee099e8e53bc5b8d79545c4d72a7d"
+    },
+    {
+      "id": "DFRL-P-045",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #045",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "4c4564ae36eda1db81a76c95fb656c5c6fd38144fe63b231a1d8370ad31d4cfb"
+    },
+    {
+      "id": "DFRL-P-046",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #046",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "dfa90ef540d08d2d67b728b441f9c94b8868177efe8f802e0ad19660393b189d"
+    },
+    {
+      "id": "DFRL-P-047",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #047",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "846ea83cc1ceae6433c78c182d0307ccf0f8e337dff3817784ed7f75dae0ff04"
+    },
+    {
+      "id": "DFRL-P-048",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #048",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "124266e866ee89d7cf6c2baf6845c2d1dde7b6673a26594498a5e15b02241b7c"
+    },
+    {
+      "id": "DFRL-P-049",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #049",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "b0aa17294d3d5378b772b71ae85d50c0bf2c00ae38980ab8899809d461b4e4c0"
+    },
+    {
+      "id": "DFRL-P-050",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #050",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "6d55ef5621108a5304f301224d0e86e6f301d31d5772d34f6d1e7f53720f8a0f"
+    },
+    {
+      "id": "DFRL-P-051",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #051",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "0924834569a1ec641b61e20ebf8815ce62f40a389b1601ef134674ac6062ee90"
+    },
+    {
+      "id": "DFRL-P-052",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #052",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "e0fa03c730291b53d040bc80becf74f9d6e71b565b038e47ad4773f86f4e21ef"
+    },
+    {
+      "id": "DFRL-P-053",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #053",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "9b25300d31ef35d2c60d082aff3e2ed092c10029fbabb9c2925eaee3c97746e4"
+    },
+    {
+      "id": "DFRL-P-054",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #054",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "ca30a7742ddf8eee3ecb1adf78870304ac7a4870edb28906dfc2510eae856ea3"
+    },
+    {
+      "id": "DFRL-P-055",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #055",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "8154b34035c6bd6982cc077a8ed8672ef90de3ba7b287a699e469c7105b0038b"
+    },
+    {
+      "id": "DFRL-P-056",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #056",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "3e6341f86b44402b7d8994391fa2396dc566dd865fd65961bdd7844886ec505a"
+    },
+    {
+      "id": "DFRL-P-057",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #057",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "d9741db31f4eb60a1b7c50b0a5667249c9689ebe7621686ba34f0582f770bb9f"
+    },
+    {
+      "id": "DFRL-P-058",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #058",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "fffe9dfb722fd123a40d18a2fd6a3eae62e4c3775f7bf8e73130b4ebbc17ffd1"
+    },
+    {
+      "id": "DFRL-P-059",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #059",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "415e04d75473f9226618b8400354292fe3048dc03f81c6e74dc87cec95dee6f0"
+    },
+    {
+      "id": "DFRL-P-060",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #060",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "2fa22fe8abfaebb7a940a16af47e06a6f2defaad4e7bc026d57e84a37fdb4cb9"
+    },
+    {
+      "id": "DFRL-P-061",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #061",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "a0f7a9c10749165c78288c59c37cf4af8263b2deec2935eece2beb38fe112dde"
+    },
+    {
+      "id": "DFRL-P-062",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #062",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "4d930a0270662ffebbe4240b214b4f13be308ade419d59522103ee88f6417540"
+    },
+    {
+      "id": "DFRL-P-063",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #063",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "7bde850e6ca36132a16b41b92a3af3236d0ed40ff5d2cbb841354d15ecdddc6c"
+    },
+    {
+      "id": "DFRL-P-064",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #064",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "d47114c744e3229e55feb1dc58a45d07cea7d7aef0bf9888c5606d6b5136ab88"
+    },
+    {
+      "id": "DFRL-P-065",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #065",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "f16a0fc8320ed99ebb9e48cadff95b211312dac0e908c848e1510591425faa47"
+    },
+    {
+      "id": "DFRL-P-066",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #066",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "13f8a20cfcf2a18b65004aead6d8dc2152351ad889a63abdd5b0eab2b0f38bf9"
+    },
+    {
+      "id": "DFRL-P-067",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #067",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "ab02d2bc26bbdb305cfc9d0ed005e9eb382be6dd38efbbcbfe33c1703b872aee"
+    },
+    {
+      "id": "DFRL-P-068",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #068",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "78920cb45dac25d7bbd5825eb74312d63b3742f70fdffa195c3a7e9cad35f513"
+    },
+    {
+      "id": "DFRL-P-069",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #069",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "fd0875142d9c8b3ecbf209ec3f8ad7ecadef28dd8ecc831ee2d60c7cc82aebdc"
+    },
+    {
+      "id": "DFRL-P-070",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #070",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "7cb994aede95c8e084da1d945d97aabdefdaa820b9656b5ba3f552b252c7d920"
+    },
+    {
+      "id": "DFRL-P-071",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #071",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "45ebca1ef150b344ea82abe33361d0026de1e07f31353330a088ea19ad02877d"
+    },
+    {
+      "id": "DFRL-P-072",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #072",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "dad8ada78b8305f44773e7deab3940abd868ce396e4841937dee2c53a6fb6ef0"
+    },
+    {
+      "id": "DFRL-P-073",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #073",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "b1d1036b26f623549352ed5a7de2caaae00a6d5c177a7f6c32c85a925fbdcb03"
+    },
+    {
+      "id": "DFRL-P-074",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #074",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "5c10733cf5f1e84c9ead159ee294c8616d8cfa731b2a218bf2141d42ac7659dc"
+    },
+    {
+      "id": "DFRL-P-075",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #075",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "f0713bf72c431ab6417a4572f5896b38f6259d06592c3d9cdb3371d566134c2a"
+    },
+    {
+      "id": "DFRL-P-076",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #076",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "6a647398816a54e1a6443f8abff8a1dfd8ecbb69e0a6a5e53f94e5cca63a7d97"
+    },
+    {
+      "id": "DFRL-P-077",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #077",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "505006a6295cf25738985bb66756c14f5a05e8346dd489042e1ebdd2fc6f9979"
+    },
+    {
+      "id": "DFRL-P-078",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #078",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "e3a7d9e0a1ed1924e219544e3f42f1eef2319c682cbcdc97a801d6814deabe47"
+    },
+    {
+      "id": "DFRL-P-079",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #079",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "c2c3e4d870e124cb2ebd000103d472f9ac9f97a07636292e336a5681063da9e3"
+    },
+    {
+      "id": "DFRL-P-080",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #080",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "5d9699651f4efc496d5d27fa015c7bb0f9a92df5f756536f62de075da7e7fa9d"
+    },
+    {
+      "id": "DFRL-P-081",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #081",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "a76b940115145ccfb1a006bed0e2f0f3c1d8fb2670620e4b03124783cb85b3f2"
+    },
+    {
+      "id": "DFRL-P-082",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #082",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "2eaaf134a349026708a35d06fe2871769c58052910f1d1d625312db5b9c2c281"
+    },
+    {
+      "id": "DFRL-P-083",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #083",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "ad3877e766a94a7c1cc559a286a989316d56351d3b29a725abfa866fe0b66745"
+    },
+    {
+      "id": "DFRL-P-084",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #084",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "9163deccb0eee62d47bd4467cad026a1b0072603df192ce33ac7f49fa83cecb5"
+    },
+    {
+      "id": "DFRL-P-085",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #085",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "d7657e34aa397a0bd8382a42b75e5da298e9af05a09183ef817b4c1ef5a81207"
+    },
+    {
+      "id": "DFRL-P-086",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #086",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "795afd739e932935e049a836f26752c5c5f18e86831180d910eda9108022bc6f"
+    },
+    {
+      "id": "DFRL-P-087",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #087",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "09bd861fd0f79599f6bebdab7288b6a6d41748d9b0a06a067a561c4bf7cc0c62"
+    },
+    {
+      "id": "DFRL-P-088",
+      "family": "DFRL",
+      "name": "Sovereign DFRL Formal Paradox Operator #088",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "7f2a8e5e15ee4981314c7193bd64a96cb369ffa7e6334415060cee120c7f1931"
+    },
+    {
+      "id": "DH-P-001",
+      "family": "DH",
+      "name": "Achilles and the Tortoise",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "11cbbe898d8930c0779b004a2d47e84d71e022f858e2174b047422582686c0e0"
+    },
+    {
+      "id": "DH-P-002",
+      "family": "DH",
+      "name": "Russell Set Paradox",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "e57b5a664e449ee019af13e219086b5392abe3bb6494c71e9887e6940b2b9aca"
+    },
+    {
+      "id": "DH-P-003",
+      "family": "DH",
+      "name": "Barber Paradox",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "da0866677fc71b8dc198f40cd92ce35b688144cb085c40944bbb7f6ea56032a7"
+    },
+    {
+      "id": "DH-P-004",
+      "family": "DH",
+      "name": "Liar Paradox",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "d967d270daec400141778e8c311550bbbe32b4d13a4a8f84e22e3b90229a0da2"
+    },
+    {
+      "id": "DH-P-005",
+      "family": "DH",
+      "name": "Grelling-Nelson Paradox",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "1444541927213fe0a47e50341b0b0993e83e9123a90f1472ae7ad7385ee74b57"
+    },
+    {
+      "id": "DH-P-006",
+      "family": "DH",
+      "name": "Curry Paradox",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "a173700761f6143292920de4c2e2d6540e8ca373c8fa7b6970f7c73c565c4503"
+    },
+    {
+      "id": "DH-P-007",
+      "family": "DH",
+      "name": "Berry Paradox",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "24a29ce7c8507e9ffafdd642c735346dc1dff2636f8d6e134f99393682fe4fce"
+    },
+    {
+      "id": "DH-P-008",
+      "family": "DH",
+      "name": "Richard Paradox",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "a6beaf2656ad9a746bd0453fc0729f8b39c119425a51307b502d54ceaa68b732"
+    },
+    {
+      "id": "DH-P-009",
+      "family": "DH",
+      "name": "Burali-Forti Paradox",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "bf95417e8343f7ed9d7b733661681784e90d2f826c3fe6ce225c70dc4b57cdf6"
+    },
+    {
+      "id": "DH-P-010",
+      "family": "DH",
+      "name": "Cantor Paradox",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "ad95adfc61c8efd12eb2599722350369e75eb9030936eb5b8fb8cf942e358fda"
+    },
+    {
+      "id": "DH-P-011",
+      "family": "DH",
+      "name": "Sorites Paradox",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "e3d2c1102687b713ad86dcc06dddf53e58204829e52700297a4b2e643a49a0ed"
+    },
+    {
+      "id": "DH-P-012",
+      "family": "DH",
+      "name": "Ship of Theseus",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "fcb9e2a3ecd72afe5db962dbd93e9efa69a8ba91ed0f0604b79465845c5835d4"
+    },
+    {
+      "id": "DH-P-013",
+      "family": "DH",
+      "name": "Grandfather Paradox",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "bb14ed62d2fd065afeb5ea93916d203db6141550d800620108b719d9ab36563f"
+    },
+    {
+      "id": "DH-P-014",
+      "family": "DH",
+      "name": "Bootstrap Paradox",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "bba56eda9a3e749e64cfa2168cf1985487684c50aee0f38a76104521c62c649f"
+    },
+    {
+      "id": "DH-P-015",
+      "family": "DH",
+      "name": "Raven Paradox (Hempel)",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "99185786a3125ffd76d24f39dd0c7679be2c6030ea15e5a71c0649213cbab416"
+    },
+    {
+      "id": "DH-P-016",
+      "family": "DH",
+      "name": "Goodman New Riddle of Induction (Grue)",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "475cf3deb254afc74f21129f5934c6d7beab88f0684b16622957af988d1c1d74"
+    },
+    {
+      "id": "DH-P-017",
+      "family": "DH",
+      "name": "Newcomb Problem",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "0cb4feaf01b7a3874fdd803967f9dbd96ebdc507743fc1aeb3c045be9717fed1"
+    },
+    {
+      "id": "DH-P-018",
+      "family": "DH",
+      "name": "Prisoner Dilemma",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "2efcdaf25b4077028e29b0a748d91f2fb1f15eb84fc69daae35c432ad9a67609"
+    },
+    {
+      "id": "DH-P-019",
+      "family": "DH",
+      "name": "Simpson Paradox",
+      "expected": "sat",
+      "actual": "sat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "0c362edf28c66e138237c5b7c23653c31af3ac5a9d94e80eec789e956aefff9d"
+    },
+    {
+      "id": "DH-P-020",
+      "family": "DH",
+      "name": "Monty Hall Problem",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "93903a9ec447542a4f47c8432c648e7ddbd38bb30c3a9402f188c0a9c8b91288"
+    },
+    {
+      "id": "DH-P-021",
+      "family": "DH",
+      "name": "Birthday Paradox",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "85d7ee8c3e3bc69eacae3509c3bc58ba51a31b33cc82d216bd66a6a1f1763cb5"
+    },
+    {
+      "id": "DH-P-022",
+      "family": "DH",
+      "name": "Banach-Tarski Paradox",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "cdeb57d2b4c688078255425810aa6257ebbfa4b69191e76141d68045c48c0575"
+    },
+    {
+      "id": "DH-P-023",
+      "family": "DH",
+      "name": "Gabriel Horn (Torricelli Trumpet)",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "b9b7139c39910bd1ce09cd90f6c52b7eb4be64aa1277e0eebd7eb281ae9d8dbb"
+    },
+    {
+      "id": "DH-P-024",
+      "family": "DH",
+      "name": "Olbers Paradox",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "55cb367b04bdae2ad8aa26ec0599d243a221c5f854674132127b4015613cc3ae"
+    },
+    {
+      "id": "DH-P-025",
+      "family": "DH",
+      "name": "Fermi Paradox",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "6e5b8c801a5368abb1cf45ef1a391c24eb89bb2cc7f806e539b543fedfcf2c2b"
+    },
+    {
+      "id": "DH-P-026",
+      "family": "DH",
+      "name": "Twin Paradox",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "43a1a50ebcc0ebf2a24c92859cd5efc91bd87935b8051e5120e777b34de3c0af"
+    },
+    {
+      "id": "DH-P-027",
+      "family": "DH",
+      "name": "EPR Paradox",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "2eb36164861517004876d93b0d5438fb84a50026d22e243b1a0e1b25fea6d421"
+    },
+    {
+      "id": "DH-P-028",
+      "family": "DH",
+      "name": "Schrodinger Cat Paradox",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "acb025e96d36d019a933b0e94de9bb43d2e2b96065ab7aecea558c055c6710d4"
+    },
+    {
+      "id": "DH-P-029",
+      "family": "DH",
+      "name": "Zeno Arrow Paradox",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "ec382a18aba53784d9a386ef7c9f196b6af81e6431c6d3f2b1ddd1dc6cb8ce19"
+    },
+    {
+      "id": "DH-P-030",
+      "family": "DH",
+      "name": "Zeno Dichotomy Paradox",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "c64b34e1c669d03a45e492dbc3abf3883fade37ceeeefc5cce92ec1817ece36a"
+    },
+    {
+      "id": "DH-P-031",
+      "family": "DH",
+      "name": "Braess Paradox",
+      "expected": "sat",
+      "actual": "sat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "53977fafacb5eb31d35827d04b064e82c5ab2d2cf6f6fdf41ad6ec9c162b5c48"
+    },
+    {
+      "id": "DH-P-032",
+      "family": "DH",
+      "name": "Byzantine Generals Paradox",
+      "expected": "unsat",
+      "actual": "unsat",
+      "match": true,
+      "replay_match": true,
+      "assertion_hash": "29ecbd0fc23699ebf606ad5d9226f11cdd51767515053b32f2ca52e7fd5770c8"
+    }
+  ]
+}

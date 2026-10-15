@@ -1,0 +1,36 @@
+{
+  "proof_id": "PROOF-RECEIPT-DH-P-029",
+  "case_id": "DH-P-029",
+  "name": "Zeno Arrow Paradox",
+  "domain": "INFINITE_SERIES",
+  "statement": "At every instant of time, a flying arrow occupies a space equal to itself and is motionless.",
+  "formal_proposition": "Instantaneous velocity is defined as the limit dx/dt as dt -> 0. Non-zero velocity v0 > 0 refutes the claim that instantaneous occupancy implies zero velocity.",
+  "assumptions": [
+    "Arrow has position trajectory x(t) = v0 * t with v0 > 0",
+    "Instantaneous velocity defined via derivative"
+  ],
+  "axioms": [
+    "Differential calculus velocity definition"
+  ],
+  "constraints": [
+    "v0 > 0.0"
+  ],
+  "expected_result": "unsat",
+  "actual_result": "unsat",
+  "replay_result": "unsat",
+  "replay_match": true,
+  "verified": true,
+  "scope": "MODEL_VERIFIED",
+  "solver": "z3-wasm",
+  "solver_version": "Microsoft Research Z3 WASM 5.2.0",
+  "execution_id": "dh_suite_1790883774548_x1etdi",
+  "commit_sha": "b992445d00e6f8e27bd0aeaf308ad2f17a64d142",
+  "contract_hash": "ec382a18aba53784d9a386ef7c9f196b6af81e6431c6d3f2b1ddd1dc6cb8ce19",
+  "source_hash": "ef549d903a57cb3898bbf3bfdd2fa360ff101f22714bbdf3e6a9a93d158e886d",
+  "source_content_hash": "acacd64e3e442ee8be0f69d24bcfe82a6f2513d4fa952e32491397db7a0270f3",
+  "evidence_hash": "945d507c1e34c5cde25d6a73c78296895295a9947df8027f9fd76b45f696a684",
+  "evidence_integrity": "PASS",
+  "source_integrity": "PASS",
+  "timestamp": "2026-10-01T19:42:58.071Z",
+  "duration_ms": 58.826
+}
