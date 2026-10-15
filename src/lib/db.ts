@@ -233,6 +233,12 @@ export async function getPglite(): Promise<import("@electric-sql/pglite").PGlite
  */
 export function ensureDbReady(): Promise<void> {
   if (dbSource !== "pglite") return Promise.resolve();
+  // Keep the server process able to answer liveness/readiness probes when a
+  // production deployment is misconfigured. Actual database operations still
+  // fail closed in createSql(); /readyz reports 503 until DATABASE_URL exists.
+  if (process.env.VERCEL_ENV === "production" && !databaseUrl) {
+    return Promise.resolve();
+  }
   return getSql().then(() => undefined);
 }
 
@@ -241,7 +247,11 @@ export function ensureDbReady(): Promise<void> {
 const globalBoot = globalThis as typeof globalThis & {
   __pgBootstrapPromise__?: Promise<void>;
 };
-if (typeof window === "undefined" && dbSource === "pglite") {
+if (
+  typeof window === "undefined" &&
+  dbSource === "pglite" &&
+  !(process.env.VERCEL_ENV === "production" && !databaseUrl)
+) {
   globalBoot.__pgBootstrapPromise__ ??= ensureDbReady().catch((err) => {
     globalBoot.__pgBootstrapPromise__ = undefined;
     console.error("[db] PGLite bootstrap failed:", err);
