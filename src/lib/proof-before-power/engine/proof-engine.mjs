@@ -263,6 +263,7 @@ export function stageSeal(label, payload, previous = "") {
   return sha256(canonical({ label, payload, previous }));
 }
 
+/** @type {Record<string, string>} */
 const PLAIN = {
   OP_ALLOWLIST: "The operation is not on the allowlist.",
   TENANT_BIND: "The tenant is outside the granted scope.",
