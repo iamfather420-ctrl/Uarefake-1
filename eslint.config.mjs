@@ -16,6 +16,7 @@ export default tseslint.config(
       "node_modules/**",
       "src/routeTree.gen.ts",
       "integrated-sources/Full-Build/**",
+      "integrations/source-repos/**",
     ],
   },
   js.configs.recommended,
