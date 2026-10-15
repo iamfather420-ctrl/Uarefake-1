@@ -37,7 +37,7 @@ jobs:
       - name: Import pinned Full-Build source without secrets or generated dependencies
         shell: bash
         env:
-          TARGET_BRANCH: ${{ github.ref_name }}
+          TARGET_BRANCH: ${{ github.event.pull_request.head.ref || github.ref_name }}
         run: |
           set -euo pipefail
           SOURCE_SHA="a67017fbfe2ac795dfdc635a434ef50b19852ec8"
