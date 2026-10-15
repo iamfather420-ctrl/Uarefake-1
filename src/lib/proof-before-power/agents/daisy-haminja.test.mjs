@@ -1,0 +1,16 @@
+import assert from "node:assert/strict";
+import { daisyAct } from "./daisy-haminja.mjs";
+import { evaluate, rewriteSafe, signAuthorization, POLICY } from "../engine/proof-engine.mjs";
+const unsafe = daisyAct("Update all production account statuses to suspended.", {}, () => ({ status: "APPLIED" }));
+assert.equal(unsafe.toolRan, false);
+assert.equal(unsafe.gate.proceed, false);
+const now = Date.now();
+const safe = rewriteSafe({ intent: "safe", operation: "ACCOUNT_STATUS_UPDATE", tenant: POLICY.demoTenant, environment: "sandbox", targetCount: 1, targetIds: ["acct_demo_014"], productionGrant: false, checkpoint: true, inverseDefined: true, auth: null });
+const commitment = evaluate({ ...safe, auth: null }, POLICY, now).commitment;
+const auth = signAuthorization({ actor: "judge.demo", commitment, issuedAt: now });
+const allowed = daisyAct("Update account acct_demo_014 status in the demo tenant sandbox, with checkpoint and inverse.", { auth, now, host: { checkpoint: true, inverseDefined: true, tenant: POLICY.demoTenant, environment: "sandbox", targetCount: 1, targetIds: ["acct_demo_014"] } }, () => ({ status: "APPLIED" }));
+assert.equal(allowed.toolRan, true);
+const noRunner = daisyAct("Update account acct_demo_014 status in the demo tenant sandbox, with checkpoint and inverse.", { auth, now, host: { checkpoint: true, inverseDefined: true, tenant: POLICY.demoTenant, environment: "sandbox", targetCount: 1, targetIds: ["acct_demo_014"] } });
+assert.equal(noRunner.toolRan, false);
+assert.equal(noRunner.failClosed, true);
+console.log("Daisy Haminja gate tests passed; unsafe action refused and missing runner fails closed.");
