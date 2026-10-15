@@ -1,0 +1,38 @@
+{
+  "proof_id": "PROOF-RECEIPT-DH-P-010",
+  "case_id": "DH-P-010",
+  "name": "Cantor Paradox",
+  "domain": "SET_THEORY",
+  "statement": "Power set of universal set must have strictly greater cardinality than universal set.",
+  "formal_proposition": "For universal set U, |P(U)| <= |U|. Cantor theorem proves |U| < |P(U)|. The conjunction is refutable.",
+  "assumptions": [
+    "U contains all sets",
+    "Power set operation is valid on U"
+  ],
+  "axioms": [
+    "Cantor theorem: |X| < |P(X)|",
+    "Subsets of universal set belong to universal set"
+  ],
+  "constraints": [
+    "cardU > 0",
+    "cardPU > cardU"
+  ],
+  "expected_result": "unsat",
+  "actual_result": "unsat",
+  "replay_result": "unsat",
+  "replay_match": true,
+  "verified": true,
+  "scope": "MODEL_VERIFIED",
+  "solver": "z3-wasm",
+  "solver_version": "Microsoft Research Z3 WASM 5.2.0",
+  "execution_id": "dh_suite_1790883774548_x1etdi",
+  "commit_sha": "b992445d00e6f8e27bd0aeaf308ad2f17a64d142",
+  "contract_hash": "ad95adfc61c8efd12eb2599722350369e75eb9030936eb5b8fb8cf942e358fda",
+  "source_hash": "c48e00114c6398e597f07401c0319cdb19f1bd0ed81220a40398e2882d095e19",
+  "source_content_hash": "acacd64e3e442ee8be0f69d24bcfe82a6f2513d4fa952e32491397db7a0270f3",
+  "evidence_hash": "8a73b3cdfb48960568b44cea0572dbff0ed4ba12d566effcad1319fa39cf88ed",
+  "evidence_integrity": "PASS",
+  "source_integrity": "PASS",
+  "timestamp": "2026-10-01T19:42:56.644Z",
+  "duration_ms": 54.253
+}

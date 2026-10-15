@@ -1,0 +1,38 @@
+{
+  "proof_id": "PROOF-RECEIPT-DH-P-026",
+  "case_id": "DH-P-026",
+  "name": "Twin Paradox",
+  "domain": "RELATIVITY",
+  "statement": "Traveling twin accelerates away and returns younger than stationary twin.",
+  "formal_proposition": "Asymmetric Minkowski spacetime proper time: tau_traveler = T * sqrt(1 - v^2/c^2) < T. Refuting hypothesis that traveling twin elapsed proper time equals stationary twin.",
+  "assumptions": [
+    "Minkowski metric interval ds^2 = c^2 dt^2 - dx^2",
+    "Non-inertial turnaround by traveling twin"
+  ],
+  "axioms": [
+    "Lorentz invariance",
+    "Proper time path integral"
+  ],
+  "constraints": [
+    "v = 0.8c",
+    "T > 0"
+  ],
+  "expected_result": "unsat",
+  "actual_result": "unsat",
+  "replay_result": "unsat",
+  "replay_match": true,
+  "verified": true,
+  "scope": "MODEL_VERIFIED",
+  "solver": "z3-wasm",
+  "solver_version": "Microsoft Research Z3 WASM 5.2.0",
+  "execution_id": "dh_suite_1790883774548_x1etdi",
+  "commit_sha": "b992445d00e6f8e27bd0aeaf308ad2f17a64d142",
+  "contract_hash": "43a1a50ebcc0ebf2a24c92859cd5efc91bd87935b8051e5120e777b34de3c0af",
+  "source_hash": "1fc4a644fb25ced4d40635c9c976a976cfd1670be7399c8834b4e12a421a8b91",
+  "source_content_hash": "acacd64e3e442ee8be0f69d24bcfe82a6f2513d4fa952e32491397db7a0270f3",
+  "evidence_hash": "5cbab69a7da7e9109a9745446d2fa8686f4d82f298c324f16981b9eecf7bf402",
+  "evidence_integrity": "PASS",
+  "source_integrity": "PASS",
+  "timestamp": "2026-10-01T19:42:57.855Z",
+  "duration_ms": 63.426
+}

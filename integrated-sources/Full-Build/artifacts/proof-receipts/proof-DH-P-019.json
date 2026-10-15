@@ -1,0 +1,36 @@
+{
+  "proof_id": "PROOF-RECEIPT-DH-P-019",
+  "case_id": "DH-P-019",
+  "name": "Simpson Paradox",
+  "domain": "STATISTICS",
+  "statement": "Trend appears in groups but reverses when groups are aggregated.",
+  "formal_proposition": "Subgroup success rate reversal upon aggregation: a1 > b1 and a2 > b2 while totalA < totalB is mathematically SATISFIABLE.",
+  "assumptions": [
+    "Positive sub-sample counts",
+    "Non-uniform group weight distribution"
+  ],
+  "axioms": [
+    "Weighted average arithmetic"
+  ],
+  "constraints": [
+    "Rates in (0, 1)"
+  ],
+  "expected_result": "sat",
+  "actual_result": "sat",
+  "replay_result": "sat",
+  "replay_match": true,
+  "verified": true,
+  "scope": "MODEL_VERIFIED",
+  "solver": "z3-wasm",
+  "solver_version": "Microsoft Research Z3 WASM 5.2.0",
+  "execution_id": "dh_suite_1790883774548_x1etdi",
+  "commit_sha": "b992445d00e6f8e27bd0aeaf308ad2f17a64d142",
+  "contract_hash": "0c362edf28c66e138237c5b7c23653c31af3ac5a9d94e80eec789e956aefff9d",
+  "source_hash": "aad195fe57b670a87b3d24c45f1f919f4ca97e84ac65d9456ff412dda3d21d18",
+  "source_content_hash": "acacd64e3e442ee8be0f69d24bcfe82a6f2513d4fa952e32491397db7a0270f3",
+  "evidence_hash": "416d8274fd682f356bc77eb0c2d3f20abc6e006eb52b522bd62c99b394044e5b",
+  "evidence_integrity": "PASS",
+  "source_integrity": "PASS",
+  "timestamp": "2026-10-01T19:42:57.315Z",
+  "duration_ms": 69.765
+}

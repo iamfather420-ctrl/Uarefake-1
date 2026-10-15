@@ -1,0 +1,37 @@
+{
+  "proof_id": "PROOF-RECEIPT-DH-P-011",
+  "case_id": "DH-P-011",
+  "name": "Sorites Paradox",
+  "domain": "VAGUENESS",
+  "statement": "Removing one grain from a heap leaves a heap; by induction one grain is a heap.",
+  "formal_proposition": "Crisp induction on bounded tolerance boundary (heap(n) => heap(n-1)) forces heap(1) from heap(5), refuting the negative boundary condition.",
+  "assumptions": [
+    "heap(5) is true",
+    "heap(1) is false",
+    "crisp single-grain tolerance"
+  ],
+  "axioms": [
+    "Finite backward mathematical induction"
+  ],
+  "constraints": [
+    "1 <= n <= 5"
+  ],
+  "expected_result": "unsat",
+  "actual_result": "unsat",
+  "replay_result": "unsat",
+  "replay_match": true,
+  "verified": true,
+  "scope": "MODEL_VERIFIED_BOUNDED",
+  "solver": "z3-wasm",
+  "solver_version": "Microsoft Research Z3 WASM 5.2.0",
+  "execution_id": "dh_suite_1790883774548_x1etdi",
+  "commit_sha": "b992445d00e6f8e27bd0aeaf308ad2f17a64d142",
+  "contract_hash": "e3d2c1102687b713ad86dcc06dddf53e58204829e52700297a4b2e643a49a0ed",
+  "source_hash": "501735fdfadbb659fe04ede9d44ace273754873dcaf7f590a399a04ce527e183",
+  "source_content_hash": "acacd64e3e442ee8be0f69d24bcfe82a6f2513d4fa952e32491397db7a0270f3",
+  "evidence_hash": "47d73c5ee4daf695c03070d1c97ea1416857f856e780ace95b9e2c5a6db1c0b9",
+  "evidence_integrity": "PASS",
+  "source_integrity": "PASS",
+  "timestamp": "2026-10-01T19:42:56.709Z",
+  "duration_ms": 76.348
+}
