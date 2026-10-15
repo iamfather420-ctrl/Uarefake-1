@@ -49,8 +49,8 @@ export function beforeToolCall(call, ctx = {}) {
 /**
  * @param {object} call
  * @param {Record<string, any>} ctx
- * @param {((action: Record<string, any>) => unknown) | undefined} runner
- * @returns {object}
+ * @param {((action: Record<string, any>) => unknown)} [runner]
+ * @returns {Record<string, any>}
  */
 export function runGatedTool(call, ctx, runner) {
   const gate = beforeToolCall(call, ctx);
