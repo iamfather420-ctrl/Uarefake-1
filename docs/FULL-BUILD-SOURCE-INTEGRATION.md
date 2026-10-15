@@ -2,6 +2,8 @@
 
 The packaged build artifact is produced by the branch-scoped CI workflow after validation; the artifact excludes workspace memory, local configuration, dependency trees, generated builds, local databases, and the duplicate Grok workspace ZIP.
 
+The next integration pass imports the filtered 36-repository source snapshot under `integrations/source-repos/` while excluding workspace memory, local configuration, credentials, generated dependencies, caches, local databases, and temporary tool output. These snapshots remain isolated from the runtime until compatibility and collision review is complete.
+
 The canonical repository is `iamfather420-ctrl/Uarefake-1`. The source repository is `iamfather420-ctrl/Full-Build`, pinned to commit `a67017fbfe2ac795dfdc635a434ef50b19852ec8`.
 
 The import workflow copies source into `integrated-sources/Full-Build/` while excluding Git metadata, dependency directories, environment files, credentials/certificates, local databases, generated builds, caches, and toolchains. It preserves the source package manifest and lockfile so the source can be installed and verified independently.
