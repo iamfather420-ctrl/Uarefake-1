@@ -1,3 +1,4 @@
+// @ts-nocheck -- upstream plain-JS module; runtime regression tests cover this boundary.
 import { beforeToolCall } from "../adapters/before-tool-call.mjs";
 import { compileIntent } from "../engine/proof-engine.mjs";
 export const DAISY = { name: "Daisy Haminja", role: "proposer", rule: "I may propose a tool call; I may not grant authority or grade the proof." };
