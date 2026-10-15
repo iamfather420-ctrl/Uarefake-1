@@ -15,24 +15,24 @@
       "bytes": 40041955
     },
     "autonomous-b2b-consolidated": {
-      "files": 1050,
-      "bytes": 43277748
+      "files": 1049,
+      "bytes": 43277717
     },
     "autonomous-b2b-marketplace": {
       "files": 729,
       "bytes": 12973266
     },
     "base-waste-harvester": {
-      "files": 30,
-      "bytes": 14303400
+      "files": 29,
+      "bytes": 14291112
     },
     "blaze-1": {
       "files": 2,
       "bytes": 497
     },
     "clean-web-consolidated": {
-      "files": 918,
-      "bytes": 32249186
+      "files": 917,
+      "bytes": 32249155
     },
     "daisy-app-forge": {
       "files": 11,
@@ -95,8 +95,8 @@
       "bytes": 71052
     },
     "reclamation-experts": {
-      "files": 40,
-      "bytes": 499863
+      "files": 39,
+      "bytes": 479323
     },
     "solvex-b2b-autonomy": {
       "files": 35,
@@ -111,8 +111,8 @@
       "bytes": 86040
     },
     "solvex-crystal-clear-compliance": {
-      "files": 20,
-      "bytes": 14242466
+      "files": 19,
+      "bytes": 14230178
     },
     "solvex-hub": {
       "files": 50,
@@ -147,8 +147,8 @@
       "bytes": 1899845
     }
   },
-  "totalFiles": 5996,
-  "totalBytes": 230539644,
+  "totalFiles": 5991,
+  "totalBytes": 230494466,
   "sameRelativePathGroups": [
     {
       "relativePath": ".agents/memory/MEMORY.md",
@@ -295,20 +295,6 @@
     },
     {
       "relativePath": ".gitattributes",
-      "repos": [
-        "autonomous-b2b-consolidated",
-        "clean-web-consolidated"
-      ],
-      "identicalGroups": [
-        [
-          "autonomous-b2b-consolidated",
-          "clean-web-consolidated"
-        ]
-      ],
-      "conflicting": false
-    },
-    {
-      "relativePath": ".gitconfig",
       "repos": [
         "autonomous-b2b-consolidated",
         "clean-web-consolidated"
@@ -15986,20 +15972,6 @@
     },
     {
       "relativePath": "vault/solvex-openapi.json",
-      "repos": [
-        "base-waste-harvester",
-        "solvex-crystal-clear-compliance"
-      ],
-      "identicalGroups": [
-        [
-          "base-waste-harvester",
-          "solvex-crystal-clear-compliance"
-        ]
-      ],
-      "conflicting": false
-    },
-    {
-      "relativePath": "vault/subscribers.db",
       "repos": [
         "base-waste-harvester",
         "solvex-crystal-clear-compliance"
@@ -37570,21 +37542,6 @@
       ]
     },
     {
-      "sha256": "6ef44bd53cb6b06cb92f96afbfd512e17e67d61e504ff586a521786104a932a9",
-      "copies": [
-        {
-          "repo": "autonomous-b2b-consolidated",
-          "path": ".gitconfig",
-          "size": 31
-        },
-        {
-          "repo": "clean-web-consolidated",
-          "path": ".gitconfig",
-          "size": 31
-        }
-      ]
-    },
-    {
       "sha256": "4223054b7f91b431a378bdea41f4c3dfc846c04688c637742d8a80d8771d3c6d",
       "copies": [
         {
@@ -44411,21 +44368,6 @@
           "repo": "solvex-crystal-clear-compliance",
           "path": ".github/workflows/remote_compilation.yml",
           "size": 1033
-        }
-      ]
-    },
-    {
-      "sha256": "28482b28eb90fa66d8ad8c30e51f8c0b4fad04839b04bb250f11b55cd62ee475",
-      "copies": [
-        {
-          "repo": "base-waste-harvester",
-          "path": "vault/subscribers.db",
-          "size": 12288
-        },
-        {
-          "repo": "solvex-crystal-clear-compliance",
-          "path": "vault/subscribers.db",
-          "size": 12288
         }
       ]
     },
