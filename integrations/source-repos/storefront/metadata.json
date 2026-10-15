@@ -1,0 +1,6 @@
+{
+  "name": "Solvex Paradox Marketplace & Autonomous Engine",
+  "description": "Unified sovereign B2B marketplace and AI paradox engine integrating 88 Paradoxes, 105 Sovereign Solutions, Freedom SIM AI OS (SwarmOS), Daisy Haminja Agentic Brain, MMTAI Zero-Trust 380-Byte Ledger, and cross-domain procurement.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

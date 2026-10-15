@@ -1,0 +1,13 @@
+{
+  "frontend": {
+    "domain": "uarefake.com",
+    "platform": "vercel"
+  },
+  "controlboard": {
+    "domain": "uarefake.space",
+    "platform": "spaceship"
+  },
+  "role": "storefront-node",
+  "mesh": "solvex-paradox-box"
+}
+

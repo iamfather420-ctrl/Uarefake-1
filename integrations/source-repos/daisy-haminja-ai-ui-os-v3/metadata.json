@@ -1,0 +1,6 @@
+{
+  "name": "DAISY Core",
+  "description": "Master Mind-map Token Automation Interface (MMTAI) & Standalone Multi-Agent Intelligence Engine",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

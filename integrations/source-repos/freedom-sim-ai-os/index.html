@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Google AI Studio App</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script src="https://js.puter.com/v2/"></script>
+    <script>
+      (function() {
+        if (typeof window !== 'undefined') {
+          if (!window.process) {
+            window.process = {
+              env: {},
+              cwd: () => '/',
+              nextTick: (cb) => setTimeout(cb, 0),
+              browser: true,
+            };
+          } else {
+            if (typeof window.process.cwd !== 'function') {
+              window.process.cwd = () => '/';
+            }
+            if (!window.process.env) {
+              window.process.env = {};
+            }
+            if (typeof window.process.nextTick !== 'function') {
+              window.process.nextTick = (cb) => setTimeout(cb, 0);
+            }
+            window.process.browser = true;
+          }
+        }
+      })();
+    </script>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
