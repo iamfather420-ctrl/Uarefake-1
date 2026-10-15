@@ -4,7 +4,7 @@ import { PageShell } from "@/components/nav";
 import { Button } from "@/components/ui/button";
 import { StateChip } from "@/components/ui/badge";
 import { productBySku } from "@/lib/catalog";
-import { persistOrder, recordAudit } from "@/lib/ledger";
+import { persistOrder } from "@/lib/ledger";
 import { useAppStore } from "@/lib/store";
 import { formatUsd, shortHash } from "@/lib/utils";
 
@@ -15,7 +15,6 @@ function CartPage() {
   const orders = useAppStore((s) => s.orders);
   const setQty = useAppStore((s) => s.setQty);
   const checkout = useAppStore((s) => s.checkout);
-  const attemptPay = useAppStore((s) => s.attemptPay);
   const reverseOrder = useAppStore((s) => s.reverseOrder);
 
   const lines = cart
@@ -26,34 +25,24 @@ function CartPage() {
     .filter((x): x is NonNullable<typeof x> => x !== null);
   const total = lines.reduce((n, l) => n + l.product.priceCents * l.qty, 0);
 
-  function place() {
+  async function place() {
     const res = checkout();
-    if (!res.ok) toast.error(res.error);
-    else {
-      toast.success(`Order ${res.order.id} created. Payment not claimed.`);
-      for (const item of res.order.items) {
+    if (!res.ok) {
+      toast.error(res.error);
+      return;
+    }
+    try {
+      const items = res.order.items.map((item) => {
         const product = productBySku(item.sku);
-        void persistOrder({
-          data: {
-            id: `${res.order.id}:${item.sku}`,
-            sku: item.sku,
-            proof: product?.proofBundle ?? "NONE",
-            priceCents: item.priceCents * item.qty,
-            status: res.order.status,
-          },
-        });
-      }
-      void recordAudit({
-        data: {
-          action: "ORDER_CREATED",
-          target: "orders",
-          targetId: res.order.id,
-          payload: JSON.stringify({
-            items: res.order.items.map((i) => i.sku),
-            totalCents: res.order.totalCents,
-          }),
-        },
+        if (!product) throw new Error("Catalog item disappeared; request was not recorded.");
+        return { sku: item.sku, proof: product.proofBundle, qty: item.qty };
       });
+      await persistOrder({ data: { id: res.order.id, items } });
+      toast.success(`Access request ${res.order.id} recorded. No payment was collected.`);
+    } catch (error) {
+      reverseOrder(res.order.id);
+      const reason = error instanceof Error ? error.message : "Persistence failed.";
+      toast.error(`Fail-closed: request was not confirmed. ${reason}`);
     }
   }
 
@@ -114,7 +103,7 @@ function CartPage() {
           {lines.length > 0 ? (
             <div className="mt-6 flex items-center justify-between">
               <p className="font-mono text-lg tabular-nums">{formatUsd(total)}</p>
-              <Button onClick={place}>Create escrow order</Button>
+              <Button onClick={() => void place()}>Request access</Button>
             </div>
           ) : null}
         </section>
@@ -147,11 +136,6 @@ function CartPage() {
                     <p className="mt-2 text-xs leading-relaxed text-stamp">{o.reason}</p>
                   ) : null}
                   <div className="mt-3 flex flex-wrap gap-2">
-                    {o.status === "ORDER_CREATED" ? (
-                      <Button size="sm" variant="stamp" onClick={() => attemptPay(o.id)}>
-                        Capture PayPal
-                      </Button>
-                    ) : null}
                     {o.status === "FAIL_CLOSED" || o.status === "ORDER_CREATED" ? (
                       <Button size="sm" variant="outline" onClick={() => reverseOrder(o.id)}>
                         Reverse
