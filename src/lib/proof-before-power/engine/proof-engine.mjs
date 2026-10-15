@@ -1,4 +1,3 @@
-// @ts-nocheck -- upstream plain-JS module; runtime regression tests cover this boundary.
 /**
  * UAREFAKE Proof-Before-Power engine (PBP-1).
  * A finite, decidable policy theory. Not a language-model opinion.
