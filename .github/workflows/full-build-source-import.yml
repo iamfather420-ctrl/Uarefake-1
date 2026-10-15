@@ -36,8 +36,9 @@ jobs:
           cache: npm
 
       - name: Import pinned Full-Build source without secrets or generated dependencies
-        if: github.event_name == 'push'
         shell: bash
+        env:
+          TARGET_BRANCH: ${{ github.event.pull_request.head.ref || github.ref_name }}
         run: |
           set -euo pipefail
           SOURCE_SHA="a67017fbfe2ac795dfdc635a434ef50b19852ec8"
@@ -78,7 +79,7 @@ jobs:
           git add integrated-sources/Full-Build eslint.config.mjs
           if ! git diff --cached --quiet; then
             git commit -m "build(integration): import pinned Full-Build source with provenance"
-            git push origin "HEAD:${GITHUB_REF_NAME}"
+            git push origin "HEAD:${TARGET_BRANCH}"
           fi
 
       - name: Install canonical app dependencies
