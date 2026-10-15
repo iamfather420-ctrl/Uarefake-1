@@ -110,7 +110,7 @@ jobs:
             "sourceSnapshotCount": 36,
             "importedFileCount": $SNAPSHOT_FILE_COUNT,
             "importedBytes": $SNAPSHOT_BYTES,
-            "excluded": [".git metadata", ".agents workspace memory", ".buddy deployment workspace", ".gitconfig", "node_modules", ".env files", "credential/certificate files", "local database files", "dist/coverage", ".vercel output", caches/toolchains, Python bytecode, temporary MCP results, pasted-text attachments, .node_modules.lock],
+            "excluded": [".git metadata", ".agents workspace memory", ".buddy deployment workspace", ".gitconfig", "node_modules", ".env files", "credential/certificate files", "local database files", "dist/coverage", ".vercel output", "caches/toolchains", "Python bytecode", "temporary MCP results", "pasted-text attachments", ".node_modules.lock"],
             "disposition": "Isolated source snapshots for provenance and compatibility review; not all source modules are wired into the root runtime."
           }
           EOF
