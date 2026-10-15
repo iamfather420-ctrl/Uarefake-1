@@ -55,7 +55,7 @@ export function beforeToolCall(call, ctx = {}) {
 export function runGatedTool(call, ctx, runner) {
   const gate = beforeToolCall(call, ctx);
   if (!gate.proceed || typeof runner !== "function") {
-    return { ran: false, failClosed: gate.proceed || !gate.proceed, gate };
+    return { ran: false, failClosed: true, gate };
   }
   return { ran: true, result: runner(gate.action), gate };
 }
