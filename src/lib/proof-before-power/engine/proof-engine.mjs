@@ -182,7 +182,7 @@ export function evaluate(action, policy = POLICY, now = Date.now()) {
       { ageMs: Number.isFinite(age) ? age : null, windowMs: policy.jitWindowMs }),
   ];
 
-  const failed = obligations.filter((o) => !o.holds);
+  const failed = obligations.filter((/** @type {{ holds: boolean }} */ o) => !o.holds);
   const decision = failed.length === 0 ? "ALLOW" : "REFUSE";
   return {
     policy: policy.id,
@@ -278,7 +278,7 @@ const PLAIN = {
 /** @param {any} proof @returns {Array<Record<string, string>>} */
 export function explainRefusal(proof) {
   if (!proof || proof.decision === "ALLOW") return [{ id: "CLEAR", plain: "Every obligation holds. Power is limited to this scope." }];
-  return proof.counterexamples.map((item) => ({ id: item.obligation, plain: PLAIN[item.obligation] || "An obligation failed." }));
+  return proof.counterexamples.map((/** @type {{ obligation: string }} */ item) => ({ id: item.obligation, plain: PLAIN[item.obligation] || "An obligation failed." }));
 }
 
 export const SCENARIOS = {
