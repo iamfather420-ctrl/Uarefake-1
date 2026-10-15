@@ -47,10 +47,10 @@ jobs:
           git -C "$TMP_DIR/Full-Build" checkout --detach "$SOURCE_SHA"
           mkdir -p integrated-sources/Full-Build
           rsync -a \
-            --exclude='.git/' \\
-            --exclude='.agents/' \\
-            --exclude='.buddy/' \\
-            --exclude='.gitconfig' \\
+            --exclude='.git/' \
+            --exclude='.agents/' \
+            --exclude='.buddy/' \
+            --exclude='.gitconfig' \
             --exclude='node_modules/' \
             --exclude='.env' \
             --exclude='.env.*' \
