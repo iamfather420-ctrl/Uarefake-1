@@ -4,17 +4,19 @@ import { pendingMigrations } from "../../scripts/migration-plan.mjs";
 export type DbSource = "neon" | "pglite";
 
 // An empty/whitespace DATABASE_URL (an easy misconfig in deploy UIs) must mean
-// "unset" — otherwise production would silently run on the PGLite fallback.
+// "unset". Vercel serverless deployments must not fall back to ephemeral PGLite:
+ // it is not durable across invocations and its filesystem-backed assets may not
+// be included in the deployment bundle. PGLite is a local-development fallback only.
 const rawDatabaseUrl =
   typeof process !== "undefined" ? process.env.DATABASE_URL : undefined;
 const databaseUrl =
   rawDatabaseUrl && rawDatabaseUrl.trim() ? rawDatabaseUrl : undefined;
 
 /**
- * Active backend: real **Neon** when `DATABASE_URL` is set (deployed / configured
- * sandbox), otherwise a local embedded **PGLite** (Postgres compiled to WASM) so
- * the app has a working database even with nothing configured — the live preview
- * included. Swap in Neon later by just setting `DATABASE_URL`; no code changes.
+ * Active backend: real **Neon/Postgres** when `DATABASE_URL` is set. PGLite is
+ * available only for local development. Every Vercel environment must provide a
+ * real database URL; deployment previews must not silently run against ephemeral
+ * or non-persistent storage.
  */
 export const dbSource: DbSource = databaseUrl ? "neon" : "pglite";
 
@@ -170,16 +172,12 @@ async function createPgliteSql(): Promise<Sql> {
 let sqlPromise: Promise<Sql> | null = null;
 
 async function createSql(): Promise<Sql> {
-  // Production must never silently fall back to ephemeral in-memory storage.
-  // Vercel sets VERCEL_ENV during production builds and runtime; a missing
-  // DATABASE_URL is a deployment configuration failure, not a PGLite request.
-  if (
-    typeof window === "undefined" &&
-    process.env.VERCEL_ENV === "production" &&
-    !databaseUrl
-  ) {
+  // Vercel deployments (production, preview, and development) must never
+  // silently fall back to ephemeral PGLite. A missing DATABASE_URL is a
+  // deployment configuration failure, not a request for mock/non-durable data.
+  if (typeof window === "undefined" && process.env.VERCEL && !databaseUrl) {
     throw new Error(
-      "[db] DATABASE_URL is required in the Vercel production environment; refusing the PGLite fallback.",
+      "[db] DATABASE_URL is required in every Vercel environment; refusing the PGLite fallback.",
     );
   }
   if (typeof window !== "undefined") {
@@ -192,8 +190,9 @@ async function createSql(): Promise<Sql> {
 }
 
 /**
- * Get the shared, **server-only** SQL client. Neon when `DATABASE_URL` is set,
- * otherwise the local PGLite fallback. Memoized — safe to call per request.
+ * Get the shared, **server-only** SQL client. Neon/Postgres when
+ * `DATABASE_URL` is set; local PGLite only outside Vercel. Memoized — safe to
+ * call per request.
  *
  * Schema comes from `migrations/*.sql`, auto-applied before the first query on
  * both backends — define tables there, never inline in server functions.
@@ -236,7 +235,7 @@ export function ensureDbReady(): Promise<void> {
   // Keep the server process able to answer liveness/readiness probes when a
   // production deployment is misconfigured. Actual database operations still
   // fail closed in createSql(); /readyz reports 503 until DATABASE_URL exists.
-  if (process.env.VERCEL_ENV === "production" && !databaseUrl) {
+  if (process.env.VERCEL && !databaseUrl) {
     return Promise.resolve();
   }
   return getSql().then(() => undefined);
@@ -250,7 +249,7 @@ const globalBoot = globalThis as typeof globalThis & {
 if (
   typeof window === "undefined" &&
   dbSource === "pglite" &&
-  !(process.env.VERCEL_ENV === "production" && !databaseUrl)
+  !(process.env.VERCEL && !databaseUrl)
 ) {
   globalBoot.__pgBootstrapPromise__ ??= ensureDbReady().catch((err) => {
     globalBoot.__pgBootstrapPromise__ = undefined;
