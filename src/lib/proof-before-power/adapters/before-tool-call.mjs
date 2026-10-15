@@ -1,4 +1,3 @@
-// @ts-nocheck -- upstream plain-JS module; runtime regression tests cover this boundary.
 import { compileIntent, evaluate, rewriteSafe, POLICY } from "../engine/proof-engine.mjs";
 const RESERVED = ["auth", "host", "tenant", "environment", "productionGrant", "checkpoint", "inverseDefined", "targetIds", "targetCount"];
 export function beforeToolCall(call, ctx = {}) {
