@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import { daisyAct } from "./daisy-haminja.mjs";
+import { runGatedTool } from "../adapters/before-tool-call.mjs";
 import { evaluate, rewriteSafe, signAuthorization, POLICY } from "../engine/proof-engine.mjs";
 
 const unsafe = daisyAct("Update all production account statuses to suspended.", {}, () => ({ status: "APPLIED" }));
@@ -77,4 +78,21 @@ const noRunner = daisyAct(
 assert.equal(noRunner.toolRan, false);
 assert.equal(noRunner.failClosed, true);
 
-console.log("Daisy Haminja gate tests passed; demo tokens denied, host-verified boundary enforced, missing runner fails closed.");
+
+const gatedUnsafe = runGatedTool(
+  { name: "ACCOUNT_STATUS_UPDATE", input: "Update all production account statuses to suspended." },
+  {},
+  () => { throw new Error("Runner must never be invoked for a refused action."); },
+);
+assert.equal(gatedUnsafe.ran, false);
+assert.equal(gatedUnsafe.failClosed, true);
+assert.equal(gatedUnsafe.gate.proceed, false);
+
+const gatedMissingRunner = runGatedTool(
+  { name: "ACCOUNT_STATUS_UPDATE", input: "Update account status in sandbox." },
+  { host: { authorizationVerified: true, authorizationIssuer: "test-idp", tenantBound: true } },
+);
+assert.equal(gatedMissingRunner.ran, false);
+assert.equal(gatedMissingRunner.failClosed, true);
+
+console.log("Daisy Haminja gate tests passed; demo tokens denied, unsafe actions refused, missing runners fail closed.");
