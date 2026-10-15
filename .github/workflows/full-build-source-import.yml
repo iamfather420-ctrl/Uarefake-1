@@ -69,6 +69,51 @@ jobs:
             --exclude='.local/' \
             --exclude='.cargo/' \
             "$TMP_DIR/Full-Build/" integrated-sources/Full-Build/
+          # Import the audited 36-repository snapshot without local memory, caches, credentials, or generated dependencies.
+          AUDIT_DIR="$(mktemp -d)/source-audit"
+          git clone --filter=blob:none --no-checkout https://github.com/iamfather420-ctrl/Uarefake-1.git "$AUDIT_DIR"
+          git -C "$AUDIT_DIR" checkout --detach "4565b39d12201197cfc01ed19010d49d9c906529"
+          mkdir -p integrations/source-repos
+          rsync -a \
+            --exclude='.git/' \
+            --exclude='.agents/' \
+            --exclude='.buddy/' \
+            --exclude='.gitconfig' \
+            --exclude='node_modules/' \
+            --exclude='.env' \
+            --exclude='.env.*' \
+            --exclude='*.pem' \
+            --exclude='*.key' \
+            --exclude='*.p12' \
+            --exclude='*.pfx' \
+            --exclude='*.db' \
+            --exclude='*.sqlite*' \
+            --exclude='dist/' \
+            --exclude='coverage/' \
+            --exclude='.vercel/output/' \
+            --exclude='.cache/' \
+            --exclude='.local/' \
+            --exclude='.cargo/' \
+            --exclude='__pycache__/' \
+            --exclude='*.pyc' \
+            --exclude='artifacts/.tmp/' \
+            --exclude='Pasted Text-*.txt' \
+            --exclude='.node_modules.lock' \
+            "$AUDIT_DIR/integrations/source-repos/" integrations/source-repos/
+          SNAPSHOT_FILE_COUNT="$(find integrations/source-repos -type f | wc -l | tr -d ' ')"
+          SNAPSHOT_BYTES="$(du -sb integrations/source-repos | cut -f1)"
+          cat > integrations/source-repos/SOURCE-SNAPSHOT-PROVENANCE.json <<EOF
+          {
+            "sourceRepository": "iamfather420-ctrl/Uarefake-1",
+            "sourceBranch": "integration/cross-repo-purity-match-20261015",
+            "sourceCommit": "4565b39d12201197cfc01ed19010d49d9c906529",
+            "sourceSnapshotCount": 36,
+            "importedFileCount": $SNAPSHOT_FILE_COUNT,
+            "importedBytes": $SNAPSHOT_BYTES,
+            "excluded": [".git metadata", ".agents workspace memory", ".buddy deployment workspace", ".gitconfig", "node_modules", ".env files", "credential/certificate files", "local database files", "dist/coverage", ".vercel output", caches/toolchains, Python bytecode, temporary MCP results, pasted-text attachments, .node_modules.lock],
+            "disposition": "Isolated source snapshots for provenance and compatibility review; not all source modules are wired into the root runtime."
+          }
+          EOF
           cat > integrated-sources/Full-Build/SOURCE-PROVENANCE.json <<'EOF'
           {
             "sourceRepository": "iamfather420-ctrl/Full-Build",
