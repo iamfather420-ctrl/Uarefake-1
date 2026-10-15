@@ -7,6 +7,7 @@
  * All obligations holding means the unsafe state is UNSAT in this theory.
  */
 
+/** @type {Record<string, any>} */
 export const POLICY = {
   id: "PBP-1",
   name: "Proof Before Power",
@@ -79,7 +80,7 @@ export function sha256(input) {
 
 /** @param {any} value @returns {string} */
 export function canonical(value) {
-  if (value === null || typeof value !== "object") return JSON.stringify(value);
+  if (value === null || typeof value !== "object") return JSON.stringify(value) ?? "undefined";
   if (Array.isArray(value)) return `[${value.map(canonical).join(",")}]`;
   const keys = Object.keys(value).sort();
   return `{${keys.map((k) => `${JSON.stringify(k)}:${canonical(value[k])}`).join(",")}}`;
