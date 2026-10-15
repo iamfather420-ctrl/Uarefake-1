@@ -14,7 +14,9 @@ import { resolveRuntimeDatabaseUrl } from "../../../scripts/database-urls.mjs";
  */
 
 /** True when a real database is configured server-side. */
-const databaseConfigured = Boolean(resolveRuntimeDatabaseUrl(process.env));
+const databaseConfigured = Boolean(
+  resolveRuntimeDatabaseUrl(process.env) || process.env.DATABASE_URL?.trim(),
+);
 
 /** Re-export so callers can branch on it without importing `server.ts`. */
 export { authConfigured };
