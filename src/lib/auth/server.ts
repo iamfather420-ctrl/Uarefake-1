@@ -77,13 +77,25 @@ const authDisabled = env("VITE_AUTH_ENABLED") === "false";
 // Broker federation creds: the deployer injects a per-app client when deployed;
 // otherwise fall back to the shared live-preview client, which the broker accepts
 // for any `*.grok-sandbox.com` callback (see `./preview`).
-const grokIssuer = env("GROK_AUTH_ISSUER") ?? GROK_ISSUER_DEFAULT;
-const grokClientId = env("GROK_AUTH_CLIENT_ID") ?? PREVIEW_CLIENT_ID;
-const grokClientSecret = env("GROK_AUTH_CLIENT_SECRET") ?? PREVIEW_CLIENT_SECRET;
+const productionDeployment = env("VERCEL_ENV") === "production";
+const configuredGrokIssuer = env("GROK_AUTH_ISSUER");
+const grokIssuer = configuredGrokIssuer ?? GROK_ISSUER_DEFAULT;
+// The shared preview OAuth client is ONLY for ephemeral sandbox previews. Never
+// let a production deployment inherit its shared client credentials.
+const grokClientId =
+  env("GROK_AUTH_CLIENT_ID") ?? (productionDeployment ? undefined : PREVIEW_CLIENT_ID);
+const grokClientSecret =
+  env("GROK_AUTH_CLIENT_SECRET") ?? (productionDeployment ? undefined : PREVIEW_CLIENT_SECRET);
 
-/** True when federated sign-in is active (real auth is enforced). */
+/** True only when sign-in has explicit production credentials and session secret. */
 export const authConfigured =
-  !authDisabled && Boolean(grokClientId && grokClientSecret);
+  !authDisabled &&
+  Boolean(
+    grokClientId &&
+      grokClientSecret &&
+      (!productionDeployment ||
+        (configuredGrokIssuer && env("BETTER_AUTH_SECRET") && env("BETTER_AUTH_URL"))),
+  );
 
 // This app's own Better Auth origin. When deployed the deployer injects the
 // public URL. In the sandbox live preview there's no fixed URL (each preview gets
