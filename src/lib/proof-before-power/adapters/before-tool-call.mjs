@@ -7,9 +7,9 @@ const RESERVED = ["auth", "host", "tenant", "environment", "productionGrant", "c
  * provider. The demo engine's deterministic token is never sufficient to invoke
  * a tool. Callers must not construct this context from request/body fields.
  *
- * @param {object} call
- * @param {object} [ctx]
- * @returns {object}
+ * @param {Record<string, any>} call
+ * @param {Record<string, any>} [ctx]
+ * @returns {Record<string, any>}
  */
 export function beforeToolCall(call, ctx = {}) {
   const rejected = RESERVED.filter((key) => call?.[key] != null);
@@ -48,8 +48,8 @@ export function beforeToolCall(call, ctx = {}) {
 
 /**
  * @param {object} call
- * @param {object} ctx
- * @param {((action: object) => unknown) | undefined} runner
+ * @param {Record<string, any>} ctx
+ * @param {((action: Record<string, any>) => unknown) | undefined} runner
  * @returns {object}
  */
 export function runGatedTool(call, ctx, runner) {
