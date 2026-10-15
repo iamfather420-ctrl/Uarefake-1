@@ -1,6 +1,0 @@
-{
-  "name": "Solvex Enterprise",
-  "description": "B2B Enterprise Software & Paradox Solutions Marketplace for Tier-1 Financial Institutions",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
