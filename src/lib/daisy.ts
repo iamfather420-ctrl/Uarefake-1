@@ -1,3 +1,4 @@
+import { compileIntent, evaluate, POLICY } from "@/lib/proof-before-power/engine/proof-engine.mjs";
 import { createServerFn } from "@tanstack/react-start";
 
 const SYSTEM = `You are Daisy Haminja, PARAI intelligence of UAREFAKE / Solvex.
@@ -67,4 +68,33 @@ export const consultDaisy = createServerFn({ method: "POST" })
       };
     }
     return { ok: true as const, text };
+  });
+
+/**
+ * Deterministic, non-executing proposal preflight. It intentionally supplies
+ * no authorization or execution context; a proposal must remain refused until
+ * a separate trusted server-side authorization boundary exists.
+ */
+export const evaluateDaisyProposal = createServerFn({ method: "POST" })
+  .validator((input: { prompt: string }) => input)
+  .handler(async ({ data }) => {
+    const prompt = data.prompt.trim().slice(0, 1200);
+    if (!prompt) {
+      return { ok: false as const, error: "Empty input is not context." };
+    }
+    const action = compileIntent(prompt);
+    const evaluation = evaluate(action, POLICY);
+    return {
+      ok: true as const,
+      decision: evaluation.decision,
+      policy: evaluation.policy,
+      commitment: evaluation.commitment,
+      obligations: evaluation.obligations.map((item: { id: string; result: string; holds: boolean }) => ({
+        id: item.id,
+        result: item.result,
+        holds: item.holds,
+      })),
+      executionAllowed: false as const,
+      explanation: "Advisory preflight only. No identity provider, authorization grant, tool runner, or mutation is connected here.",
+    };
   });
