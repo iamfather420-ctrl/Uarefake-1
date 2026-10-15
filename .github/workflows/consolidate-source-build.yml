@@ -111,6 +111,28 @@ jobs:
 
           cp "$TMP/provenance.tsv" "$ROOT/integration/reports/source-provenance.tsv"
 
+          # Preserve the target's large workspace attachment as extracted source, not an opaque ZIP.
+          if [[ -f "$ROOT/attachments/grok-workspace.zip" ]]; then
+            archive="$ROOT/attachments/grok-workspace.zip"
+            out="$DEST/grok-workspace-attachment"
+            mkdir -p "$TMP/grok-workspace" "$out"
+            unzip -q "$archive" -d "$TMP/grok-workspace"
+            rsync -a --exclude='.git/' --exclude='node_modules/' --exclude='**/node_modules/**' --exclude='.env' --exclude='**/.env' --exclude='**/.env.*' --exclude='.cargo/' --exclude='**/.cargo/**' --exclude='.local/' --exclude='**/.local/**' --exclude='.cache/' --exclude='**/.cache/**' --exclude='**/__pycache__/**' --exclude='*.pyc' --exclude='.vercel/output/' --exclude='**/.vercel/output/**' --exclude='dist/' --exclude='**/dist/**' --exclude='build/' --exclude='**/build/**' "$TMP/grok-workspace/" "$out/"
+            archive_sha="$(sha256sum "$archive" | cut -d' ' -f1)"
+            cat > "$out/.source-provenance.json" <<JSON
+          {
+            "repository": "iamfather420-ctrl/Uarefake-1",
+            "ref": "${GITHUB_REF_NAME}",
+            "commit": "${GITHUB_SHA}",
+            "sourceArchive": "attachments/grok-workspace.zip",
+            "sourceArchiveSha256": "$archive_sha",
+            "generatedByRun": "$GITHUB_RUN_ID",
+            "note": "Archive extracted and filtered; source archive is excluded from the release ZIP to avoid double-packaging."
+          }
+          JSON
+            echo "grok-workspace-attachment|iamfather420-ctrl/Uarefake-1/attachments/grok-workspace.zip|${GITHUB_REF_NAME}|${GITHUB_SHA}|extracted-archive sha256=$archive_sha" >> "$ROOT/integration/reports/source-provenance.tsv"
+          fi
+
       - name: Hash inventory and duplicate/collision report
         shell: bash
         run: |
@@ -190,17 +212,17 @@ jobs:
       - name: Build current Uarefake-1 web application
         run: |
           npm ci
-          npx eslint src server scripts
+          npm run build:dev
           npm run typecheck
           npm test
-          npm run build:dev
+          npx eslint src server scripts
 
       - name: Package unified source snapshot
         if: always()
         shell: bash
         run: |
           mkdir -p release
-          zip -qr release/SOLVEX-DAISY-HAMINJA-UAREFAKE-UNIFIED-SOURCE.zip             integrations/source-repos integration/reports docs/CROSS-REPOSITORY-PURITY-MATCH.md             docs/SECOND-ACCOUNT-SOURCE-MATCH.md integration/source-manifest.json integration/second-account-source-manifest.json             -x '**/.git/**' '**/node_modules/**' '**/.cache/**' '**/.cargo/**' '**/.local/**'
+          zip -qr release/SOLVEX-DAISY-HAMINJA-UAREFAKE-UNIFIED-SOURCE.zip . -x './.git/**' '.git/**' './node_modules/**' 'node_modules/**' '**/node_modules/**' './release/**' 'release/**' './attachments/grok-workspace.zip' 'attachments/grok-workspace.zip' './.cache/**' '.cache/**' '**/.cache/**' './.cargo/**' '.cargo/**' '**/.cargo/**' './.local/**' '.local/**' '**/.local/**' './.vercel/output/**' '.vercel/output/**' '**/.vercel/output/**'
 
       - name: Upload unified source artifact
         if: always()
