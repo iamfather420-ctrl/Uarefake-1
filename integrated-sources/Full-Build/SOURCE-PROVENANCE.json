@@ -3,7 +3,36 @@
   "sourceRef": "main",
   "sourceCommit": "a67017fbfe2ac795dfdc635a434ef50b19852ec8",
   "importMethod": "pinned source copy",
-  "sourceImportExcluded": [".git metadata", ".agents workspace memory", ".buddy deployment workspace", ".gitconfig", "node_modules", ".env files", "credential and certificate files", "local database files", "dist and coverage", ".vercel output", "caches and toolchains"],
-  "packageArtifactExcluded": ["attachments/grok-workspace.zip", "attachments/Pasted Text-*.txt", "artifacts/.tmp tool results", ".node_modules.lock", ".git metadata", "node_modules", ".env files", "credential and certificate files", "local database files", "dist and coverage", ".vercel output", "caches and toolchains", ".agents workspace memory", ".buddy deployment workspace", ".gitconfig"],
-  "verification": "npm ci and npm run verify:120 run in the isolated source root. The command executes the 120-case corpus and 46-gate suite. A passing formal corpus does not itself prove production readiness."
+  "sourceImportExcluded": [
+    ".git metadata",
+    ".agents workspace memory",
+    ".buddy deployment workspace",
+    ".gitconfig",
+    "node_modules",
+    ".env files",
+    "private key and certificate files",
+    "local database files",
+    "dist and coverage",
+    ".vercel output",
+    "caches and toolchains"
+  ],
+  "packageArtifactExcluded": [
+    "attachments/grok-workspace.zip",
+    "attachments/Pasted Text-*.txt",
+    "artifacts/.tmp tool results",
+    ".node_modules.lock",
+    ".git metadata",
+    "node_modules",
+    ".env files",
+    "private key and certificate files",
+    "local database files",
+    "dist and coverage",
+    ".vercel output",
+    "caches and toolchains",
+    ".agents workspace memory",
+    ".buddy deployment workspace",
+    ".gitconfig"
+  ],
+  "verification": "npm ci and npm run verify:120 run in the isolated source root; the command executes the 120-case corpus and 46-gate suite. A passing formal corpus does not itself prove production readiness."
 }
+
