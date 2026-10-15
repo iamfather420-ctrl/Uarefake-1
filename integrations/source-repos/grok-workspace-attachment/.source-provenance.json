@@ -1,9 +1,9 @@
 {
   "repository": "iamfather420-ctrl/Uarefake-1",
   "ref": "integration/cross-repo-purity-match-20261015",
-  "commit": "2270e35b9c7498c45046724741667b58d1e3abb3",
+  "commit": "1e7d66502c5f3a71ceb0d6862f8d7bdc43c8dd54",
   "sourceArchive": "attachments/grok-workspace.zip",
   "sourceArchiveSha256": "c4611314d12c742dda99cdd1a391ebe7ede9dfe0ff7e06a60d4a4b237691a250",
-  "generatedByRun": "38742101552",
+  "generatedByRun": "38742607390",
   "note": "Archive extracted and filtered; source archive is excluded from the release ZIP to avoid double-packaging."
 }

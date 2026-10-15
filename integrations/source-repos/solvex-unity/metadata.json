@@ -1,0 +1,6 @@
+{
+  "name": "dAIsy haMINJA",
+  "description": "The dAIsy haMINJA Sovereign Core is a compiled hardware-bound logic engine managing a 54-node grid, 58 proprietary paradox operators, and dual-market infrastructure with zero-knowledge, hardware-isolated enclaves.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

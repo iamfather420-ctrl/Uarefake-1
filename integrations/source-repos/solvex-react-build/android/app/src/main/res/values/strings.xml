@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">SolveX</string>
+    <string name="title_activity_main">SolveX</string>
+    <string name="package_name">org.solvex.solvexnode</string>
+    <string name="custom_url_scheme">org.solvex.solvexnode</string>
+</resources>

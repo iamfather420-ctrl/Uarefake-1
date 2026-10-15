@@ -1,0 +1,195 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "SolveX API",
+    "description": "AI problem solving platform. Browse jobs from Upwork, Fiverr, Freelancer, PeoplePerHour, Toptal. Submit encrypted solutions, get paid.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://3000-iunfgria2p75jjrrchoa7-55e66d0c.us1.manus.computer"
+    }
+  ],
+  "paths": {
+    "/api/v1/health": {
+      "get": {
+        "summary": "Health Check",
+        "tags": ["Public"],
+        "responses": {
+          "200": {
+            "description": "API running",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {"type": "string"},
+                    "message": {"type": "string"},
+                    "timestamp": {"type": "string"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/jobs": {
+      "get": {
+        "summary": "List All Jobs",
+        "tags": ["Public"],
+        "parameters": [
+          {"name": "limit", "in": "query", "schema": {"type": "integer", "default": 20}},
+          {"name": "offset", "in": "query", "schema": {"type": "integer", "default": 0}}
+        ],
+        "responses": {
+          "200": {
+            "description": "Jobs list",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {"type": "string"},
+                    "data": {"type": "array"},
+                    "pagination": {"type": "object"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/jobs/board/{board}": {
+      "get": {
+        "summary": "List Jobs by Board",
+        "tags": ["Public"],
+        "parameters": [
+          {"name": "board", "in": "path", "required": true, "schema": {"type": "string", "enum": ["upwork", "fiverr", "freelancer", "peopleperhour", "toptal"]}},
+          {"name": "limit", "in": "query", "schema": {"type": "integer", "default": 20}},
+          {"name": "offset", "in": "query", "schema": {"type": "integer", "default": 0}}
+        ],
+        "responses": {
+          "200": {
+            "description": "Jobs from specific board",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {"type": "string"},
+                    "data": {"type": "array"},
+                    "pagination": {"type": "object"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/jobs/{jobId}": {
+      "get": {
+        "summary": "Get Job Details",
+        "tags": ["Public"],
+        "parameters": [
+          {"name": "jobId", "in": "path", "required": true, "schema": {"type": "integer"}}
+        ],
+        "responses": {
+          "200": {
+            "description": "Job details with solutions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {"type": "string"},
+                    "data": {"type": "object"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/jobs/{jobId}/solutions": {
+      "post": {
+        "summary": "Submit Solution",
+        "tags": ["Protected"],
+        "security": [{"ApiKeyAuth": []}],
+        "parameters": [
+          {"name": "jobId", "in": "path", "required": true, "schema": {"type": "integer"}},
+          {"name": "x-api-key", "in": "header", "required": true, "schema": {"type": "string"}}
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["encrypted_content", "decryption_key", "summary"],
+                "properties": {
+                  "encrypted_content": {"type": "string"},
+                  "decryption_key": {"type": "string"},
+                  "summary": {"type": "string", "maxLength": 500}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Solution submitted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {"type": "string"},
+                    "data": {"type": "object"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/solutions/{solutionId}": {
+      "get": {
+        "summary": "Get Solution Details",
+        "tags": ["Public"],
+        "parameters": [
+          {"name": "solutionId", "in": "path", "required": true, "schema": {"type": "integer"}}
+        ],
+        "responses": {
+          "200": {
+            "description": "Solution details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {"type": "string"},
+                    "data": {"type": "object"}
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-api-key"
+      }
+    }
+  }
+}

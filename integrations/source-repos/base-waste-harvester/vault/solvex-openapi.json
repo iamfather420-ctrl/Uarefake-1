@@ -1,0 +1,504 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "SolveX API",
+    "description": "AI-powered problem solving platform. Browse jobs from Upwork, Fiverr, Freelancer. Submit encrypted solutions. Get paid after client acceptance.",
+    "version": "1.0.0",
+    "contact": {
+      "name": "SolveX Support",
+      "url": "https://solvex.com"
+    },
+    "license": {
+      "name": "MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://3000-iunfgria2p75jjrrchoa7-55e66d0c.us1.manus.computer",
+      "description": "Production Server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "Jobs",
+      "description": "Browse and manage job listings"
+    },
+    {
+      "name": "Solutions",
+      "description": "Submit and manage solutions"
+    },
+    {
+      "name": "Health",
+      "description": "API health and status"
+    }
+  ],
+  "paths": {
+    "/api/v1/health": {
+      "get": {
+        "tags": ["Health"],
+        "summary": "Health Check",
+        "description": "Check if the SolveX API is running and healthy",
+        "operationId": "getHealth",
+        "responses": {
+          "200": {
+            "description": "API is running",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "message": {
+                      "type": "string",
+                      "example": "SolveX API is running"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time",
+                      "example": "2026-03-14T03:30:00Z"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/jobs": {
+      "get": {
+        "tags": ["Jobs"],
+        "summary": "List All Jobs",
+        "description": "Get all available jobs with pagination. No authentication required.",
+        "operationId": "listJobs",
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "description": "Number of jobs to return (max 100)",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "minimum": 1,
+              "maximum": 100
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "description": "Number of jobs to skip for pagination",
+            "schema": {
+              "type": "integer",
+              "default": 0,
+              "minimum": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of jobs retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Job"
+                      }
+                    },
+                    "pagination": {
+                      "type": "object",
+                      "properties": {
+                        "limit": {
+                          "type": "integer"
+                        },
+                        "offset": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          }
+        }
+      }
+    },
+    "/api/v1/jobs/{jobId}": {
+      "get": {
+        "tags": ["Jobs"],
+        "summary": "Get Job Details",
+        "description": "Get detailed information about a specific job including submitted solutions",
+        "operationId": "getJobDetail",
+        "parameters": [
+          {
+            "name": "jobId",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the job",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Job details retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "type": "object",
+                      "properties": {
+                        "problem": {
+                          "$ref": "#/components/schemas/Job"
+                        },
+                        "solutions": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/components/schemas/SolutionSummary"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Job not found"
+          }
+        }
+      }
+    },
+    "/api/v1/jobs/{jobId}/solutions": {
+      "post": {
+        "tags": ["Solutions"],
+        "summary": "Submit Solution",
+        "description": "Submit an encrypted solution to a job. Requires API key authentication.",
+        "operationId": "submitSolution",
+        "parameters": [
+          {
+            "name": "jobId",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the job",
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "x-api-key",
+            "in": "header",
+            "required": true,
+            "description": "Your API key for authentication",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": ["encrypted_content", "decryption_key", "summary"],
+                "properties": {
+                  "encrypted_content": {
+                    "type": "string",
+                    "description": "AES-256-GCM encrypted solution content",
+                    "example": "U2FsdGVkX1..."
+                  },
+                  "decryption_key": {
+                    "type": "string",
+                    "description": "Decryption key for the solution",
+                    "example": "your-decryption-key"
+                  },
+                  "summary": {
+                    "type": "string",
+                    "maxLength": 500,
+                    "description": "Brief summary of the solution",
+                    "example": "I will build a React component library with TypeScript support and Tailwind CSS styling."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Solution submitted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Solution"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request or invalid input"
+          },
+          "401": {
+            "description": "Missing or invalid API key"
+          }
+        }
+      }
+    },
+    "/api/v1/solutions/{solutionId}": {
+      "get": {
+        "tags": ["Solutions"],
+        "summary": "Get Solution Details",
+        "description": "Get details about a specific solution",
+        "operationId": "getSolutionDetail",
+        "parameters": [
+          {
+            "name": "solutionId",
+            "in": "path",
+            "required": true,
+            "description": "The ID of the solution",
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Solution details retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "success"
+                    },
+                    "data": {
+                      "$ref": "#/components/schemas/Solution"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Solution not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Job": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "external_job_id": {
+            "type": "string",
+            "example": "upwork_123456"
+          },
+          "job_board": {
+            "type": "string",
+            "enum": ["upwork", "fiverr", "freelancer", "jsearch", "sample"],
+            "example": "upwork"
+          },
+          "title": {
+            "type": "string",
+            "example": "React Developer Needed - E-commerce Platform"
+          },
+          "description": {
+            "type": "string",
+            "example": "Looking for an experienced React developer to build a modern e-commerce platform..."
+          },
+          "budget_min": {
+            "type": "number",
+            "example": 3000
+          },
+          "budget_max": {
+            "type": "number",
+            "example": 8000
+          },
+          "budget_currency": {
+            "type": "string",
+            "example": "USD"
+          },
+          "location": {
+            "type": "string",
+            "example": "Remote"
+          },
+          "is_remote": {
+            "type": "boolean",
+            "example": true
+          },
+          "required_skills": {
+            "type": "string",
+            "example": "React,TypeScript,Node.js,PostgreSQL"
+          },
+          "experience_level": {
+            "type": "string",
+            "enum": ["entry_level", "intermediate", "senior"],
+            "example": "intermediate"
+          },
+          "employment_type": {
+            "type": "string",
+            "enum": ["contract", "full_time", "part_time"],
+            "example": "contract"
+          },
+          "employer_name": {
+            "type": "string",
+            "example": "TechStartup Inc"
+          },
+          "employer_logo_url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://example.com/logo.png"
+          },
+          "posted_at": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-14T00:00:00Z"
+          },
+          "external_url": {
+            "type": "string",
+            "format": "uri",
+            "example": "https://upwork.com/jobs/123456"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["active", "closed", "cancelled"],
+            "example": "active"
+          }
+        }
+      },
+      "Solution": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "problemId": {
+            "type": "integer",
+            "example": 1
+          },
+          "solverId": {
+            "type": "integer",
+            "example": 5
+          },
+          "content": {
+            "type": "string",
+            "example": "I will build a React component library..."
+          },
+          "encryptedContent": {
+            "type": "string",
+            "example": "U2FsdGVkX1..."
+          },
+          "encryptionKey": {
+            "type": "string",
+            "example": "key123"
+          },
+          "aiReviewStatus": {
+            "type": "string",
+            "enum": ["pending", "in_progress", "completed", "failed"],
+            "example": "pending"
+          },
+          "aiReviewScore": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100,
+            "nullable": true,
+            "example": 85
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-14T03:30:00Z"
+          },
+          "updatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-14T03:30:00Z"
+          }
+        }
+      },
+      "SolutionSummary": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "example": 1
+          },
+          "solverId": {
+            "type": "integer",
+            "example": 5
+          },
+          "aiReviewStatus": {
+            "type": "string",
+            "enum": ["pending", "in_progress", "completed", "failed"],
+            "example": "pending"
+          },
+          "aiReviewScore": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 100,
+            "nullable": true,
+            "example": 85
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2026-03-14T03:30:00Z"
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "x-api-key",
+        "description": "API Key for authentication"
+      }
+    }
+  },
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ]
+}

@@ -1,0 +1,84 @@
+name: Remote Compilation Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build-android-apk:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Provision Core Ubuntu Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libltdl-dev libffi-dev libssl-dev python3-dev zip unzip zlib1g-dev openjdk-17-jdk
+
+      - name: Provision Python Build Architecture
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Buildozer Framework
+        run: |
+          pip install --upgrade pip
+          pip install buildozer cython virtualenv
+
+      - name: Clean Previous Build Artifacts
+        run: |
+          buildozer android clean
+          rm -rf .buildozer/android/platform/build-* || true
+          rm -rf bin/ || true
+
+      - name: Clean buildozer cache
+        run: |
+          rm -rf ~/.buildozer/android/platform/build-*
+          rm -rf .buildozer/android/platform/build-*
+
+      - name: Execute Android Compilation
+        run: |
+          yes | buildozer -v android debug
+
+      - name: Generate Release Tag
+        id: generate_tag
+        run: |
+          TAG="release-$(date +%Y%m%d-%H%M%S)"
+          echo "tag=$TAG" >> $GITHUB_OUTPUT
+          echo "date=$(date)" >> $GITHUB_OUTPUT
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.generate_tag.outputs.tag }}
+          name: "SolveX Crystal Clear Box Compliance Immutability - ${{ steps.generate_tag.outputs.date }}"
+          body: |
+            ## SolveX Crystal Clear Box APK Release
+            
+            **Build Date:** ${{ steps.generate_tag.outputs.date }}
+            **Commit:** ${{ github.sha }}
+            
+            ### Download Instructions:
+            1. Download the APK file below on your Android device.
+            2. Open your file manager and navigate to Downloads.
+            3. Tap the APK file to install.
+          files: |
+            bin/*.apk
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Secure Final APK Artifact (Backup)
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: SolveX_Crystal_Clear_Box_Compliance_Immutability_Release
+          path: bin/*.apk
+          retention-days: 30
