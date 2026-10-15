@@ -112,7 +112,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          STAGE_DIR="$(mktemp -d)/uarefake-1-merged-source"
+          STAGE_PARENT="$(mktemp -d)"
+          STAGE_DIR="$STAGE_PARENT/uarefake-1-merged-source"
           mkdir -p "$STAGE_DIR"
           rsync -a \
             --exclude='.git/' \
@@ -135,8 +136,12 @@ jobs:
             --exclude='.buddy/' \
             --exclude='.gitconfig' \
             --exclude='attachments/grok-workspace.zip' \
+            --exclude='attachments/Pasted Text-*.txt' \
+            --exclude='artifacts/.tmp/' \
+            --exclude='.node_modules.lock' \
             ./ "$STAGE_DIR/"
-          zip -qr /tmp/uarefake-1-merged-source.zip "$STAGE_DIR"
+          cd "$STAGE_PARENT"
+          zip -qr /tmp/uarefake-1-merged-source.zip uarefake-1-merged-source
       - name: Upload merged source build
         if: always()
         uses: actions/upload-artifact@v4
