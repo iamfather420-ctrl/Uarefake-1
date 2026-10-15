@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "target": {
+    "repository": "iamfather420-ctrl/Uarefake-1",
+    "ref": "main",
+    "commit": "1ebcc6ba7de2f1dbcbc7f9dbe7493371acebb6ab"
+  },
+  "crossAccountSources": [
+    {
+      "repository": "Solvex-Paradox-Box/Uarefake",
+      "ref": "main",
+      "commit": "9e5970c90def3c37e51170d995e04f1128eaefe8",
+      "fileCount": 236,
+      "treeBytes": 53562857,
+      "match": {
+        "sharedPaths": 236,
+        "identicalBlobs": 231,
+        "changedBlobs": 5,
+        "sourceOnlyPaths": 0
+      },
+      "disposition": "compare-five-conflicts-preserve-target-only-recovery-paths",
+      "conflicts": [
+        "migrations/0003_recovery.sql",
+        "src/lib/app-data/client.server.ts",
+        "src/lib/auth/server.ts",
+        "src/lib/db.ts",
+        "vercel.json"
+      ]
+    },
+    {
+      "repository": "Solvex-Paradox-Box/Daisy-Himinja-AI-UI-OS-v3",
+      "ref": "main",
+      "commit": "60702d6b708227972daf98c10b7846e065488ad2",
+      "fileCount": 58,
+      "treeBytes": 3026608,
+      "match": {
+        "sharedPaths": 0
+      },
+      "disposition": "integrate-as-separate-android-daisy-module"
+    },
+    {
+      "repository": "Solvex-Paradox-Box/daisy-haminja-120-evidence",
+      "ref": "main",
+      "commit": "0fcecfbb095ed3371ceb7992b47650060d44a2d3",
+      "fileCount": 5,
+      "treeBytes": 66574,
+      "match": {
+        "sharedPaths": 0
+      },
+      "disposition": "import-versioned-evidence-and-rerun-against-integrated-code",
+      "importantFiles": [
+        "SOLVEX_DAISY_BUILD_COMPLETENESS_REPORT.md",
+        "SOLVEX_DAISY_FORMAL_120_EVIDENCE_REPORT.md",
+        "artifacts/formal-aggregation.json",
+        "artifacts/system-46-gates.json",
+        "artifacts/z3-120-case-results.json"
+      ]
+    },
+    {
+      "repository": "Solvex-Paradox-Box/Ai-studio-marketplace-build",
+      "ref": "main",
+      "commit": "f69a85814b781e21c7b487ea2d6a7b474c7122ca",
+      "fileCount": 2,
+      "treeBytes": 40450903,
+      "disposition": "extract-and-hash-archives-once",
+      "duplicates": [
+        "bdc-project (1).zip",
+        "uarefake.zip"
+      ]
+    },
+    {
+      "repository": "Solvex-Paradox-Box/Autonomous-consolidated-B2B-solutions",
+      "ref": "main",
+      "commit": "3bfcf92f40595a9c68b130e99197e13cbbd9bb75",
+      "fileCount": 10078,
+      "treeBytes": 277256333,
+      "disposition": "select-source-excluding-node_modules-and-duplicate-zips",
+      "nodeModulesFiles": 9016
+    },
+    {
+      "repository": "Solvex-Paradox-Box/CLEAN-WEB-CONSOLIDATED",
+      "ref": "main",
+      "commit": "fcc61b9cfecf7b2df6c82213207295507e2bf2c1",
+      "fileCount": 10366,
+      "treeBytes": 272063826,
+      "disposition": "select-source-excluding-node_modules-and-duplicate-zips",
+      "nodeModulesFiles": 9436
+    }
+  ],
+  "otherOwnedReposForNextPass": [
+    "Solvex-Paradox-Box/Daisy-Haminja-App-Forge",
+    "Solvex-Paradox-Box/Daisy-Haminja-AI---UAREFAKE-Registry-Problem-Solving-Engine",
+    "Solvex-Paradox-Box/Solvex-Crystal-Clear-Black-Box",
+    "Solvex-Paradox-Box/Uarefake.com-storefront",
+    "Solvex-Paradox-Box/Storefront",
+    "Solvex-Paradox-Box/Solvex-B2B-Autonomy",
+    "Solvex-Paradox-Box/Solvex-Paradox-Marketplace-B2B-Solutions",
+    "Solvex-Paradox-Box/Autonomous-B2B-Solutions-Marketplace-",
+    "Solvex-Paradox-Box/Paradox-verification",
+    "Solvex-Paradox-Box/Monorepo",
+    "Solvex-Paradox-Box/SolveX-U-ARE-FAKE-B2B--Solutions-Marketplace",
+    "Solvex-Paradox-Box/Solvex-core",
+    "Solvex-Paradox-Box/Marketplace-p"
+  ],
+  "exclusions": [
+    "node_modules",
+    "generated .vercel output",
+    "local caches",
+    "secrets",
+    "local histories",
+    "duplicate ZIP payloads after content-hash verification"
+  ],
+  "status": "partial-audit-no-source-copy-yet"
+}
