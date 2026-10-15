@@ -94,11 +94,12 @@ export const authConfigured =
   Boolean(
     grokClientId &&
       grokClientSecret &&
+      databaseUrl &&
       (!productionDeployment ||
         (configuredGrokIssuer &&
           env("BETTER_AUTH_SECRET") &&
           env("BETTER_AUTH_URL") &&
-          env("AUTH_DATABASE_URL"))),
+          env("AUTH_DATABASE_URL")),
   );
 
 // This app's own Better Auth origin. When deployed the deployer injects the
