@@ -1,0 +1,6 @@
+{
+  "name": "DAISY Brain",
+  "description": "DAISY Core multi-agent autonomous corporate brain. Consolidates DAISY Core, SolveX B2B Marketplace, and the U.A.R.E.F.A.K.E. closed-loop cognitive engine.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

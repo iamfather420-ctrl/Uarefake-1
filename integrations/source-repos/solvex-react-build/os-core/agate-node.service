@@ -1,0 +1,16 @@
+[Unit]
+Description=Freedom Sim AI OS Production Daemon
+After=network.target
+
+[Service]
+Type=simple
+User=agate_runtime
+WorkingDirectory=/var/lib/agate_node
+ExecStart=/usr/bin/python3 /var/lib/agate_node/core/ai_os.py
+Restart=always
+RestartSec=5
+PrivateTmp=true
+ProtectSystem=strict
+
+[Install]
+WantedBy=multi-user.target

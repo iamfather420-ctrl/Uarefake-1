@@ -1,0 +1,6 @@
+{
+  "name": "Autonomous B2B Automation Engine",
+  "description": "Daisy Sovereign AI Assistant & Brain Platform with 128B MoE Problem Solver, 13 Isolated Sandbox Categories, Market Pricing Research Generator, Sovereign Owner Approval Gate, B2B Public Marketplace, 54-Node Daisy Engine, 88 Paradox Solver, and MMTAI Zero-Trust Security Protocol.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

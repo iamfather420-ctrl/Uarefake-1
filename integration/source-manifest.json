@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "canonicalTarget": {
+    "repository": "iamfather420-ctrl/Uarefake-1",
+    "baseRef": "main",
+    "baseCommit": "1ebcc6ba7de2f1dbcbc7f9dbe7493371acebb6ab"
+  },
+  "auditBranch": "integration/cross-repo-purity-match-20261015",
+  "sources": [
+    {
+      "repository": "iamfather420-ctrl/Full-Build",
+      "ref": "main",
+      "commit": "a67017fbfe2ac795dfdc635a434ef50b19852ec8",
+      "disposition": "integrate-selected-real-source",
+      "reason": "1384 files; 12 conflicting same-path files with target; preserve Daisy assets and code; resolve collisions."
+    },
+    {
+      "repository": "iamfather420-ctrl/SOLVEX-PARADOX-BOX",
+      "ref": "main",
+      "commit": "83f3fd9f9a7cc07c440e13c17818e6be271b9bee",
+      "disposition": "integrate-selected-source",
+      "reason": "Compliance/proof/runtime source; preserve separate Android/web build roots where needed."
+    },
+    {
+      "repository": "iamfather420-ctrl/SolveXRepoUnify",
+      "ref": "master",
+      "commit": "cbb4bedd82c8e9c91265424ade6d52d82d68ee43",
+      "disposition": "integrate-selected-source",
+      "reason": "Daisy Haminja assistant, workspace and sovereign engine; reconcile dependencies and APIs."
+    },
+    {
+      "repository": "iamfather420-ctrl/FREEDOM-SIM-AI-OS",
+      "ref": "main",
+      "commit": "271f55cbf8e8be9216f9a7e2b8c1d069daf9e59e",
+      "disposition": "integrate-selected-source",
+      "reason": "MMTAI and SwarmOS modules; verify production role and dependencies."
+    },
+    {
+      "repository": "iamfather420-ctrl/solvex-react-build",
+      "ref": "main",
+      "commit": "1f2608dee2f04de8d0f1cb10a27933092a324fb7",
+      "disposition": "integrate-source-excluding-generated",
+      "reason": "Exclude committed node_modules and rebuild from lockfile."
+    },
+    {
+      "repository": "iamfather420-ctrl/bloom-clear-tiger-meadow",
+      "ref": "main",
+      "commit": "5de736c33a29a863ad81d801160459793f61413c",
+      "disposition": "integrate-source-excluding-generated",
+      "reason": "Exclude .vercel/output and duplicate archives; inspect unique source."
+    },
+    {
+      "repository": "iamfather420-ctrl/agate-unified-monorepo",
+      "ref": "master",
+      "commit": "61af90d51f46de4567cc525d922550a7f36e4a5b",
+      "disposition": "candidate-canonical-agate-snapshot",
+      "reason": "Near-duplicate of agate-master-build; compare three changed blobs before selecting."
+    },
+    {
+      "repository": "iamfather420-ctrl/agate-master-build",
+      "ref": "master",
+      "commit": "5b949ab28b7a2c65cd197e446c8c16ecf4493961",
+      "disposition": "hold-duplicate",
+      "reason": "30,079/30,082 same-path blobs identical to agate-unified-monorepo."
+    },
+    {
+      "repository": "iamfather420-ctrl/agate-core-build",
+      "ref": "main",
+      "commit": "c97ab5ea590156cca9ef705c9cc580016ddd2b7e",
+      "disposition": "select-source-only",
+      "reason": "Contains .cargo/.local/.cache and toolchain data; exclude generated/cached content."
+    },
+    {
+      "repository": "iamfather420-ctrl/Solvex-Hub",
+      "ref": "main",
+      "commit": "8494f0840b0a0e97fc38fb78e5aa09d726302865",
+      "disposition": "separate-app-candidate",
+      "reason": "Android idea vault; integrate only if product boundary/runtime contract are clear."
+    }
+  ],
+  "excludedByDefault": [
+    "node_modules",
+    "**/.cargo/**",
+    "**/.local/**",
+    "**/.cache/**",
+    "**/.vercel/output/**",
+    "**/__pycache__/**",
+    "**/*.pyc",
+    "temporary MCP query results",
+    "local histories",
+    "credentials and secret files",
+    "local database files unless classified as source fixtures"
+  ],
+  "blockedItems": [
+    "Second connected GitHub account repository listing is empty in current connection",
+    "Google AI Studio/Replit artifacts not inspected in this pass",
+    "ZIP attachments not yet extracted and content-matched"
+  ],
+  "status": "inventory-partial; merge-not-complete"
+}

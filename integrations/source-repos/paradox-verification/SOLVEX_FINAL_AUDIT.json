@@ -1,0 +1,1356 @@
+{
+  "schemaVersion": "2.0.0-FINAL-AUDIT",
+  "title": "SolveX Enterprise Paradox Formal Verification & Final Audit Lock",
+  "generatedTimestamp": "2026-09-10T17:42:04.744Z",
+  "totalCertificatesAudited": 88,
+  "engineIntegrity": {
+    "sha256NistCompliant": true,
+    "zeroSimulatedHashesFound": true
+  },
+  "metrics": {
+    "structuralIntegrity": "PASS",
+    "evidenceCompletenessPercent": 7,
+    "evidenceCompletenessSummary": "6 / 88 certificates have complete evidence packages (7%). 82 marked NOT YET VERIFIED.",
+    "reproducibility": "PASS",
+    "formalVerification": "6 / 88 theorems mathematically specified & proven; 0 / 88 confirmed by formal CI tools (marked IMPLEMENTATION VERIFIED)",
+    "implementationVerification": "6 / 88 implementation verified; 1 under reconstruction; 81 pending test harness",
+    "securityVerification": "6 / 88 verified under explicit hardware/parameter assumptions; 82 unverified",
+    "independentReview": "PENDING",
+    "certification": "NONE"
+  },
+  "statusTotals": {
+    "claimed": 0,
+    "specificationComplete": 0,
+    "tested": 0,
+    "formallyVerified": 0,
+    "implementationVerified": 6,
+    "securityVerified": 0,
+    "independentlyReviewed": 0,
+    "certified": 0,
+    "notYetVerified": 82
+  },
+  "verificationRulesEnforced": [
+    "RULE 1: No Evidence = No Verification Claim",
+    "RULE 2: Zero Simulated or Pseudo Hashes (NIST FIPS 180-4 SHA-256 Only)",
+    "RULE 3: Generic Templates (PX-08..88) Strictly Marked NOT YET VERIFIED",
+    "RULE 4: Zero Premature ISO/SOC2/FedRAMP Certification Claims",
+    "RULE 5: 100% Reviewers Marked Independent Review Pending"
+  ],
+  "checksSummary": {
+    "totalChecks": 14,
+    "pass": 14,
+    "fail": 0,
+    "warning": 0
+  },
+  "flawsDetected": [],
+  "perParadoxSummary": [
+    {
+      "pxId": "PX-01",
+      "name": "Quantum Decoy Divergence",
+      "currentStatus": "IMPLEMENTATION VERIFIED",
+      "evidenceCompleteness": "COMPLETE",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "PASS",
+      "formalVerificationStatus": "SPECIFIED_PROVEN",
+      "securityStatus": "SCOPED_UNDER_ASSUMPTIONS",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-02",
+      "name": "Heisenberg Key Leakage",
+      "currentStatus": "IMPLEMENTATION VERIFIED",
+      "evidenceCompleteness": "COMPLETE",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "PASS",
+      "formalVerificationStatus": "SPECIFIED_PROVEN",
+      "securityStatus": "SCOPED_UNDER_ASSUMPTIONS",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-03",
+      "name": "Byzantine Consensus Delay",
+      "currentStatus": "IMPLEMENTATION VERIFIED",
+      "evidenceCompleteness": "COMPLETE",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "PASS",
+      "formalVerificationStatus": "SPECIFIED_PROVEN",
+      "securityStatus": "SCOPED_UNDER_ASSUMPTIONS",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-04",
+      "name": "Solvent Flux Paradox",
+      "currentStatus": "IMPLEMENTATION VERIFIED",
+      "evidenceCompleteness": "COMPLETE",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "PASS",
+      "formalVerificationStatus": "SPECIFIED_PROVEN",
+      "securityStatus": "SCOPED_UNDER_ASSUMPTIONS",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-05",
+      "name": "Tether Drift Mismatch",
+      "currentStatus": "IMPLEMENTATION VERIFIED",
+      "evidenceCompleteness": "COMPLETE",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "PASS",
+      "formalVerificationStatus": "SPECIFIED_PROVEN",
+      "securityStatus": "SCOPED_UNDER_ASSUMPTIONS",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-06",
+      "name": "Watermark Decryption Threat",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "UNDER_RECONSTRUCTION",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "UNEXECUTED",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "CFG deobfuscation test suite under active reconstruction"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-07",
+      "name": "Signature Collapse Loop",
+      "currentStatus": "IMPLEMENTATION VERIFIED",
+      "evidenceCompleteness": "COMPLETE",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "PASS",
+      "formalVerificationStatus": "SPECIFIED_PROVEN",
+      "securityStatus": "SCOPED_UNDER_ASSUMPTIONS",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-08",
+      "name": "Axiomatic Flux Operator 8",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-09",
+      "name": "Axiomatic Flux Operator 9",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-10",
+      "name": "Axiomatic Flux Operator 10",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-11",
+      "name": "Axiomatic Flux Operator 11",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-12",
+      "name": "Axiomatic Flux Operator 12",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-13",
+      "name": "Axiomatic Flux Operator 13",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-14",
+      "name": "Axiomatic Flux Operator 14",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-15",
+      "name": "Axiomatic Flux Operator 15",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-16",
+      "name": "Axiomatic Flux Operator 16",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-17",
+      "name": "Axiomatic Flux Operator 17",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-18",
+      "name": "Axiomatic Flux Operator 18",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-19",
+      "name": "Axiomatic Flux Operator 19",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-20",
+      "name": "Axiomatic Flux Operator 20",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-21",
+      "name": "Axiomatic Flux Operator 21",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-22",
+      "name": "Axiomatic Flux Operator 22",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-23",
+      "name": "Axiomatic Flux Operator 23",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-24",
+      "name": "Axiomatic Flux Operator 24",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-25",
+      "name": "Axiomatic Flux Operator 25",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-26",
+      "name": "Axiomatic Flux Operator 26",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-27",
+      "name": "Axiomatic Flux Operator 27",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-28",
+      "name": "Axiomatic Flux Operator 28",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-29",
+      "name": "Axiomatic Flux Operator 29",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-30",
+      "name": "Axiomatic Flux Operator 30",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-31",
+      "name": "Axiomatic Flux Operator 31",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-32",
+      "name": "Axiomatic Flux Operator 32",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-33",
+      "name": "Axiomatic Flux Operator 33",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-34",
+      "name": "Axiomatic Flux Operator 34",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-35",
+      "name": "Axiomatic Flux Operator 35",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-36",
+      "name": "Axiomatic Flux Operator 36",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-37",
+      "name": "Axiomatic Flux Operator 37",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-38",
+      "name": "Axiomatic Flux Operator 38",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-39",
+      "name": "Axiomatic Flux Operator 39",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-40",
+      "name": "Axiomatic Flux Operator 40",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-41",
+      "name": "Axiomatic Flux Operator 41",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-42",
+      "name": "Axiomatic Flux Operator 42",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-43",
+      "name": "Axiomatic Flux Operator 43",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-44",
+      "name": "Axiomatic Flux Operator 44",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-45",
+      "name": "Axiomatic Flux Operator 45",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-46",
+      "name": "Axiomatic Flux Operator 46",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-47",
+      "name": "Axiomatic Flux Operator 47",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-48",
+      "name": "Axiomatic Flux Operator 48",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-49",
+      "name": "Axiomatic Flux Operator 49",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-50",
+      "name": "Axiomatic Flux Operator 50",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-51",
+      "name": "Axiomatic Flux Operator 51",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-52",
+      "name": "Axiomatic Flux Operator 52",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-53",
+      "name": "Axiomatic Flux Operator 53",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-54",
+      "name": "Axiomatic Flux Operator 54",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-55",
+      "name": "Axiomatic Flux Operator 55",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-56",
+      "name": "Axiomatic Flux Operator 56",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-57",
+      "name": "Axiomatic Flux Operator 57",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-58",
+      "name": "Axiomatic Flux Operator 58",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-59",
+      "name": "Axiomatic Flux Operator 59",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-60",
+      "name": "Axiomatic Flux Operator 60",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-61",
+      "name": "Axiomatic Flux Operator 61",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-62",
+      "name": "Axiomatic Flux Operator 62",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-63",
+      "name": "Axiomatic Flux Operator 63",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-64",
+      "name": "Axiomatic Flux Operator 64",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-65",
+      "name": "Axiomatic Flux Operator 65",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-66",
+      "name": "Axiomatic Flux Operator 66",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-67",
+      "name": "Axiomatic Flux Operator 67",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-68",
+      "name": "Axiomatic Flux Operator 68",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-69",
+      "name": "Axiomatic Flux Operator 69",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-70",
+      "name": "Axiomatic Flux Operator 70",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-71",
+      "name": "Axiomatic Flux Operator 71",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-72",
+      "name": "Axiomatic Flux Operator 72",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-73",
+      "name": "Axiomatic Flux Operator 73",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-74",
+      "name": "Axiomatic Flux Operator 74",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-75",
+      "name": "Axiomatic Flux Operator 75",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-76",
+      "name": "Axiomatic Flux Operator 76",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-77",
+      "name": "Axiomatic Flux Operator 77",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-78",
+      "name": "Axiomatic Flux Operator 78",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-79",
+      "name": "Axiomatic Flux Operator 79",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-80",
+      "name": "Axiomatic Flux Operator 80",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-81",
+      "name": "Axiomatic Flux Operator 81",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-82",
+      "name": "Axiomatic Flux Operator 82",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-83",
+      "name": "Axiomatic Flux Operator 83",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-84",
+      "name": "Axiomatic Flux Operator 84",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-85",
+      "name": "Axiomatic Flux Operator 85",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-86",
+      "name": "Axiomatic Flux Operator 86",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-87",
+      "name": "Axiomatic Flux Operator 87",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    },
+    {
+      "pxId": "PX-88",
+      "name": "Axiomatic Flux Operator 88",
+      "currentStatus": "NOT YET VERIFIED",
+      "evidenceCompleteness": "PARTIAL",
+      "hashIntegrity": "VERIFIED",
+      "testStatus": "NOT_APPLICABLE",
+      "formalVerificationStatus": "TOOL_UNCONFIRMED",
+      "securityStatus": "UNVERIFIED",
+      "independentReviewStatus": "PENDING",
+      "missingEvidence": [
+        "Subgrid node implementation and specialized adversarial test harness pending development"
+      ],
+      "issuesFound": []
+    }
+  ]
+}

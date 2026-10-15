@@ -1,0 +1,7 @@
+{
+  "protocol": "CSaaS",
+  "version": "1.0.0",
+  "zkp_enabled": true,
+  "guardian_mode": "strict",
+  "logging_target": "~/.agate_node/vault/consensus_memory.json"
+}

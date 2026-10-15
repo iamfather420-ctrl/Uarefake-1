@@ -1,0 +1,15 @@
+node_modules/
+build/
+dist/
+coverage/
+.DS_Store
+*.log
+.env*
+!.env.example
+.turbo/
+workspace_temp/*
+!workspace_temp/.gitkeep
+packages/*
+!packages/.gitkeep
+apps/*
+!apps/.gitkeep
