@@ -58,6 +58,34 @@ jobs:
           clean-web-consolidated|https://github.com/Solvex-Paradox-Box/CLEAN-WEB-CONSOLIDATED.git|main|source
           solvex-crystal-clear-black-box|https://github.com/Solvex-Paradox-Box/Solvex-Crystal-Clear-Black-Box.git|main|source
           solvex-hub|https://github.com/iamfather420-ctrl/Solvex-Hub.git|main|source
+          agate-unified-monorepo|https://github.com/iamfather420-ctrl/agate-unified-monorepo.git|master|source
+          agate-veritas|https://github.com/iamfather420-ctrl/agate-veritas.git|main|source
+          reclamation-experts|https://github.com/iamfather420-ctrl/Reclamation-Experts.git|main|source
+          base-waste-harvester|https://github.com/iamfather420-ctrl/Base-Waste-Harvester.git|main|source
+          ai-linkey|https://github.com/iamfather420-ctrl/AI-Linkey.git|main|source
+          anonymous-identity-financial|https://github.com/iamfather420-ctrl/Anonymous-Identity-Financial.git|main|source
+          agate-sovereign-wallet|https://github.com/iamfather420-ctrl/AGate-Sovergine-Wallet.git|main|source
+          solvex-react-build|https://github.com/iamfather420-ctrl/solvex-react-build.git|main|source
+          crystal-clear-box|https://github.com/iamfather420-ctrl/Crystal-Clear-Box.git|main|source
+          solvex-crystal-clear-compliance|https://github.com/iamfather420-ctrl/SolveX-Crystal-Clear-Box-Compliance-Immutibility.git|main|source
+          planetary-harvester|https://github.com/iamfather420-ctrl/Planetary-Harvester.git|main|source
+          pro-validator|https://github.com/iamfather420-ctrl/Pro-Validator.git|main|source
+          paradox-compliance-dashboard|https://github.com/iamfather420-ctrl/Paradox-compliance-dashboard.git|main|source
+          bloom-clear-tiger-meadow|https://github.com/iamfather420-ctrl/bloom-clear-tiger-meadow.git|main|source
+          uarefake-small|https://github.com/iamfather420-ctrl/uarefake.git|main|source
+          web-build|https://github.com/iamfather420-ctrl/web-build.git|main|source
+          proof-before-power|https://github.com/iamfather420-ctrl/proof-before-power.git|main|source
+          solvex-b2b-autonomy|https://github.com/Solvex-Paradox-Box/Solvex-B2B-Autonomy.git|main|source
+          solvex-paradox-marketplace-b2b|https://github.com/Solvex-Paradox-Box/Solvex-Paradox-Marketplace-B2B-Solutions.git|main|source
+          solvex-unity|https://github.com/Solvex-Paradox-Box/solvex-Unity.git|main|source
+          marketplace-p|https://github.com/Solvex-Paradox-Box/Marketplace-p.git|main|source
+          autonomous-b2b-marketplace|https://github.com/Solvex-Paradox-Box/Autonomous-B2B-Solutions-Marketplace-.git|main|source
+          solvex-core|https://github.com/Solvex-Paradox-Box/Solvex-core.git|main|source
+          monorepo|https://github.com/Solvex-Paradox-Box/Monorepo.git|main|source
+          solvex-uarefake-marketplace|https://github.com/Solvex-Paradox-Box/SolveX-U-ARE-FAKE-B2B--Solutions-Marketplace.git|main|source
+          quantum-ai-optimizer|https://github.com/Solvex-Paradox-Box/Quantum-AI-Optimizer-.git|main|source
+          project-a|https://github.com/Solvex-Paradox-Box/A.git|main|source
+          blaze-1|https://github.com/Solvex-Paradox-Box/Blaze-1.0.git|main|source
           ai-studio-marketplace-archives|https://github.com/Solvex-Paradox-Box/Ai-studio-marketplace-build.git|main|archives
           EOF
           )
