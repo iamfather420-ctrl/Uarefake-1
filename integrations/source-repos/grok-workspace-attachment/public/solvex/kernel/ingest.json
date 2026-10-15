@@ -1,0 +1,18 @@
+{
+  "artifact": "solvex-kernel-ui-final8.zip",
+  "sha256": "a4feecc235567d663020f5da0239045bf27ea86bb455972b3c18639c7fd1b8da",
+  "kind": "in-process-pipeline-kernel",
+  "version": "1.0.0",
+  "claimed_os_children": 54,
+  "claimed_ports": {
+    "first": 41001,
+    "last": 41054,
+    "bus": 40999,
+    "bound_in_this_hull": false
+  },
+  "honesty": "This hull does not spawn 54 OS children or bind 41001-41054. Generation ids replace PIDs. Recorded Full-Build evidence remains the authority for historical execution.",
+  "paypal": "CONFIGURED",
+  "neon": "EXTERNAL_PROVIDER_REQUIRED",
+  "stripe": "PROHIBITED_BLOCKED",
+  "pbp": "PBP-1 ported into /space/power"
+}

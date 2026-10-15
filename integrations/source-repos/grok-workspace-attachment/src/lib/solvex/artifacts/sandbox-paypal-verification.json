@@ -1,0 +1,22 @@
+{
+  "execution_id": "sandbox_exec_1790484595057",
+  "commit_sha": "728625581c2f89210c752d03fda0a154812b2366",
+  "timestamp": "2026-09-27T04:49:55.057Z",
+  "environment": "sandbox",
+  "claim_scope": "LOCAL",
+  "status": "AUTHENTICATION_FAILED",
+  "configured": true,
+  "oauth_attempted": true,
+  "oauth_status_code": 401,
+  "oauth_success": false,
+  "transaction_attempted": false,
+  "transaction_verified": false,
+  "idempotency_tested": false,
+  "idempotency_passed": false,
+  "failure_injection": {
+    "missing_creds_fail_closed": true,
+    "invalid_creds_rejected_401": true,
+    "invalid_creds_observed_error": "Client Authentication failed"
+  },
+  "evidence_hash": "513449dd8796f45be12cef1247c364d197f5ad623be0af5c5cf288534689ff56"
+}

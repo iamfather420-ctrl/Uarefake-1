@@ -38,6 +38,10 @@
       "files": 1383,
       "bytes": 31953867
     },
+    "grok-workspace-attachment": {
+      "files": 386,
+      "bytes": 53043813
+    },
     "paradox-verification": {
       "files": 55,
       "bytes": 1593941
@@ -63,8 +67,8 @@
       "bytes": 1899845
     }
   },
-  "totalFiles": 5607,
-  "totalBytes": 160244694,
+  "totalFiles": 5993,
+  "totalBytes": 213288507,
   "sameRelativePathGroups": [
     {
       "relativePath": ".agents/memory/MEMORY.md",
@@ -335,6 +339,7 @@
         "daisy-registry-engine",
         "freedom-sim-ai-os",
         "full-build",
+        "grok-workspace-attachment",
         "paradox-verification",
         "solvex-crystal-clear-black-box",
         "solvex-hub",
@@ -368,7 +373,8 @@
         "autonomous-b2b-consolidated",
         "clean-web-consolidated",
         "freedom-sim-ai-os",
-        "full-build"
+        "full-build",
+        "grok-workspace-attachment"
       ],
       "identicalGroups": [
         [
@@ -11693,7 +11699,8 @@
       "repos": [
         "autonomous-b2b-consolidated",
         "clean-web-consolidated",
-        "full-build"
+        "full-build",
+        "grok-workspace-attachment"
       ],
       "identicalGroups": [],
       "conflicting": true
@@ -11706,6 +11713,7 @@
         "daisy-app-forge",
         "daisy-registry-engine",
         "full-build",
+        "grok-workspace-attachment",
         "paradox-verification",
         "solvex-repo-unify",
         "solvex-storefront",
@@ -11811,6 +11819,15 @@
         ]
       ],
       "conflicting": false
+    },
+    {
+      "relativePath": "public/favicon.svg",
+      "repos": [
+        "autonomous-b2b-consolidated",
+        "grok-workspace-attachment"
+      ],
+      "identicalGroups": [],
+      "conflicting": true
     },
     {
       "relativePath": "public/favicon_native.svg",
@@ -13528,7 +13545,8 @@
       "repos": [
         "autonomous-b2b-consolidated",
         "clean-web-consolidated",
-        "full-build"
+        "full-build",
+        "grok-workspace-attachment"
       ],
       "identicalGroups": [
         [
@@ -13537,7 +13555,7 @@
           "full-build"
         ]
       ],
-      "conflicting": false
+      "conflicting": true
     },
     {
       "relativePath": "src/components/ui/card.tsx",
@@ -15163,7 +15181,8 @@
       "repos": [
         "autonomous-b2b-consolidated",
         "clean-web-consolidated",
-        "full-build"
+        "full-build",
+        "grok-workspace-attachment"
       ],
       "identicalGroups": [
         [
@@ -15172,7 +15191,7 @@
           "full-build"
         ]
       ],
-      "conflicting": false
+      "conflicting": true
     },
     {
       "relativePath": "src/lib/webgl-check.ts",
@@ -15417,7 +15436,8 @@
       "repos": [
         "autonomous-b2b-consolidated",
         "clean-web-consolidated",
-        "full-build"
+        "full-build",
+        "grok-workspace-attachment"
       ],
       "identicalGroups": [
         [
@@ -15432,7 +15452,8 @@
       "repos": [
         "autonomous-b2b-consolidated",
         "clean-web-consolidated",
-        "full-build"
+        "full-build",
+        "grok-workspace-attachment"
       ],
       "identicalGroups": [
         [
@@ -15441,7 +15462,7 @@
           "full-build"
         ]
       ],
-      "conflicting": false
+      "conflicting": true
     },
     {
       "relativePath": "src/routes/$.tsx",
@@ -15464,7 +15485,8 @@
       "repos": [
         "autonomous-b2b-consolidated",
         "clean-web-consolidated",
-        "full-build"
+        "full-build",
+        "grok-workspace-attachment"
       ],
       "identicalGroups": [
         [
@@ -15473,7 +15495,7 @@
           "full-build"
         ]
       ],
-      "conflicting": false
+      "conflicting": true
     },
     {
       "relativePath": "src/routes/analytics.tsx",
@@ -15558,7 +15580,8 @@
       "repos": [
         "autonomous-b2b-consolidated",
         "clean-web-consolidated",
-        "full-build"
+        "full-build",
+        "grok-workspace-attachment"
       ],
       "identicalGroups": [
         [
@@ -15567,7 +15590,7 @@
           "full-build"
         ]
       ],
-      "conflicting": false
+      "conflicting": true
     },
     {
       "relativePath": "src/routes/library.tsx",
@@ -15975,6 +15998,7 @@
         "autonomous-b2b-consolidated",
         "daisy-registry-engine",
         "full-build",
+        "grok-workspace-attachment",
         "paradox-verification",
         "solvex-repo-unify",
         "solvex-storefront",
@@ -16041,6 +16065,7 @@
       "relativePath": "vercel.json",
       "repos": [
         "daisy-registry-engine",
+        "grok-workspace-attachment",
         "solvex-storefront",
         "storefront"
       ],
@@ -16061,6 +16086,7 @@
         "daisy-registry-engine",
         "freedom-sim-ai-os",
         "full-build",
+        "grok-workspace-attachment",
         "paradox-verification",
         "solvex-repo-unify",
         "solvex-storefront",
@@ -20654,6 +20680,16 @@
         {
           "repo": "full-build",
           "path": "src/DFRLFormalVerifier.ts",
+          "size": 0
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": ".node_modules.lock",
+          "size": 0
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "screenshots/.gitkeep",
           "size": 0
         }
       ]
@@ -45500,6 +45536,11 @@
           "repo": "full-build",
           "path": "artifacts/production-gate-evaluation.json",
           "size": 8744
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/production-gate-evaluation.json",
+          "size": 8744
         }
       ]
     },
@@ -45600,6 +45641,11 @@
           "repo": "full-build",
           "path": "artifacts/execution-gates.md",
           "size": 3360
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/production-gate-evaluation.md",
+          "size": 3360
         }
       ]
     },
@@ -45654,6 +45700,61 @@
       ]
     },
     {
+      "sha256": "ca9f21910fa867604d7806626da813551cbb9c58b53e5fe30c8ed0758189f005",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "artifacts/artifact-cross-check-audit.json",
+          "size": 4678
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/artifact-cross-check-audit.json",
+          "size": 4678
+        }
+      ]
+    },
+    {
+      "sha256": "f7ea6e8a8c9ae2fea832c7cfbb97375edb7293daa4f92e159fdadca6dd645837",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "artifacts/final-proof-gate.json",
+          "size": 1135
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/final-proof-gate.json",
+          "size": 1135
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "src/lib/solvex/artifacts/final-proof-gate.json",
+          "size": 1135
+        }
+      ]
+    },
+    {
+      "sha256": "53fd86a43334a452328daf2da5973abba1d9060653789d8fb46b6c03e52910df",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "artifacts/daisy-54-node-canonical.json",
+          "size": 13312
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/daisy-54-node-canonical.json",
+          "size": 13312
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "src/lib/solvex/artifacts/daisy-54-node-canonical.json",
+          "size": 13312
+        }
+      ]
+    },
+    {
       "sha256": "f0e97dbb8a56d5e96ca27f479bf3f01d2db8c3041ed45191fb4f29a57d2bb1ec",
       "copies": [
         {
@@ -45665,6 +45766,966 @@
           "repo": "full-build",
           "path": "artifacts/dh-32-formal-verification.json",
           "size": 79260
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/dh-bootstrap-32-verification.json",
+          "size": 79260
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/dh-32-formal-verification.json",
+          "size": 79260
+        }
+      ]
+    },
+    {
+      "sha256": "41d371f540922b04419dbeec08b086e0a512c91db0d7142a8c80934c122219a7",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "artifacts/paypal-verification-matrix.json",
+          "size": 1013
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/paypal-verification-matrix.json",
+          "size": 1013
+        }
+      ]
+    },
+    {
+      "sha256": "65dce11304efc76e97fb2f0eaaba67ae8a0b08f8680a1ca0dd22208c08bcc631",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "artifacts/verification-baseline.json",
+          "size": 1244
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/verification-baseline.json",
+          "size": 1244
+        }
+      ]
+    },
+    {
+      "sha256": "198ae071e6cebe61d895b199e8809aed7da2570baf3a09409ca13c721eb9fb2e",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "artifacts/api-security-v2.json",
+          "size": 791
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/api-security-v2.json",
+          "size": 791
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "src/lib/solvex/artifacts/api-security-v2.json",
+          "size": 791
+        }
+      ]
+    },
+    {
+      "sha256": "897a2bac6dec1c186daed130783be305943481880c053b89403333d40de5bb16",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "artifacts/dh-formal-tamper-report.json",
+          "size": 426
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/dh-formal-tamper-report.json",
+          "size": 426
+        }
+      ]
+    },
+    {
+      "sha256": "d9619fd00abfa4b52da62d1151258263060f57a7ea4ba972055487bff9e6983d",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "artifacts/dh-32-formal-verification.md",
+          "size": 8106
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/dh-32-formal-verification.md",
+          "size": 8106
+        }
+      ]
+    },
+    {
+      "sha256": "d2129d88c57d483c94d1116ffb46fb5ce2a87a327cab98100cbb5e2275f3da4f",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "artifacts/dfrl-proof-closure.json",
+          "size": 617
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/dfrl-proof-closure.json",
+          "size": 617
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "src/lib/solvex/artifacts/dfrl-proof-closure.json",
+          "size": 617
+        }
+      ]
+    },
+    {
+      "sha256": "e3fe5b88746f113ce2e47c45a07ac21f2125f611434d4aace9da050e4e1bef88",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "artifacts/formal-aggregation.json",
+          "size": 1188
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/formal-aggregation.json",
+          "size": 1188
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "src/lib/solvex/artifacts/formal-aggregation.json",
+          "size": 1188
+        }
+      ]
+    },
+    {
+      "sha256": "8b79ca50518518aec8db59d18bc0d8bf30361347b29e9ee5849ce1d16fdc9ca3",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "artifacts/z3-120-formal-verification-summary.md",
+          "size": 1655
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/z3-120-formal-verification-summary.md",
+          "size": 1655
+        }
+      ]
+    },
+    {
+      "sha256": "446ed87e9e9980806725f1981ee94d13bc348973d5971f2a830b2c43787ca4d7",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "artifacts/COMPLETE-VERIFICATION-REPORT.md",
+          "size": 4605
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/COMPLETE-VERIFICATION-REPORT.md",
+          "size": 4605
+        }
+      ]
+    },
+    {
+      "sha256": "b5962d4cc09065ef67d95a074330ebb80097d8f1127fd2e04854dce983b9f487",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "artifacts/dh-reconciliation-table.md",
+          "size": 6908
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/dh-reconciliation-table.md",
+          "size": 6908
+        }
+      ]
+    },
+    {
+      "sha256": "a1ae5b9530985cca2d88c115266eda2ce09fce82aa46dc9407001b7a70436827",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "artifacts/dh-formal-integrity-manifest.json",
+          "size": 11281
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/dh-formal-integrity-manifest.json",
+          "size": 11281
+        }
+      ]
+    },
+    {
+      "sha256": "0112e2c1f99d67dd0f0c579eba76543be22b55e25b7b6c66b5571b5adff6f766",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "artifacts/z3-120-formal-verification-summary.json",
+          "size": 1067
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/z3-120-formal-verification-summary.json",
+          "size": 1067
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "src/lib/solvex/artifacts/z3-120-formal-verification-summary.json",
+          "size": 1067
+        }
+      ]
+    },
+    {
+      "sha256": "e19b7044a0f49a47d1f57e657541ecf5c3c1127a1e0bcaf1b67d71cca115dd40",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "artifacts/cleanroom-replay-verification.json",
+          "size": 449
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/cleanroom-replay-verification.json",
+          "size": 449
+        }
+      ]
+    },
+    {
+      "sha256": "b3b4fb891df36c2c74a8bf3a4104c2a3faff24812fb90aca7137c38d6d38461a",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "artifacts/claim-vs-proof-audit.json",
+          "size": 27365
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/claim-vs-proof-audit.json",
+          "size": 27365
+        }
+      ]
+    },
+    {
+      "sha256": "c896ff3469201a80f490a94dcb0811e30e08f3e1041d9f963438233a376228c5",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "artifacts/z3-failure-injection-test.json",
+          "size": 484
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/z3-failure-injection-test.json",
+          "size": 484
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "src/lib/solvex/artifacts/z3-failure-injection-test.json",
+          "size": 484
+        }
+      ]
+    },
+    {
+      "sha256": "a33f04f7096507bbcf5d9a817fe4252a5729cff78993036a4bb45d7ad6941513",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "artifacts/proof-receipts-tamper-test.json",
+          "size": 1498
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/proof-receipts-tamper-test.json",
+          "size": 1498
+        }
+      ]
+    },
+    {
+      "sha256": "5f83b55ef8716ec74797d0efe8a8abaaff72aa2bd544542d03749b7acfaaa675",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "artifacts/complete-verification-registry.json",
+          "size": 327821
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/complete-verification-registry.json",
+          "size": 327821
+        }
+      ]
+    },
+    {
+      "sha256": "de83875880ca1a0bdecdd1c1a12320587d2c16af8992e00ad3a8960459afa457",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "artifacts/dh-formal-contract-registry.json",
+          "size": 39152
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/dh-formal-contract-registry.json",
+          "size": 39152
+        }
+      ]
+    },
+    {
+      "sha256": "a9145166f785fa02eefc798a951bca2cfc729ce9152f66515302b3bd0b64e9aa",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "artifacts/proof-integrity-manifest.json",
+          "size": 168174
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/proof-integrity-manifest.json",
+          "size": 168174
+        }
+      ]
+    },
+    {
+      "sha256": "d98b32e79a690e1591af7d35d4af5abe3f9b5176042f15067f49950a3cc03c12",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "artifacts/proof-receipts.json",
+          "size": 395313
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/proof-receipts.json",
+          "size": 395313
+        }
+      ]
+    },
+    {
+      "sha256": "bd0e4916083c85006b174d2cbfeabf1dd726a218978f49df2ced9a752a5ae012",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "artifacts/dh-reconciliation-table.json",
+          "size": 9587
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/dh-reconciliation-table.json",
+          "size": 9587
+        }
+      ]
+    },
+    {
+      "sha256": "8f07b861e659126c621f7c522747c01b0ad28b00680495ee5c30da3534423e42",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "artifacts/integrity-tamper-result.json",
+          "size": 400
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/integrity-tamper-result.json",
+          "size": 400
+        }
+      ]
+    },
+    {
+      "sha256": "ccf17c00e77d2147a1a5387433410ac313290b8604c89da6e9d292ab8ba6d172",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "artifacts/dh-formal-mutation-report.json",
+          "size": 1174
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/dh-formal-mutation-report.json",
+          "size": 1174
+        }
+      ]
+    },
+    {
+      "sha256": "34ccd04b9f1cb29014cfb4115195a6bb019e5b03fcc238b2363ecc35ecd17c35",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "artifacts/smt-mutation-test.json",
+          "size": 1119
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/smt-mutation-test.json",
+          "size": 1119
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "src/lib/solvex/artifacts/smt-mutation-test.json",
+          "size": 1119
+        }
+      ]
+    },
+    {
+      "sha256": "6277b1908dcfe639c79a10d3b674c6fa2d216ea533c64a0d0a912ab218db2b16",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "artifacts/COMPLETE-VERIFICATION-REPORT.json",
+          "size": 25237
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/COMPLETE-VERIFICATION-REPORT.json",
+          "size": 25237
+        }
+      ]
+    },
+    {
+      "sha256": "ebdac149d784e1a84d3278a221144a5618d40a0e68dbb402190d8ca7cbdb86e2",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "artifacts/dh-formal-execution-report.json",
+          "size": 50922
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/dh-formal-execution-report.json",
+          "size": 50922
+        }
+      ]
+    },
+    {
+      "sha256": "2b8f305a5034c66f51e2ffeb0e876cda80c05170e6dd3e88307d5e8df082b7f4",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "artifacts/dh-formal-replay-report.json",
+          "size": 15862
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/dh-formal-replay-report.json",
+          "size": 15862
+        }
+      ]
+    },
+    {
+      "sha256": "8739becc1cea3a7ccf08ed8702d82077654a0595b07b7c7d0a8676c6846d6a68",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "artifacts/dh-formal-failure-injection-report.json",
+          "size": 430
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/dh-formal-failure-injection-report.json",
+          "size": 430
+        }
+      ]
+    },
+    {
+      "sha256": "e6ce626f273cab60481697674a706d1d9ffc2f6866723d0117623a8bc7271873",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "artifacts/final-forensic-report.md",
+          "size": 5805
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/final-forensic-report.md",
+          "size": 5805
+        }
+      ]
+    },
+    {
+      "sha256": "ba74ce7928a1829f01573f4b4451afdec2a0ee37d3bbf6b50ceaac982593e787",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "artifacts/final-forensic-report.json",
+          "size": 11776
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/final-forensic-report.json",
+          "size": 11776
+        }
+      ]
+    },
+    {
+      "sha256": "acacd64e3e442ee8be0f69d24bcfe82a6f2513d4fa952e32491397db7a0270f3",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "src/paradoxes/DHBootstrapParadoxRegistry.ts",
+          "size": 16291
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "src/lib/solvex/bootstrap.ts",
+          "size": 16291
+        }
+      ]
+    },
+    {
+      "sha256": "3ba4803b28be1e17176e2a684c8d08e08b40ed111f27e690955692fb6931577b",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "src/data/paradoxData.ts",
+          "size": 15056
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "src/lib/solvex/paradox-data.ts",
+          "size": 15056
+        }
+      ]
+    },
+    {
+      "sha256": "440b724e7681a3cc246dc12c09a03e7b6d208568d596df5cc164e6502f4fa4ee",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "proof-before-power/public/adapters/before-tool-call.mjs",
+          "size": 1954
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/pbp/before-tool-call.mjs",
+          "size": 1954
+        }
+      ]
+    },
+    {
+      "sha256": "ab048b80279bfa74428f6601c851ed492e4c9f7c6d47940797f3b44bfc4f14d2",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "proof-before-power/public/agents/daisy-haminja.mjs",
+          "size": 1818
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/pbp/daisy-haminja.mjs",
+          "size": 1818
+        }
+      ]
+    },
+    {
+      "sha256": "4ee7f112fd226dec1f1c1436840126e27480f9626ad2a365b0a2b81a42d0402e",
+      "copies": [
+        {
+          "repo": "full-build",
+          "path": "proof-before-power/public/engine/proof-engine.mjs",
+          "size": 12495
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/pbp/proof-engine.mjs",
+          "size": 12495
+        }
+      ]
+    },
+    {
+      "sha256": "03dbca4df35f913aa7bfefdef956c65c396129291976b9f0b46979772b61a114",
+      "copies": [
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "artifacts/imagine_images/3b5404a6-04c5-4138-ad47-bb4e62c06a7c.jpg",
+          "size": 546870
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": ".grok/og-bg.jpg",
+          "size": 546870
+        }
+      ]
+    },
+    {
+      "sha256": "67b8c4d569a978c49965dd3e9c305f2601c01ce4108f260a585c8c1429dc88d7",
+      "copies": [
+        {
+          "repo": "grok-workspace-attachment",
+          "path": ".grok/favicon.svg",
+          "size": 445
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/favicon.svg",
+          "size": 445
+        }
+      ]
+    },
+    {
+      "sha256": "d63ddc781bf0d15753fe0ba22c7cd5828dabb7776465ea4d4939558d4909b0fa",
+      "copies": [
+        {
+          "repo": "grok-workspace-attachment",
+          "path": ".grok/skills/generate2dmap/LICENSE",
+          "size": 1065
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": ".grok/skills/generate2dsprite/LICENSE",
+          "size": 1065
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": ".grok/skills/video2dsprite/LICENSE",
+          "size": 1065
+        }
+      ]
+    },
+    {
+      "sha256": "a3667d46be6cda6ec841c482ca371b9bae081445bc9fb15e08e5ef5e22386d31",
+      "copies": [
+        {
+          "repo": "grok-workspace-attachment",
+          "path": ".grok/skills/generate2dmap/SOURCE.md",
+          "size": 303
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": ".grok/skills/generate2dsprite/SOURCE.md",
+          "size": 303
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": ".grok/skills/video2dsprite/SOURCE.md",
+          "size": 303
+        }
+      ]
+    },
+    {
+      "sha256": "09620130c61fbb9a7b04ca2a48ccc635daa37b1fd199cf106e548ecdf8dcabdd",
+      "copies": [
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/solvex-manifest.json",
+          "size": 981
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "src/lib/solvex/artifacts/solvex-manifest.json",
+          "size": 981
+        }
+      ]
+    },
+    {
+      "sha256": "7d3cb3faf858cf65079cbdb5c9ac3659a83965175f9cedec779ceb2e5c2bef8b",
+      "copies": [
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/deterministic-replay.json",
+          "size": 57951
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "src/lib/solvex/artifacts/deterministic-replay.json",
+          "size": 57951
+        }
+      ]
+    },
+    {
+      "sha256": "58b9e30cb53445b77b308dae6e3c6cd885f59f384bcdc358be99df92dc4e5c20",
+      "copies": [
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/sandbox-end-to-end.json",
+          "size": 550
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "src/lib/solvex/artifacts/sandbox-end-to-end.json",
+          "size": 550
+        }
+      ]
+    },
+    {
+      "sha256": "d2334cc973794d14e892911f781449617873a504649e082f84e6798c0f22f3dc",
+      "copies": [
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/sandbox-preflight-report.json",
+          "size": 2384
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "src/lib/solvex/artifacts/sandbox-preflight-report.json",
+          "size": 2384
+        }
+      ]
+    },
+    {
+      "sha256": "d132d246f000465711f784ed6c8862f4ff8b9f50e69b2325b0203145a669be9c",
+      "copies": [
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/execution-gates.json",
+          "size": 8649
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "src/lib/solvex/artifacts/execution-gates.json",
+          "size": 8649
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "src/lib/solvex/artifacts/production-gate-evaluation.json",
+          "size": 8649
+        }
+      ]
+    },
+    {
+      "sha256": "250dfef367c9665be3490b814d6abd8bb3e9947efbaa5f80aade3919bfaef068",
+      "copies": [
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/persistence-verification.json",
+          "size": 3291
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "src/lib/solvex/artifacts/persistence-verification.json",
+          "size": 3291
+        }
+      ]
+    },
+    {
+      "sha256": "ab97f804e9b310b2f4fc6a226043ee24191f4cc6a8d8f34a3eef5bb443febf1b",
+      "copies": [
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/sandbox-provider-verification.json",
+          "size": 2034
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "src/lib/solvex/artifacts/sandbox-provider-verification.json",
+          "size": 2034
+        }
+      ]
+    },
+    {
+      "sha256": "ee52dc110198dd11191684ee2402fb3f099511eb3beb320be877732b50033565",
+      "copies": [
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/dfrl-88-verification.json",
+          "size": 155725
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "src/lib/solvex/artifacts/dfrl-88-verification.json",
+          "size": 155725
+        }
+      ]
+    },
+    {
+      "sha256": "ee85bae6724dc3d5173e4666661b1be5f0b5e24d244618ce9b6f4fb2c48a6ea0",
+      "copies": [
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/paypal-dual-environment-test.json",
+          "size": 2429
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "src/lib/solvex/artifacts/paypal-dual-environment-test.json",
+          "size": 2429
+        }
+      ]
+    },
+    {
+      "sha256": "9daa4c95f6f587b85c74ba3e4f85b1c26cf3e495e591caa615e2aeeb17ceec04",
+      "copies": [
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/enterprise-verification.json",
+          "size": 7169
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/enterprise-verification-report.json",
+          "size": 7169
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "src/lib/solvex/artifacts/enterprise-verification.json",
+          "size": 7169
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "src/lib/solvex/artifacts/enterprise-verification-report.json",
+          "size": 7169
+        }
+      ]
+    },
+    {
+      "sha256": "6772a37967e6f1cc3c446e9459d79239e376198a2b9d47608d1cf3a3d77336ab",
+      "copies": [
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/baseline-freeze-manifest.json",
+          "size": 957
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "src/lib/solvex/artifacts/baseline-freeze-manifest.json",
+          "size": 957
+        }
+      ]
+    },
+    {
+      "sha256": "0462afbd5a0baf9be9a28aa4118ef7660b0de9a56fb5b402e9c5b232c2ee05a4",
+      "copies": [
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/DFRL-88-MACHINE-VERIFICATION-AUDIT.json",
+          "size": 99994
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/dfrl_complete_88_proof_dossier.json",
+          "size": 99994
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "src/lib/solvex/artifacts/DFRL-88-MACHINE-VERIFICATION-AUDIT.json",
+          "size": 99994
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "src/lib/solvex/artifacts/dfrl_complete_88_proof_dossier.json",
+          "size": 99994
+        }
+      ]
+    },
+    {
+      "sha256": "63d90241e685776bbcfa3fa460c148f6ff3d0d6153e492d7f349d21c870fe8e2",
+      "copies": [
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/preflight-report.json",
+          "size": 3189
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "src/lib/solvex/artifacts/preflight-report.json",
+          "size": 3189
+        }
+      ]
+    },
+    {
+      "sha256": "53d3317b9aeca4d1362156a549734b0851108018875f7c6967599d205b5418fe",
+      "copies": [
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/artifact-tamper-test.json",
+          "size": 374
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "src/lib/solvex/artifacts/artifact-tamper-test.json",
+          "size": 374
+        }
+      ]
+    },
+    {
+      "sha256": "abab6b4223908ab21339d9fd33206bc5c748475bcf874665857de9eacb6b5336",
+      "copies": [
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/sandbox-production-boundary.json",
+          "size": 720
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "src/lib/solvex/artifacts/sandbox-production-boundary.json",
+          "size": 720
+        }
+      ]
+    },
+    {
+      "sha256": "8c553e3fe8b5a687f8d0813efe4a90f67440757bd0cf034418f53b37e0a3966e",
+      "copies": [
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/sandbox-neon-verification.json",
+          "size": 529
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "src/lib/solvex/artifacts/sandbox-neon-verification.json",
+          "size": 529
+        }
+      ]
+    },
+    {
+      "sha256": "f0f619b610fcf2d017b0bec01ec8a413ab264e3f8ae37ddd33ccfa5b5e4530d3",
+      "copies": [
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/sandbox-execution-gates.json",
+          "size": 1796
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "src/lib/solvex/artifacts/sandbox-execution-gates.json",
+          "size": 1796
+        }
+      ]
+    },
+    {
+      "sha256": "e850b5d0cdbe5d28967f983ae3e4708cf020f97b158cb2ae11a6a2ee87bfbcd1",
+      "copies": [
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/sandbox-paypal-verification.json",
+          "size": 739
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "src/lib/solvex/artifacts/sandbox-paypal-verification.json",
+          "size": 739
+        }
+      ]
+    },
+    {
+      "sha256": "dbea93a521e621ac4042f0e1bbe3e72a9b43ce644ac79c53bc5f611eabd26547",
+      "copies": [
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/sandbox-sovereign-escrow-verification.json",
+          "size": 532
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "src/lib/solvex/artifacts/sandbox-sovereign-escrow-verification.json",
+          "size": 532
+        }
+      ]
+    },
+    {
+      "sha256": "7eef54203eb44ca127432681d6ccc19c5eea7282fd6d80a31e42e1f70597f1e9",
+      "copies": [
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "public/solvex/daisy-54-node-execution.json",
+          "size": 67332
+        },
+        {
+          "repo": "grok-workspace-attachment",
+          "path": "src/lib/solvex/artifacts/daisy-54-node-execution.json",
+          "size": 67332
         }
       ]
     },
