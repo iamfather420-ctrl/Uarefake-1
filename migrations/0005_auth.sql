@@ -68,3 +68,27 @@ create table if not exists "verification" (
 create index if not exists "session_userId_idx" on "session" ("userId");
 create index if not exists "account_userId_idx" on "account" ("userId");
 create index if not exists "verification_identifier_idx" on "verification" ("identifier");
+
+-- Separate web-runtime privileges from Better Auth session-storage privileges.
+-- Both login roles are created without a password; provision credentials through
+-- the Neon role-password workflow and store them only in the Vercel secret store.
+DO $roles$
+BEGIN
+  IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_roles WHERE rolname = 'solvex_app_login') THEN
+    EXECUTE 'CREATE ROLE solvex_app_login LOGIN INHERIT NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS';
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_roles WHERE rolname = 'solvex_auth_runtime') THEN
+    EXECUTE 'CREATE ROLE solvex_auth_runtime NOLOGIN INHERIT NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS';
+  END IF;
+  IF NOT EXISTS (SELECT 1 FROM pg_catalog.pg_roles WHERE rolname = 'solvex_auth_login') THEN
+    EXECUTE 'CREATE ROLE solvex_auth_login LOGIN INHERIT NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS';
+  END IF;
+END
+$roles$;
+
+GRANT solvex_app_runtime TO solvex_app_login;
+GRANT USAGE ON SCHEMA public TO solvex_auth_runtime;
+GRANT SELECT, INSERT, UPDATE, DELETE
+  ON TABLE public."user", public."session", public."account", public."verification"
+  TO solvex_auth_runtime;
+GRANT solvex_auth_runtime TO solvex_auth_login;
