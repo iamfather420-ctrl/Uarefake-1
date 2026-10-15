@@ -1,0 +1,37 @@
+{
+  "proof_id": "PROOF-RECEIPT-DH-P-032",
+  "case_id": "DH-P-032",
+  "name": "Byzantine Generals Paradox",
+  "domain": "DISTRIBUTED_CONSENSUS",
+  "statement": "Reaching consensus across unreliable networks with traitorous nodes.",
+  "formal_proposition": "Lamport-Shostak-Pease Theorem: Synchronous Byzantine agreement with m traitorous nodes requires strictly > 3m nodes (n >= 3m + 1). For n=3 and m=1, reaching consensus is refutable.",
+  "assumptions": [
+    "Oral message model without digital signatures",
+    "m traitorous arbitrary Byzantine nodes"
+  ],
+  "axioms": [
+    "Lamport lower bound theorem n >= 3m + 1"
+  ],
+  "constraints": [
+    "n = 3",
+    "m = 1"
+  ],
+  "expected_result": "unsat",
+  "actual_result": "unsat",
+  "replay_result": "unsat",
+  "replay_match": true,
+  "verified": true,
+  "scope": "MODEL_VERIFIED",
+  "solver": "z3-wasm",
+  "solver_version": "Microsoft Research Z3 WASM 5.2.0",
+  "execution_id": "dh_suite_1790883774548_x1etdi",
+  "commit_sha": "b992445d00e6f8e27bd0aeaf308ad2f17a64d142",
+  "contract_hash": "29ecbd0fc23699ebf606ad5d9226f11cdd51767515053b32f2ca52e7fd5770c8",
+  "source_hash": "1f3e556ee182213af0907ca99979be9db5c46f7670f33258152b6611912106d9",
+  "source_content_hash": "acacd64e3e442ee8be0f69d24bcfe82a6f2513d4fa952e32491397db7a0270f3",
+  "evidence_hash": "a44d4a7dd8e22cc8aeb11f6f2d29989a60afdd61782a6974f76cb0075b775672",
+  "evidence_integrity": "PASS",
+  "source_integrity": "PASS",
+  "timestamp": "2026-10-01T19:42:58.282Z",
+  "duration_ms": 69.371
+}

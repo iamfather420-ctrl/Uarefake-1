@@ -1,0 +1,8 @@
+{
+  "sourceRepository": "iamfather420-ctrl/Full-Build",
+  "sourceRef": "main",
+  "sourceCommit": "a67017fbfe2ac795dfdc635a434ef50b19852ec8",
+  "importMethod": "pinned source copy",
+  "excluded": [".git", "node_modules", ".env files", private key/certificate files, local databases, dist, coverage, Vercel output, caches and toolchains"],
+  "verification": "Run npm ci and npm run verify:120 in this isolated source root. This does not itself prove production readiness."
+}

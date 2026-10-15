@@ -1,0 +1,36 @@
+{
+  "proof_id": "PROOF-RECEIPT-DH-P-015",
+  "case_id": "DH-P-015",
+  "name": "Raven Paradox (Hempel)",
+  "domain": "EPISTEMOLOGY",
+  "statement": "Observing a green apple confirms \"All ravens are black\" via contrapositive.",
+  "formal_proposition": "Universal implication (forall x: Raven(x) => Black(x)) is logically equivalent to its contrapositive (forall x: not Black(x) => not Raven(x)). Non-equivalence is refutable.",
+  "assumptions": [
+    "Classical predicate logic",
+    "Material implication equivalence"
+  ],
+  "axioms": [
+    "Contrapositive logical equivalence theorem"
+  ],
+  "constraints": [
+    "Entity domain is unrestricted"
+  ],
+  "expected_result": "unsat",
+  "actual_result": "unsat",
+  "replay_result": "unsat",
+  "replay_match": true,
+  "verified": true,
+  "scope": "MODEL_VERIFIED",
+  "solver": "z3-wasm",
+  "solver_version": "Microsoft Research Z3 WASM 5.2.0",
+  "execution_id": "dh_suite_1790883774548_x1etdi",
+  "commit_sha": "b992445d00e6f8e27bd0aeaf308ad2f17a64d142",
+  "contract_hash": "99185786a3125ffd76d24f39dd0c7679be2c6030ea15e5a71c0649213cbab416",
+  "source_hash": "182698982fcb83e4132b71f2e0e6638955e397d94b36b2cbd25a768e66ee5c3d",
+  "source_content_hash": "acacd64e3e442ee8be0f69d24bcfe82a6f2513d4fa952e32491397db7a0270f3",
+  "evidence_hash": "a583067f97ede4e82505a500e52eca1ef8e2d40512d972c31ca31a70648e1f3f",
+  "evidence_integrity": "PASS",
+  "source_integrity": "PASS",
+  "timestamp": "2026-10-01T19:42:57.020Z",
+  "duration_ms": 56.437
+}
