@@ -1,4 +1,5 @@
 import { pendingMigrations } from "../../scripts/migration-plan.mjs";
+import { resolveRuntimeDatabaseUrl } from "../../scripts/database-urls.mjs";
 
 /** Which database backend is active. */
 export type DbSource = "neon" | "pglite";
@@ -7,10 +8,10 @@ export type DbSource = "neon" | "pglite";
 // "unset". Vercel serverless deployments must not fall back to ephemeral PGLite:
  // it is not durable across invocations and its filesystem-backed assets may not
 // be included in the deployment bundle. PGLite is a local-development fallback only.
-const rawDatabaseUrl =
-  typeof process !== "undefined" ? process.env.DATABASE_URL : undefined;
 const databaseUrl =
-  rawDatabaseUrl && rawDatabaseUrl.trim() ? rawDatabaseUrl : undefined;
+  typeof process !== "undefined"
+    ? resolveRuntimeDatabaseUrl(process.env)
+    : undefined;
 
 /**
  * Active backend: real **Neon/Postgres** when `DATABASE_URL` is set. PGLite is
