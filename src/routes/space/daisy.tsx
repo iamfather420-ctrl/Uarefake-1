@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
-import { consultDaisy } from "@/lib/daisy";
+import { consultDaisy, evaluateDaisyProposal } from "@/lib/daisy";
 import { Button } from "@/components/ui/button";
 import { ParaiStrip } from "@/components/parai";
 import type { ParaiId } from "@/lib/dfrl";
@@ -38,8 +38,20 @@ export function DaisyPage() {
       await new Promise((r) => setTimeout(r, 160));
     }
     try {
-      const res = await consultDaisy({ data: { prompt: q } });
+      const preflight = await evaluateDaisyProposal({ data: { prompt: q } });
       setStage("PROVE");
+      if (preflight.ok) {
+        const passed = preflight.obligations.filter((item: { holds: boolean }) => item.holds).length;
+        const total = preflight.obligations.length;
+        const failed = preflight.obligations.filter((item: { holds: boolean }) => !item.holds).map((item: { id: string }) => item.id).join(", ");
+        setMsgs((m) => [...m, {
+          role: "daisy",
+          text: `PROOF-BEFORE-POWER · ${preflight.policy} · ${preflight.decision}\\nObligations held: ${passed}/${total}\\nRefused obligations: ${failed || "none"}\\n${preflight.explanation}\\nExecution allowed: no.`,
+        }]);
+      } else {
+        setMsgs((m) => [...m, { role: "daisy", text: `PREFLIGHT FAILED CLOSED. ${preflight.error}` }]);
+      }
+      const res = await consultDaisy({ data: { prompt: q } });
       if (res.ok) setMsgs((m) => [...m, { role: "daisy", text: res.text }]);
       else
         setMsgs((m) => [
