@@ -182,7 +182,7 @@ export function evaluate(action, policy = POLICY, now = Date.now()) {
       { ageMs: Number.isFinite(age) ? age : null, windowMs: policy.jitWindowMs }),
   ];
 
-  const failed = obligations.filter((/** @type {{ holds: boolean }} */ o) => !o.holds);
+  const failed = obligations.filter((/** @type {Record<string, any>} */ o) => !o.holds);
   const decision = failed.length === 0 ? "ALLOW" : "REFUSE";
   return {
     policy: policy.id,
@@ -193,7 +193,7 @@ export function evaluate(action, policy = POLICY, now = Date.now()) {
       : "A countermodel exists. Capability is not authority. Power is withheld.",
     commitment,
     obligations,
-    counterexamples: failed.map((o) => ({ obligation: o.id, model: o.counterexample })),
+    counterexamples: failed.map((/** @type {Record<string, any>} */ o) => ({ obligation: o.id, model: o.counterexample })),
     elapsedMs: Date.now() - t0,
     notAModel: true,
   };
