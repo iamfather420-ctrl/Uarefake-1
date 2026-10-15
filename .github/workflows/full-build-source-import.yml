@@ -4,6 +4,13 @@ on:
   push:
     branches:
       - integration/full-build-source-import-20261015
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/full-build-source-import.yml"
+      - "integrated-sources/Full-Build/**"
+      - "docs/FULL-BUILD-SOURCE-INTEGRATION.md"
+      - "eslint.config.mjs"
 
 permissions:
   contents: write
