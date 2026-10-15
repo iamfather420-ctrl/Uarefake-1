@@ -1,8 +1,7 @@
 /**
- * Keep runtime database credentials separate from schema-migration credentials.
- * Runtime connections should use a least-privilege LOGIN role. Migrations may
- * require DDL privileges and must never force the web application to run as the
- * database owner.
+ * Resolve separate credentials for deploy-time migrations, app queries, and
+ * Better Auth storage. Vercel runtime must not fall back to the privileged
+ * DATABASE_URL used by migrations.
  */
 function firstConfigured(...values) {
   for (const value of values) {
@@ -11,12 +10,16 @@ function firstConfigured(...values) {
   return undefined;
 }
 
-/** Resolve the credentials used by application queries and Better Auth. */
 export function resolveRuntimeDatabaseUrl(env = process.env) {
+  if (env.VERCEL) return firstConfigured(env.APP_DATABASE_URL);
   return firstConfigured(env.APP_DATABASE_URL, env.DATABASE_URL);
 }
 
-/** Resolve the credentials used only by deploy-time schema migration. */
+export function resolveAuthDatabaseUrl(env = process.env) {
+  if (env.VERCEL) return firstConfigured(env.AUTH_DATABASE_URL);
+  return firstConfigured(env.AUTH_DATABASE_URL, env.APP_DATABASE_URL, env.DATABASE_URL);
+}
+
 export function resolveMigrationDatabaseUrl(env = process.env) {
   return firstConfigured(env.MIGRATION_DATABASE_URL, env.DATABASE_URL);
 }
