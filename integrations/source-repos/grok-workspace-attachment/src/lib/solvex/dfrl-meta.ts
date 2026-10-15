@@ -1,0 +1,22 @@
+export const dfrlMeta = {
+  "execution_id": "dfrl_exec_1790448805501",
+  "timestamp": "2026-09-26T18:53:25.501Z",
+  "total_propositions": 88,
+  "total_operators": 88,
+  "attempted": 88,
+  "executed": 88,
+  "unsat_count": 88,
+  "unsat_proved_count": 88,
+  "sat_count": 0,
+  "unknown_count": 0,
+  "error_count": 0,
+  "not_executed_count": 0,
+  "authored_models_count": 20,
+  "generated_models_count": 68,
+  "deterministic_replays_matched": 88,
+  "claim_scope": "MODEL_VERIFIED",
+  "solver_engine": "Microsoft Research Z3 WASM (z3-solver)",
+  "solver_version": "Microsoft Research Z3 WASM 5.2.0",
+  "overall_status": "VERIFIED",
+  "verification_root_sha256": "bcc63e033f2a315d1ac65a647c493d81e4d8870b2f92191fce94985995ab48ec"
+} as const;

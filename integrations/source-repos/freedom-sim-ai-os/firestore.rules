@@ -1,0 +1,60 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // 0. Global safety net
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Phase 3: Primitives
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    // 1. Downloads Collection
+    match /downloads/{downloadId} {
+      // Allow creation by anyone (or just signed in users)
+      // For this app, we want to track even anonymous-ish activity if possible, 
+      // but let's stick to signed in for security.
+      allow create: if isSignedIn() && isValidDownload(incoming());
+      
+      // Allow any signed-in user to see the total stats (list/count)
+      allow read: if isSignedIn();
+    }
+
+    function isValidDownload(data) {
+      return data.keys().hasAll(['timestamp', 'target', 'bundleType']) 
+        && data.keys().size() <= 5 
+        && data.timestamp == request.time
+        && data.target is string && data.target.size() <= 100
+        && data.bundleType in ['ISO', 'ZIP', 'CLONE'];
+    }
+
+    // 2. Users Collection
+    match /users/{userId} {
+      allow get: if isSignedIn();
+      allow list: if isSignedIn() && resource.data.nodeId != null; // Basic discovery
+      allow create, update: if isOwner(userId) && isValidUser(incoming());
+    }
+
+    function isValidUser(data) {
+      return data.keys().hasAll(['displayName', 'credits', 'nodeId'])
+        && data.keys().size() <= 5
+        && data.displayName is string && data.displayName.size() <= 100
+        && data.credits is number
+        && data.nodeId is string && data.nodeId.size() <= 50;
+    }
+  }
+}

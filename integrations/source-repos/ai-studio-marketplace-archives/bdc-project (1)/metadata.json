@@ -1,0 +1,6 @@
+{
+  "name": "SolveX Paradox Box",
+  "description": "SolveX Paradox Box B2B Solutions Marketplace featuring fully autonomous business templates that deploy instant, ready-to-run enterprise solutions with zero external API dependencies.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

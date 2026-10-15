@@ -1,0 +1,64 @@
+---
+# Planetary Harvester Android Build Configuration
+build_version: 1.0.0
+target_platform: android
+
+# Android Debug Configuration
+android:
+  api_level: 34
+  min_api: 21
+  ndk_version: "25b"
+  
+  # zlib header configuration
+  zlib:
+    enabled: yes
+    outsource: yes
+    architectures:
+      - armeabi-v7a
+      - arm64-v8a
+      - x86
+      - x86_64
+  
+  # Debug settings
+  debug:
+    enabled: yes
+    symbols: yes
+    logcat_filters: "*:S python:D"
+  
+  # Gradle configuration
+  gradle:
+    dependencies:
+      - "androidx.appcompat:appcompat:1.6.1"
+    plugins:
+      - "com.android.application"
+  
+  # Permissions
+  permissions:
+    - INTERNET
+    - ACCESS_NETWORK_STATE
+    - READ_EXTERNAL_STORAGE
+    - WRITE_EXTERNAL_STORAGE
+
+# Build flags
+build_flags:
+  accept_catch_all: yes
+  skip_update: yes
+  accept_sdk_license: yes
+  copy_libs: yes
+  external_storage: yes
+
+# Application metadata
+app:
+  title: "Planetary Harvester"
+  package_name: "planetaryharvester"
+  package_domain: "org.agate"
+  version: "1.0.0"
+  orientation: "portrait"
+  presplash_color: "#0A0A0A"
+
+# Assets
+assets:
+  icon: "icon.png"
+  presplash: "presplash.png"
+  icon_size: [512, 512]
+  presplash_size: [1080, 1920]

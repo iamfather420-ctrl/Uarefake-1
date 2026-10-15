@@ -1,0 +1,6 @@
+{
+  "name": "Sovereign Monorepo Orchestration Engine",
+  "description": "An institutional-grade workspace orchestrator for building, consolidating, and packing multiple GitHub repositories into a single unified monorepo build, managed by the dAIsy HaMINJA Sovereign Core.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

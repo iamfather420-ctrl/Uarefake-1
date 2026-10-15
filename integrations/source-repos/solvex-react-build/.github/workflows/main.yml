@@ -1,0 +1,23 @@
+name: Build Android APK
+on: [push, pull_request]
+
+jobs:
+  build-android-apk:
+    runs-on: ubuntu-latest
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+      
+      - name: Setup Node.js Environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      
+      - name: Install Dependencies
+        run: npm install --legacy-peer-deps
+      
+      - name: Build Application
+        run: npm run build
+

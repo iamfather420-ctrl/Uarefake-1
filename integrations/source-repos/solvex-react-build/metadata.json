@@ -1,0 +1,8 @@
+{
+  "name": "SolveX Decentralized Software Pipeline CaaS",
+  "description": "SolveX Decentralized Software Pipeline CaaS featuring Child Safety as a Service. Aligns with 4 Core Pillars: Identity, Privacy, Financial Health, and Safety via Human Guardianship.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

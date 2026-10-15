@@ -1,0 +1,6 @@
+{
+  "name": "SolveX Sovereign Core Marketplace",
+  "description": "Enterprise-grade orchestrator managing a 54-node autonomous grid, paradox resolution mappings, dual marketplaces, and JIT artifact generation.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
