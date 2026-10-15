@@ -1,0 +1,115 @@
+name: Import and verify pinned Full-Build source
+
+on:
+  push:
+    branches:
+      - integration/full-build-source-import-20261015
+
+permissions:
+  contents: write
+
+jobs:
+  import-and-verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    env:
+      DATABASE_URL: ""
+    steps:
+      - name: Checkout canonical target
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          persist-credentials: true
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Import pinned Full-Build source without secrets or generated dependencies
+        shell: bash
+        env:
+          TARGET_BRANCH: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          SOURCE_SHA="a67017fbfe2ac795dfdc635a434ef50b19852ec8"
+          TMP_DIR="$(mktemp -d)"
+          git clone --filter=blob:none --no-checkout https://github.com/iamfather420-ctrl/Full-Build.git "$TMP_DIR/Full-Build"
+          git -C "$TMP_DIR/Full-Build" checkout --detach "$SOURCE_SHA"
+          mkdir -p integrated-sources/Full-Build
+          rsync -a \
+            --exclude='.git/' \
+            --exclude='.agents/' \
+            --exclude='.buddy/' \
+            --exclude='.gitconfig' \
+            --exclude='node_modules/' \
+            --exclude='.env' \
+            --exclude='.env.*' \
+            --exclude='*.pem' \
+            --exclude='*.key' \
+            --exclude='*.p12' \
+            --exclude='*.pfx' \
+            --exclude='*.db' \
+            --exclude='*.sqlite*' \
+            --exclude='dist/' \
+            --exclude='coverage/' \
+            --exclude='.vercel/' \
+            --exclude='.cache/' \
+            --exclude='.local/' \
+            --exclude='.cargo/' \
+            "$TMP_DIR/Full-Build/" integrated-sources/Full-Build/
+          cat > integrated-sources/Full-Build/SOURCE-PROVENANCE.json <<'EOF'
+          {
+            "sourceRepository": "iamfather420-ctrl/Full-Build",
+            "sourceRef": "main",
+            "sourceCommit": "a67017fbfe2ac795dfdc635a434ef50b19852ec8",
+            "importMethod": "pinned source copy",
+            "excluded": [".git", "node_modules", ".env files", private key/certificate files, local databases, dist, coverage, Vercel output, caches and toolchains"],
+            "verification": "Run npm ci and npm run verify:120 in this isolated source root. This does not itself prove production readiness."
+          }
+          EOF
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integrated-sources/Full-Build eslint.config.mjs
+          if ! git diff --cached --quiet; then
+            git commit -m "build(integration): import pinned Full-Build source with provenance"
+            git push origin "HEAD:${TARGET_BRANCH}"
+          fi
+
+      - name: Install canonical app dependencies
+        run: npm ci
+
+      - name: Canonical production build (database migrations stay disabled)
+        run: npm run build
+
+      - name: Canonical TypeScript
+        run: npm run typecheck
+
+      - name: Canonical tests
+        run: npm test
+
+      - name: Canonical lint
+        run: npm run lint
+
+      - name: Install pinned Full-Build dependencies
+        run: npm ci --prefix integrated-sources/Full-Build
+
+      - name: Rerun original 120-case verifier and 46 gates
+        working-directory: integrated-sources/Full-Build
+        run: npm run verify:120
+
+      - name: Upload fresh formal evidence and gate results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: full-build-120-case-revalidation
+          path: |
+            integrated-sources/Full-Build/artifacts/formal-aggregation.json
+            integrated-sources/Full-Build/artifacts/z3-120-formal-verification-summary.json
+            integrated-sources/Full-Build/artifacts/z3-120-formal-verification-summary.md
+            integrated-sources/Full-Build/artifacts/final-forensic-report.json
+            integrated-sources/Full-Build/artifacts/final-forensic-report.md
+            integrated-sources/Full-Build/artifacts/system-46-gates.json
+            integrated-sources/Full-Build/artifacts/daisy-brain-activation-gate.json
+          if-no-files-found: warn
