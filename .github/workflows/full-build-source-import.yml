@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - integration/full-build-source-import-20261015
+      - integration/package-merged-build-20261015
   pull_request:
     branches: [main]
     paths:
@@ -105,6 +106,44 @@ jobs:
       - name: Rerun original 120-case verifier and 46 gates
         working-directory: integrated-sources/Full-Build
         run: npm run verify:120
+
+      - name: Package merged source tree
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+          STAGE_DIR="$(mktemp -d)/uarefake-1-merged-source"
+          mkdir -p "$STAGE_DIR"
+          rsync -a \
+            --exclude='.git/' \
+            --exclude='node_modules/' \
+            --exclude='.env' \
+            --exclude='.env.*' \
+            --exclude='*.pem' \
+            --exclude='*.key' \
+            --exclude='*.p12' \
+            --exclude='*.pfx' \
+            --exclude='*.db' \
+            --exclude='*.sqlite*' \
+            --exclude='dist/' \
+            --exclude='coverage/' \
+            --exclude='.vercel/' \
+            --exclude='.cache/' \
+            --exclude='.local/' \
+            --exclude='.cargo/' \
+            --exclude='.agents/' \
+            --exclude='.buddy/' \
+            --exclude='.gitconfig' \
+            --exclude='attachments/grok-workspace.zip' \
+            ./ "$STAGE_DIR/"
+          zip -qr /tmp/uarefake-1-merged-source.zip "$STAGE_DIR"
+      - name: Upload merged source build
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: uarefake-1-merged-source
+          path: /tmp/uarefake-1-merged-source.zip
+          if-no-files-found: warn
 
       - name: Upload fresh formal evidence and gate results
         if: always()
