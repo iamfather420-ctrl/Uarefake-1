@@ -15,9 +15,9 @@ const databaseUrl =
 
 /**
  * Active backend: real **Neon/Postgres** when `DATABASE_URL` is set. PGLite is
- * available only for local development. Every Vercel environment must provide a
- * real database URL; deployment previews must not silently run against ephemeral
- * or non-persistent storage.
+ * available only for local development. Every Vercel environment must provide
+ * APP_DATABASE_URL bound to a least-privilege runtime role; builds use a separate
+ * migration connection, and previews must never silently use ephemeral storage.
  */
 export const dbSource: DbSource = databaseUrl ? "neon" : "pglite";
 
@@ -173,12 +173,11 @@ async function createPgliteSql(): Promise<Sql> {
 let sqlPromise: Promise<Sql> | null = null;
 
 async function createSql(): Promise<Sql> {
-  // Vercel deployments (production, preview, and development) must never
-  // silently fall back to ephemeral PGLite. A missing DATABASE_URL is a
-  // deployment configuration failure, not a request for mock/non-durable data.
-  if (typeof window === "undefined" && process.env.VERCEL && !databaseUrl) {
+  // Vercel must use APP_DATABASE_URL, not the privileged DATABASE_URL used
+  // for schema migrations. Missing least-privilege runtime credentials fail closed.
+  if (typeof window === "undefined" && process.env.VERCEL && !process.env.APP_DATABASE_URL?.trim()) {
     throw new Error(
-      "[db] DATABASE_URL is required in every Vercel environment; refusing the PGLite fallback.",
+      "[db] APP_DATABASE_URL is required in every Vercel environment; refusing privileged or ephemeral fallback.",
     );
   }
   if (typeof window !== "undefined") {
@@ -191,9 +190,8 @@ async function createSql(): Promise<Sql> {
 }
 
 /**
- * Get the shared, **server-only** SQL client. Neon/Postgres when
- * `DATABASE_URL` is set; local PGLite only outside Vercel. Memoized — safe to
- * call per request.
+ * Get the shared, **server-only** SQL client. Neon/Postgres via APP_DATABASE_URL
+ * on Vercel and local DATABASE_URL outside Vercel. Memoized — safe per request.
  *
  * Schema comes from `migrations/*.sql`, auto-applied before the first query on
  * both backends — define tables there, never inline in server functions.
