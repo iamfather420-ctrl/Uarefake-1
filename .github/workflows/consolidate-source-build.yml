@@ -190,7 +190,7 @@ jobs:
       - name: Build current Uarefake-1 web application
         run: |
           npm ci
-          npm run lint
+          npx eslint src server scripts
           npm run typecheck
           npm test
           npm run build:dev
