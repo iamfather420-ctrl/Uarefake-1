@@ -41,10 +41,11 @@ jobs:
           TMP="$RUNNER_TEMP/source-inputs"
           DEST="$ROOT/integrations/source-repos"
           mkdir -p "$TMP" "$DEST" "$ROOT/integration/reports"
+          # Full-Build is already imported into integrated-sources on the canonical import branch; avoid a second copy.
+          rm -rf "$DEST/full-build"
           : > "$TMP/provenance.tsv"
 
           SOURCES=$(cat <<'EOF'
-          full-build|https://github.com/iamfather420-ctrl/Full-Build.git|main|source
           daisy-haminja-ai-ui-os-v3|https://github.com/Solvex-Paradox-Box/Daisy-Himinja-AI-UI-OS-v3.git|main|source
           daisy-haminja-120-evidence|https://github.com/Solvex-Paradox-Box/daisy-haminja-120-evidence.git|main|source
           daisy-registry-engine|https://github.com/Solvex-Paradox-Box/Daisy-Haminja-AI---UAREFAKE-Registry-Problem-Solving-Engine.git|main|source
