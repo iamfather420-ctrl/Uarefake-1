@@ -6,6 +6,7 @@ on:
     branches:
       - main
       - fix/fulfillment-lifecycle
+      - integration/proof-before-power-gate
 
 permissions:
   contents: read
