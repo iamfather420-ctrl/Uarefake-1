@@ -36,7 +36,6 @@ const context = {
   },
 };
 
-// A deterministic demo token is not trusted authorization.
 const deniedDemoToken = daisyAct(
   "Update account acct_demo_014 status in the demo tenant sandbox, with checkpoint and inverse.",
   context,
@@ -46,7 +45,6 @@ assert.equal(deniedDemoToken.toolRan, false);
 assert.equal(deniedDemoToken.gate.proceed, false);
 assert.equal(deniedDemoToken.gate.proof.trustBoundary, "production-authorization-not-wired");
 
-// Caller-supplied flags cannot manufacture the missing trusted server boundary.
 const forgedContext = daisyAct(
   "Update account acct_demo_014 status in the demo tenant sandbox, with checkpoint and inverse.",
   {
@@ -77,7 +75,7 @@ const noRunner = daisyAct(
   },
 );
 assert.equal(noRunner.toolRan, false);
-assert.equal(noRunner.failClosed, true);
+assert.equal(noRunner.gate.proceed, false);
 
 const gatedUnsafe = runGatedTool(
   { name: "ACCOUNT_STATUS_UPDATE", input: "Update all production account statuses to suspended." },
