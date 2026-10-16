@@ -4,7 +4,7 @@ import { authorizeRecoveryDrill } from "./recovery-authorization.ts";
 
 describe("authorizeRecoveryDrill", () => {
   it("fails closed in production when no operator allowlist is configured", () => {
-    const result = authorizeRecoveryDrill("user-1", { production: true, recoveryTenantId: "tenant-1" });
+    const result = authorizeRecoveryDrill("user-1", { production: true, recoveryTenantId: "tenant-1", runtimeDatabaseConfigured: true });
     assert.equal(result.allowed, false);
   });
 
