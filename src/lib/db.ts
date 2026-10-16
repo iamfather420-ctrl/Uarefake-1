@@ -19,6 +19,19 @@ const databaseUrl =
 export const dbSource: DbSource = databaseUrl ? "neon" : "pglite";
 
 /**
+ * Pin node-postgres to certificate-and-hostname verification when a deployment
+ * URL uses one of pg-connection-string's legacy compatibility modes. The
+ * driver currently treats these values as verify-full and warns that its future
+ * behavior will change; normalizing preserves the secure behavior explicitly.
+ */
+export function secureDatabaseUrl(connectionString: string): string {
+  return connectionString.replace(
+    /([?&]sslmode=)(?:prefer|require|verify-ca)(?=(&|$))/i,
+    "$1verify-full",
+  );
+}
+
+/**
  * Minimal shared SQL surface, satisfied by both Neon and PGLite. Both the
  * tagged-template and `.query()` forms resolve to an array of row objects:
  *
@@ -93,7 +106,7 @@ function createNeonSql(): Promise<Sql> {
     types.setTypeParser(OID_INT8, Number);
     types.setTypeParser(OID_DATE, identity);
     types.setTypeParser(OID_INTERVAL, identity);
-    const pool = new Pool({ connectionString: databaseUrl });
+    const pool = new Pool({ connectionString: secureDatabaseUrl(databaseUrl ?? "") });
     return toSql(async <T>(text: string, params: unknown[]) => {
       const res = await pool.query(text, params);
       return res.rows as T[];
