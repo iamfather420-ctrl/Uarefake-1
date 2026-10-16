@@ -94,6 +94,12 @@ type AppState = {
   burnCell: (id: string) => void;
 };
 
+function receiptOf(prefix: string) {
+  const n = Math.random().toString(16).slice(2, 10);
+  const t = Date.now().toString(16);
+  return `${prefix}:${t}:${n}`;
+}
+
 function runId() {
   return `run_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 5)}`;
 }
@@ -300,7 +306,7 @@ export const useAppStore = create<AppState>()(
           })),
           problems: s.problems ?? [],
           cells: s.cells ?? [],
-        } as AppState;
+        } as unknown as AppState;
       },
     },
   ),
