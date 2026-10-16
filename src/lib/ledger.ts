@@ -5,6 +5,7 @@ import { daisyNodes } from "@/lib/nodes";
 import { adapters } from "@/lib/infra";
 import type { Sql } from "@/lib/db";
 import { authMiddleware } from "@/lib/auth/middleware";
+import { shouldSeedDemoData } from "@/lib/seed-policy";
 
 async function sha256(text: string) {
   const data = new TextEncoder().encode(text);
@@ -18,7 +19,13 @@ let seeded = false;
 
 async function ensureSeeded() {
   if (seeded) return;
-  const { getSql } = await import("@/lib/db");
+  const { getSql, dbSource } = await import("@/lib/db");
+  // Production Neon data is authoritative. Never backfill it from local catalogs
+  // or bundled formal-corpus fixtures during a read request.
+  if (!shouldSeedDemoData(dbSource, process.env.NODE_ENV)) {
+    seeded = true;
+    return;
+  }
   const sql = await getSql();
   const existing = await sql<{ n: number }>`select count(*)::int as n from paradoxes`;
   const already = existing[0]?.n ?? 0;
@@ -168,7 +175,7 @@ export const getLedgerSnapshot = createServerFn({ method: "GET" }).handler(async
   return {
     paradoxes: paradoxes[0]?.n ?? 0, nodes: nodes[0]?.n ?? 0, offers: offers[0]?.n ?? 0,
     published: published[0]?.n ?? 0, auditHeight: audit[0]?.n ?? 0,
-    lastHash: audit[0]?.h ?? dfrlRun.root, db: dbSource,
+    lastHash: audit[0]?.h ?? (shouldSeedDemoData(dbSource, process.env.NODE_ENV) ? dfrlRun.root : "NONE"), db: dbSource,
   } satisfies LedgerSnapshot;
 });
 
