@@ -32,6 +32,41 @@ export function secureDatabaseUrl(connectionString: string): string {
 }
 
 /**
+ * In production, force the application connection to assume the non-login
+ * runtime group. The owner credential alone must never be enough to bypass RLS
+ * in normal application queries. Database migrations use their separate
+ * migration runner and do not call this helper.
+ */
+export function secureRuntimeDatabaseUrl(
+  connectionString: string,
+  deploymentEnv = process.env.VERCEL_ENV,
+): string {
+  const secured = secureDatabaseUrl(connectionString);
+  if (deploymentEnv !== "production") return secured;
+
+  let url: URL;
+  try {
+    url = new URL(secured);
+  } catch {
+    throw new Error("Production DATABASE_URL must be a valid PostgreSQL URL.");
+  }
+  if (url.protocol !== "postgres:" && url.protocol !== "postgresql:") {
+    throw new Error("Production DATABASE_URL must use the PostgreSQL protocol.");
+  }
+
+  const currentOptions = url.searchParams.get("options")?.trim();
+  if (currentOptions && /(?:^|\\s)role=solvex_app_runtime(?:\\s|$)/.test(currentOptions)) {
+    return url.toString();
+  }
+  url.searchParams.set(
+    "options",
+    [currentOptions, "-c role=solvex_app_runtime"].filter(Boolean).join(" "),
+  );
+  return url.toString();
+}
+
+
+/**
  * Minimal shared SQL surface, satisfied by both Neon and PGLite. Both the
  * tagged-template and `.query()` forms resolve to an array of row objects:
  *
@@ -106,7 +141,7 @@ function createNeonSql(): Promise<Sql> {
     types.setTypeParser(OID_INT8, Number);
     types.setTypeParser(OID_DATE, identity);
     types.setTypeParser(OID_INTERVAL, identity);
-    const pool = new Pool({ connectionString: secureDatabaseUrl(databaseUrl ?? "") });
+    const pool = new Pool({ connectionString: secureRuntimeDatabaseUrl(databaseUrl ?? "") });
     return toSql(async <T>(text: string, params: unknown[]) => {
       const res = await pool.query(text, params);
       return res.rows as T[];
