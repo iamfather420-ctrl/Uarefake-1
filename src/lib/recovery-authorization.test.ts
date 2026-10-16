@@ -32,6 +32,7 @@ describe("authorizeRecoveryDrill", () => {
     const result = authorizeRecoveryDrill("user-1", {
       production: true,
       operatorUserIds: " user-1 , user-3 ",
+      runtimeDatabaseConfigured: true,
     });
     assert.equal(result.allowed, false);
   });
