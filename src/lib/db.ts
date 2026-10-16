@@ -1,4 +1,4 @@
-import { pendingMigrations } from "../../scripts/migration-plan.mjs";
+import { migrationSources, pendingMigrations } from "../../scripts/migration-plan.mjs";
 
 /** Which database backend is active. */
 export type DbSource = "neon" | "pglite";
@@ -150,16 +150,24 @@ async function createPgliteSql(): Promise<Sql> {
   // passes serialized on a global chain so concurrent callers never
   // double-apply.
   const migrate = async (): Promise<void> => {
-    const migrations = import.meta.glob("/migrations/*.sql", {
+    const baseMigrations = import.meta.glob("/migrations/*.sql", {
       query: "?raw",
       import: "default",
       eager: true,
     }) as Record<string, string>;
+    const authMigrations = import.meta.glob("/migrations/auth/*.sql", {
+      query: "?raw",
+      import: "default",
+      eager: true,
+    }) as Record<string, string>;
+    const authEnabled = process.env.VITE_AUTH_ENABLED === "true";
+    const migrations = authEnabled ? { ...baseMigrations, ...authMigrations } : baseMigrations;
     const doneRows = await pg.query<{ name: string }>(
       "select name from _migrations",
     );
     const done = doneRows.rows.map((r) => r.name);
-    for (const { name, path } of pendingMigrations(Object.keys(migrations), done)) {
+    const sources = migrationSources(Object.keys(baseMigrations), Object.keys(authMigrations), authEnabled);
+    for (const { name, path } of pendingMigrations(sources, done)) {
       // Apply + record atomically (parity with scripts/migrate.mjs) so a failed
       // statement can't leave a file half-applied but untracked.
       await pg.transaction(async (tx) => {
