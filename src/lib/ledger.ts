@@ -159,7 +159,7 @@ export type LedgerSnapshot = {
   auditHeight: number; lastHash: string; db: "neon" | "pglite";
 };
 
-export const getLedgerSnapshot = createServerFn({ method: "GET" }).handler(async () => {
+export const getLedgerSnapshot = createServerFn({ method: "GET" }).middleware([authMiddleware]).handler(async () => {
   await ensureSeeded();
   const { getSql, dbSource } = await import("@/lib/db");
   const sql = await getSql();
@@ -179,7 +179,7 @@ export const getLedgerSnapshot = createServerFn({ method: "GET" }).handler(async
   } satisfies LedgerSnapshot;
 });
 
-export const getProductionHealth = createServerFn({ method: "GET" }).handler(async () => {
+export const getProductionHealth = createServerFn({ method: "GET" }).middleware([authMiddleware]).handler(async () => {
   const { dbSource, getSql } = await import("@/lib/db");
   try {
     await ensureSeeded();
