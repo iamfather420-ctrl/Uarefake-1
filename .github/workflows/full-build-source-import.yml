@@ -6,6 +6,8 @@ on:
       - integration/full-build-source-import-20261015
       - integration/package-merged-build-20261015
       - integration/complete-source-snapshot-import-20261015
+      - main
+  workflow_dispatch:
   pull_request:
     branches: [main]
     paths:
