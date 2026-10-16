@@ -13,10 +13,21 @@ describe("authorizeRecoveryDrill", () => {
       production: true,
       operatorUserIds: "user-1",
       recoveryTenantId: "tenant-1",
+      runtimeDatabaseConfigured: true,
     });
     assert.equal(result.allowed, false);
   });
 
+
+  it("blocks production drills until a least-privilege runtime database URL exists", () => {
+    const result = authorizeRecoveryDrill("user-1", {
+      production: true,
+      operatorUserIds: "user-1",
+      recoveryTenantId: "tenant-1",
+      runtimeDatabaseConfigured: false,
+    });
+    assert.equal(result.allowed, false);
+  });
   it("requires a fixed existing tenant id in production", () => {
     const result = authorizeRecoveryDrill("user-1", {
       production: true,
