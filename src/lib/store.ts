@@ -105,7 +105,7 @@ function cellHeader(id: string) {
 
 export const useAppStore = create<AppState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       cart: [],
       orders: [],
       runs: [],
