@@ -10,7 +10,7 @@ import {
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { test } from "node:test";
-import { isMigrationFile, migrationName, pendingMigrations } from "./migration-plan.mjs";
+import { isMigrationFile, migrationName, migrationSources, pendingMigrations } from "./migration-plan.mjs";
 import { projectRoot } from "./with-app-env.mjs";
 
 const AUTH_MIGRATION = "0001_auth.sql";
@@ -88,4 +88,15 @@ test("the copy check reads both files and catches an edit", () => {
   writeFileSync(join(root, "migrations", AUTH_MIGRATION), "create table t (x int);\n");
   const drifted = authSchemaCopy(root);
   assert.notEqual(drifted.copy, drifted.source);
+});
+
+test("auth migration sources are included only when authentication is enabled", () => {
+  const base = ["/migrations/0002_solvex.sql"];
+  const auth = ["/migrations/auth/0001_auth.sql"];
+  assert.deepEqual(migrationSources(base, auth, false), base);
+  assert.deepEqual(migrationSources(base, auth, true), [...base, ...auth]);
+  assert.deepEqual(
+    pendingMigrations(migrationSources(base, auth, true), ["0002_solvex.sql"]),
+    [{ name: "0001_auth.sql", path: "/migrations/auth/0001_auth.sql" }],
+  );
 });
