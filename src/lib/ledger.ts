@@ -6,6 +6,7 @@ import { adapters } from "@/lib/infra";
 import type { Sql } from "@/lib/db";
 import { authMiddleware } from "@/lib/auth/middleware";
 import { shouldSeedDemoData } from "@/lib/seed-policy";
+import { authorizeRecoveryDrill } from "@/lib/recovery-authorization";
 
 async function sha256(text: string) {
   const data = new TextEncoder().encode(text);
@@ -110,7 +111,7 @@ async function ensureSeeded() {
   seeded = true;
 }
 
-async function appendAudit(sql: Sql, data: { tenantId?: string; action: string; target: string; targetId: string; payload: string }) {
+async function appendAudit(sql: Sql, data: { tenantId?: string; actor?: string; action: string; target: string; targetId: string; payload: string }) {
   const { dbSource } = await import("@/lib/db");
   if (dbSource === "neon") {
     if (!data.tenantId) throw new Error("tenant context is required for a production audit record");
@@ -127,7 +128,7 @@ async function appendAudit(sql: Sql, data: { tenantId?: string; action: string; 
         id, tenant_id, index_num, actor, action, target_entity, target_id,
         payload_json, payload_hash, previous_hash, record_hash, created_at
       ) values (
-        ${id}, ${data.tenantId}, ${index}, ${"SYSTEM_RECOVERY_DRILL"}, ${data.action}, ${data.target},
+        ${id}, ${data.tenantId}, ${index}, ${data.actor ?? "SYSTEM_RECOVERY_DRILL"}, ${data.action}, ${data.target},
         ${data.targetId}, ${data.payload}, ${payloadHash}, ${previous}, ${recordHash}, ${Date.now()}
       )
     `;
@@ -147,7 +148,7 @@ async function appendAudit(sql: Sql, data: { tenantId?: string; action: string; 
       id, index_num, actor, action, target_entity, target_id,
       payload_json, payload_hash, previous_hash, record_hash, created_at
     ) values (
-      ${id}, ${index}, ${"SYSTEM_RECOVERY_DRILL"}, ${data.action}, ${data.target},
+      ${id}, ${index}, ${data.actor ?? "SYSTEM_RECOVERY_DRILL"}, ${data.action}, ${data.target},
       ${data.targetId}, ${data.payload}, ${payloadHash}, ${previous}, ${recordHash}, ${Date.now()}
     )
   `;
@@ -203,9 +204,15 @@ export const getProductionHealth = createServerFn({ method: "GET" }).handler(asy
 
 export const runRecoveryDrill = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
-  .handler(async () => {
-  await ensureSeeded();
+  .handler(async ({ context }) => {
   const { dbSource, getSql } = await import("@/lib/db");
+  const authorization = authorizeRecoveryDrill(context.userId, {
+    production: process.env.VERCEL_ENV === "production" || process.env.NODE_ENV === "production",
+    operatorUserIds: process.env.SOLVEX_OPERATOR_USER_IDS,
+    recoveryTenantId: process.env.SOLVEX_RECOVERY_TENANT_ID,
+  });
+  if (!authorization.allowed) throw new Error(authorization.reason);
+  await ensureSeeded();
   const sql = await getSql();
   const targetId = `recovery-drill-${Date.now().toString(36)}`;
   const checkpointId = `chk_${targetId}`;
@@ -214,9 +221,14 @@ export const runRecoveryDrill = createServerFn({ method: "POST" })
   const state = JSON.stringify({ status: "HEALTHY", value: 0, synthetic: true });
   const stateHash = await sha256(state);
   const now = Date.now();
-  const tenants = await sql<{ id: string }>`select id from tenants limit 1`;
+  const tenants = authorization.tenantId
+    ? await sql<{ id: string }>`select id from tenants where id = ${authorization.tenantId} limit 1`
+    : await sql<{ id: string }>`select id from tenants limit 1`;
   const tenantId = tenants[0]?.id ?? `tenant_recovery_drill`;
   if (!tenants[0]) {
+    if (process.env.VERCEL_ENV === "production" || process.env.NODE_ENV === "production") {
+      throw new Error("Recovery drill blocked: configured production tenant does not exist.");
+    }
     await sql`insert into tenants (id, name, tier, isolated_storage_key, status, created_at, updated_at)
       values (${tenantId}, ${"Recovery Drill Tenant"}, ${"STANDARD"}, ${"recovery-drill"}, ${"ACTIVE"}, ${now}, ${now})
       on conflict (id) do nothing`;
@@ -229,7 +241,7 @@ export const runRecoveryDrill = createServerFn({ method: "POST" })
   await sql`insert into rollback_records (id, tenant_id, checkpoint_id, reason, status, restored_hash, created_at, updated_at, payload_json)
     values (${rollbackId}, ${tenantId}, ${checkpointId}, ${"SYNTHETIC_INVARIANT_BREACH"}, ${"RESTORED"}, ${stateHash}, ${now + 2}, ${now + 2}, ${JSON.stringify({ failureId, evidenceHash, targetId })})`;
   const audit = await appendAudit(sql, {
-    tenantId,
+    tenantId, actor: context.userId,
     action: "RECOVERY_DRILL_ROLLBACK", target: "synthetic_recovery_target", targetId,
     payload: JSON.stringify({ checkpointId, failureId, rollbackId, restoredHash: stateHash }),
   });
