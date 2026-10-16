@@ -1,4 +1,5 @@
 import { migrationSources, pendingMigrations } from "../../scripts/migration-plan.mjs";
+import { resolveApplicationDatabaseUrl } from "./runtime-db-policy";
 
 /** Which database backend is active. */
 export type DbSource = "neon" | "pglite";
@@ -106,18 +107,54 @@ function toSql(run: Run): Sql {
 
 function createNeonSql(): Promise<Sql> {
   globalRef.__pgSqlPromise__ ??= (async () => {
-    // Regular Postgres driver: node-postgres (`pg`) — works directly with Neon's
-    // pooled endpoint. One pool per process; warm serverless instances reuse it.
     const { Pool, types } = await import("pg");
     types.setTypeParser(OID_INT8, Number);
     types.setTypeParser(OID_DATE, identity);
     types.setTypeParser(OID_INTERVAL, identity);
-    const applicationDatabaseUrl = runtimeDatabaseUrl ?? databaseUrl;
-    if (!applicationDatabaseUrl) throw new Error("[db] No application database URL is configured.");
+    const applicationDatabaseUrl = resolveApplicationDatabaseUrl({
+      production: process.env.VERCEL_ENV === "production",
+      runtimeDatabaseUrl,
+      databaseUrl,
+    });
+    if (!applicationDatabaseUrl) {
+      throw new Error(
+        process.env.VERCEL_ENV === "production"
+          ? "[db] DATABASE_RUNTIME_URL is required in Vercel production; refusing the privileged DATABASE_URL fallback."
+          : "[db] No application database URL is configured.",
+      );
+    }
     const pool = new Pool({ connectionString: secureDatabaseUrl(applicationDatabaseUrl) });
     return toSql(async <T>(text: string, params: unknown[]) => {
-      const res = await pool.query(text, params);
-      return res.rows as T[];
+      // The runtime login may be granted BYPASSRLS by the provider. Force the
+      // reviewed NOBYPASSRLS group role for each application query and reset
+      // before returning the connection to the pool.
+      if (!runtimeDatabaseUrl) {
+        const res = await pool.query(text, params);
+        return res.rows as T[];
+      }
+      const client = await pool.connect();
+      let roleSet = false;
+      try {
+        await client.query("SET ROLE solvex_app_runtime");
+        roleSet = true;
+        const res = await client.query(text, params);
+        await client.query("RESET ROLE");
+        roleSet = false;
+        client.release();
+        return res.rows as T[];
+      } catch (error) {
+        if (roleSet) {
+          try {
+            await client.query("RESET ROLE");
+            roleSet = false;
+          } catch {
+            client.release(error instanceof Error ? error : new Error(String(error)));
+            throw error;
+          }
+        }
+        client.release();
+        throw error;
+      }
     });
   })().catch((err) => {
     globalRef.__pgSqlPromise__ = undefined;
@@ -205,11 +242,10 @@ async function createSql(): Promise<Sql> {
   if (
     typeof window === "undefined" &&
     process.env.VERCEL_ENV === "production" &&
-    !databaseUrl &&
     !runtimeDatabaseUrl
   ) {
     throw new Error(
-      "[db] DATABASE_URL is required in the Vercel production environment; refusing the PGLite fallback.",
+      "[db] DATABASE_RUNTIME_URL is required in the Vercel production environment; refusing the PGLite fallback.",
     );
   }
   if (typeof window !== "undefined") {
