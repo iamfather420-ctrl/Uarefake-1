@@ -80,9 +80,7 @@ type AppState = {
   addToCart: (sku: string) => { ok: true } | { ok: false; error: string };
   setQty: (sku: string, qty: number) => void;
   clearCart: () => void;
-  checkout: () => { ok: true; order: Order } | { ok: false; error: string };
-  attemptPay: (orderId: string) => void;
-  reverseOrder: (orderId: string) => void;
+  checkout: () => { ok: false; error: string };
   proposeRun: (input: {
     operation: string;
     authorized: boolean;
@@ -102,10 +100,6 @@ function receiptOf(prefix: string) {
   return `${prefix}:${t}:${n}`;
 }
 
-function orderId() {
-  return `ord_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 6)}`;
-}
-
 function runId() {
   return `run_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 5)}`;
 }
@@ -117,7 +111,7 @@ function cellHeader(id: string) {
 
 export const useAppStore = create<AppState>()(
   persist(
-    (set, get) => ({
+    (set) => ({
       cart: [],
       orders: [],
       runs: [],
@@ -151,58 +145,11 @@ export const useAppStore = create<AppState>()(
               : s.cart.map((l) => (l.sku === sku ? { ...l, qty } : l)),
         })),
       clearCart: () => set({ cart: [] }),
-      checkout: () => {
-        const { cart } = get();
-        if (cart.length === 0) return { ok: false, error: "Cart is empty." };
-        const items = cart.map((l) => {
-          const p = productBySku(l.sku)!;
-          return {
-            sku: l.sku,
-            title: p.title,
-            priceCents: p.priceCents,
-            qty: l.qty,
-          };
-        });
-        const totalCents = items.reduce(
-          (n, i) => n + i.priceCents * i.qty,
-          0,
-        );
-        const order: Order = {
-          id: orderId(),
-          items,
-          totalCents,
-          status: "ORDER_CREATED",
-          createdAt: Date.now(),
-          receipt: receiptOf("UAF-ORD"),
-        };
-        set((s) => ({ orders: [order, ...s.orders], cart: [] }));
-        return { ok: true, order };
-      },
-      attemptPay: (orderId) =>
-        set((s) => ({
-          orders: s.orders.map((o) =>
-            o.id === orderId
-              ? {
-                  ...o,
-                  status: "FAIL_CLOSED",
-                  reason:
-                    "PayPal DN-35 adapter: EXTERNAL_PROVIDER_REQUIRED. Code exists ≠ provider connected. Success was not simulated.",
-                }
-              : o,
-          ),
-        })),
-      reverseOrder: (orderId) =>
-        set((s) => ({
-          orders: s.orders.map((o) =>
-            o.id === orderId
-              ? {
-                  ...o,
-                  status: "REVERSED",
-                  reason: "Compensating reverse applied. Entitlement withdrawn.",
-                }
-              : o,
-          ),
-        })),
+      checkout: () => ({
+        ok: false,
+        error:
+          "Access request blocked: authenticated, tenant-scoped server persistence is not configured. No order was created.",
+      }),
       proposeRun: ({ operation, authorized, reversible }) => {
         const pairId = `pair_${Date.now().toString(36)}`;
         const base = {
@@ -344,12 +291,14 @@ export const useAppStore = create<AppState>()(
     }),
     {
       name: "uarefake-ledger",
-      version: 2,
+      version: 3,
       migrate: (persisted) => {
         const s = (persisted ?? {}) as Partial<AppState>;
         return {
           cart: s.cart ?? [],
-          orders: s.orders ?? [],
+          // Older releases stored simulated orders in browser storage. Do not carry
+          // those local-only records forward as if they were persisted orders.
+          orders: [],
           runs: (s.runs ?? []).map((r) => ({
             ...r,
             kernel: r.kernel ?? "A",
@@ -357,7 +306,7 @@ export const useAppStore = create<AppState>()(
           })),
           problems: s.problems ?? [],
           cells: s.cells ?? [],
-        } as AppState;
+        } as unknown as AppState;
       },
     },
   ),
