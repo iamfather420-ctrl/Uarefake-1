@@ -44,3 +44,13 @@ export function pendingMigrations(paths, applied) {
     .sort((a, b) => a.name.localeCompare(b.name))
     .filter(({ name }) => !done.has(name));
 }
+
+/**
+ * Include auth schema sources only when authentication is explicitly enabled.
+ * @param {Iterable<string>} basePaths
+ * @param {Iterable<string>} authPaths
+ * @param {boolean} authEnabled
+ */
+export function migrationSources(basePaths, authPaths, authEnabled) {
+  return authEnabled ? [...basePaths, ...authPaths] : [...basePaths];
+}
