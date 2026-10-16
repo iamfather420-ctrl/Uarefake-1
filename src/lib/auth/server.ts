@@ -59,7 +59,7 @@ const env = (key: string): string | undefined => {
 
 // Explicit off-switch. The deployer sets `VITE_AUTH_ENABLED=true` when it
 // provisions auth; set it to "false" to force auth off everywhere (dev user).
-const authDisabled = env("VITE_AUTH_ENABLED") === "false";
+export const authDisabled = env("VITE_AUTH_ENABLED") === "false";
 
 // Deployed apps use per-app credentials. Preview credentials are optional and
 // environment-provided; production never falls back to a shared preview client.

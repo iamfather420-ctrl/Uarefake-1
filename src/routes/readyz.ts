@@ -14,8 +14,8 @@ export const Route = createFileRoute("/readyz")({
             if (!process.env.DATABASE_URL?.trim()) {
               throw new Error("DATABASE_URL is not configured");
             }
-            const { authConfigured } = await import("@/lib/auth/server");
-            if (!authConfigured) {
+            const { authConfigured, authDisabled } = await import("@/lib/auth/server");
+            if (!authDisabled && !authConfigured) {
               throw new Error("production authentication is not configured");
             }
           }

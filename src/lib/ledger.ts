@@ -4,6 +4,7 @@ import { corpus120, dhContracts, dfrlResults, dfrlRun } from "@/lib/dfrl";
 import { daisyNodes } from "@/lib/nodes";
 import { adapters } from "@/lib/infra";
 import type { Sql } from "@/lib/db";
+import { authMiddleware } from "@/lib/auth/middleware";
 
 async function sha256(text: string) {
   const data = new TextEncoder().encode(text);
@@ -102,7 +103,30 @@ async function ensureSeeded() {
   seeded = true;
 }
 
-async function appendAudit(sql: Sql, data: { action: string; target: string; targetId: string; payload: string }) {
+async function appendAudit(sql: Sql, data: { tenantId?: string; action: string; target: string; targetId: string; payload: string }) {
+  const { dbSource } = await import("@/lib/db");
+  if (dbSource === "neon") {
+    if (!data.tenantId) throw new Error("tenant context is required for a production audit record");
+    const prev = await sql<{ n: number; h: string }>`
+      select count(*)::int as n, coalesce(max(record_hash), ${"GENESIS"}) as h from audit_records where tenant_id = ${data.tenantId}
+    `;
+    const index = (prev[0]?.n ?? 0) + 1;
+    const previous = prev[0]?.h ?? "GENESIS";
+    const payloadHash = await sha256(data.payload);
+    const recordHash = await sha256(`${index}|${data.action}|${data.targetId}|${payloadHash}|${previous}`);
+    const id = `aud_${Date.now().toString(36)}_${index}`;
+    await sql`
+      insert into audit_records (
+        id, tenant_id, index_num, actor, action, target_entity, target_id,
+        payload_json, payload_hash, previous_hash, record_hash, created_at
+      ) values (
+        ${id}, ${data.tenantId}, ${index}, ${"SYSTEM_RECOVERY_DRILL"}, ${data.action}, ${data.target},
+        ${data.targetId}, ${data.payload}, ${payloadHash}, ${previous}, ${recordHash}, ${Date.now()}
+      )
+    `;
+    return { id, index, recordHash, previous };
+  }
+
   const prev = await sql<{ n: number; h: string }>`
     select count(*)::int as n, coalesce(max(record_hash), ${"GENESIS"}) as h from audit_records
   `;
@@ -136,7 +160,9 @@ export const getLedgerSnapshot = createServerFn({ method: "GET" }).handler(async
     sql<{ n: number }>`select count(*)::int as n from paradoxes`,
     sql<{ n: number }>`select count(*)::int as n from node_registry`,
     sql<{ n: number }>`select count(*)::int as n from offers`,
-    sql<{ n: number }>`select count(*)::int as n from offers where published = 1`,
+    dbSource === "neon"
+      ? sql<{ n: number }>`select count(*)::int as n from offers where published = true`
+      : sql<{ n: number }>`select count(*)::int as n from offers where published = 1`,
     sql<{ n: number; h: string | null }>`select count(*)::int as n, max(record_hash) as h from audit_records`,
   ]);
   return {
@@ -168,7 +194,9 @@ export const getProductionHealth = createServerFn({ method: "GET" }).handler(asy
   }
 });
 
-export const runRecoveryDrill = createServerFn({ method: "POST" }).handler(async () => {
+export const runRecoveryDrill = createServerFn({ method: "POST" })
+  .middleware([authMiddleware])
+  .handler(async () => {
   await ensureSeeded();
   const { dbSource, getSql } = await import("@/lib/db");
   const sql = await getSql();
@@ -179,36 +207,24 @@ export const runRecoveryDrill = createServerFn({ method: "POST" }).handler(async
   const state = JSON.stringify({ status: "HEALTHY", value: 0, synthetic: true });
   const stateHash = await sha256(state);
   const now = Date.now();
-  await sql`insert into checkpoints (id, target_id, state_json, state_hash, created_at) values (${checkpointId}, ${targetId}, ${state}, ${stateHash}, ${now})`;
-  await sql`insert into failures (id, checkpoint_id, target_id, failure_code, failure_json, created_at) values (${failureId}, ${checkpointId}, ${targetId}, ${"SYNTHETIC_INVARIANT_BREACH"}, ${JSON.stringify({ recovered: true })}, ${now + 1})`;
+  const tenants = await sql<{ id: string }>`select id from tenants limit 1`;
+  const tenantId = tenants[0]?.id ?? `tenant_recovery_drill`;
+  if (!tenants[0]) {
+    await sql`insert into tenants (id, name, tier, isolated_storage_key, status, created_at, updated_at)
+      values (${tenantId}, ${"Recovery Drill Tenant"}, ${"STANDARD"}, ${"recovery-drill"}, ${"ACTIVE"}, ${now}, ${now})
+      on conflict (id) do nothing`;
+  }
+  await sql`insert into checkpoints (id, tenant_id, checkpoint_id, target_mutation, classification, snapshot_state_json, created_at, updated_at, status, payload_json)
+    values (${checkpointId}, ${tenantId}, ${checkpointId}, ${targetId}, ${"SYNTHETIC_RECOVERY_DRILL"}, ${state}, ${now}, ${now}, ${"CAPTURED"}, ${JSON.stringify({ stateHash })})`;
+  await sql`insert into failures (id, tenant_id, failure_type, severity, message, quarantined, resolved_at, created_at, updated_at, status, payload_json)
+    values (${failureId}, ${tenantId}, ${"SYNTHETIC_INVARIANT_BREACH"}, ${"LOW"}, ${"Synthetic recovery drill failure"}, ${true}, ${now + 2}, ${now + 1}, ${now + 2}, ${"RECOVERED"}, ${JSON.stringify({ checkpointId, recovered: true })})`;
   const evidenceHash = await sha256(`${checkpointId}|${failureId}|${stateHash}`);
-  await sql`insert into rollback_records (id, checkpoint_id, failure_id, target_id, status, restored_hash, evidence_hash, created_at) values (${rollbackId}, ${checkpointId}, ${failureId}, ${targetId}, ${"RESTORED"}, ${stateHash}, ${evidenceHash}, ${now + 2})`;
+  await sql`insert into rollback_records (id, tenant_id, checkpoint_id, reason, status, restored_hash, created_at, updated_at, payload_json)
+    values (${rollbackId}, ${tenantId}, ${checkpointId}, ${"SYNTHETIC_INVARIANT_BREACH"}, ${"RESTORED"}, ${stateHash}, ${now + 2}, ${now + 2}, ${JSON.stringify({ failureId, evidenceHash, targetId })})`;
   const audit = await appendAudit(sql, {
+    tenantId,
     action: "RECOVERY_DRILL_ROLLBACK", target: "synthetic_recovery_target", targetId,
     payload: JSON.stringify({ checkpointId, failureId, rollbackId, restoredHash: stateHash }),
   });
   return { ok: true as const, db: dbSource, targetId, checkpointId, failureId, rollbackId, auditId: audit.id, restoredHash: stateHash };
 });
-
-export const recordAudit = createServerFn({ method: "POST" })
-  .validator((input: { action: string; target: string; targetId: string; payload: string }) => input)
-  .handler(async ({ data }) => {
-    await ensureSeeded();
-    const { getSql } = await import("@/lib/db");
-    return appendAudit(await getSql(), data);
-  });
-
-export const persistOrder = createServerFn({ method: "POST" })
-  .validator((input: { id: string; sku: string; proof: string; priceCents: number; status: string }) => input)
-  .handler(async ({ data }) => {
-    await ensureSeeded();
-    const { getSql } = await import("@/lib/db");
-    const sql = await getSql();
-    const now = Date.now();
-    await sql`
-      insert into orders (id, offer_id, solution_id, proof_bundle_id, price_cents, status, payment_id, deployment_id, created_at, updated_at)
-      values (${data.id}, ${"off-" + data.sku}, ${data.sku}, ${data.proof}, ${data.priceCents}, ${data.status}, ${null}, ${null}, ${now}, ${now})
-      on conflict (id) do update set status = ${data.status}, updated_at = ${now}
-    `;
-    return { ok: true as const };
-  });

@@ -11,8 +11,11 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CartRouteImport } from './routes/cart'
+import { Route as EvidenceRouteImport } from './routes/evidence'
+import { Route as HealthzRouteImport } from './routes/healthz'
 import { Route as ManifestoRouteImport } from './routes/manifesto'
 import { Route as OpsRouteImport } from './routes/ops'
+import { Route as ReadyzRouteImport } from './routes/readyz'
 import { Route as RegistryRouteImport } from './routes/registry'
 import { Route as SpaceRouteImport } from './routes/space'
 import { Route as StoreRouteImport } from './routes/store'
@@ -37,6 +40,16 @@ const CartRoute = CartRouteImport.update({
   path: '/cart',
   getParentRoute: () => rootRouteImport,
 } as any)
+const EvidenceRoute = EvidenceRouteImport.update({
+  id: '/evidence',
+  path: '/evidence',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HealthzRoute = HealthzRouteImport.update({
+  id: '/healthz',
+  path: '/healthz',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ManifestoRoute = ManifestoRouteImport.update({
   id: '/manifesto',
   path: '/manifesto',
@@ -45,6 +58,11 @@ const ManifestoRoute = ManifestoRouteImport.update({
 const OpsRoute = OpsRouteImport.update({
   id: '/ops',
   path: '/ops',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReadyzRoute = ReadyzRouteImport.update({
+  id: '/readyz',
+  path: '/readyz',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RegistryRoute = RegistryRouteImport.update({
@@ -116,8 +134,11 @@ const StoreSkuRoute = StoreSkuRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/cart': typeof CartRoute
+  '/evidence': typeof EvidenceRoute
+  '/healthz': typeof HealthzRoute
   '/manifesto': typeof ManifestoRoute
   '/ops': typeof OpsRoute
+  '/readyz': typeof ReadyzRoute
   '/registry': typeof RegistryRouteWithChildren
   '/space': typeof SpaceRouteWithChildren
   '/store': typeof StoreRouteWithChildren
@@ -135,8 +156,11 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/cart': typeof CartRoute
+  '/evidence': typeof EvidenceRoute
+  '/healthz': typeof HealthzRoute
   '/manifesto': typeof ManifestoRoute
   '/ops': typeof OpsRoute
+  '/readyz': typeof ReadyzRoute
   '/registry/$id': typeof RegistryIdRoute
   '/space/daisy': typeof SpaceDaisyRoute
   '/space/execution': typeof SpaceExecutionRoute
@@ -152,8 +176,11 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/cart': typeof CartRoute
+  '/evidence': typeof EvidenceRoute
+  '/healthz': typeof HealthzRoute
   '/manifesto': typeof ManifestoRoute
   '/ops': typeof OpsRoute
+  '/readyz': typeof ReadyzRoute
   '/registry': typeof RegistryRouteWithChildren
   '/space': typeof SpaceRouteWithChildren
   '/store': typeof StoreRouteWithChildren
@@ -173,8 +200,11 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/cart'
+    | '/evidence'
+    | '/healthz'
     | '/manifesto'
     | '/ops'
+    | '/readyz'
     | '/registry'
     | '/space'
     | '/store'
@@ -192,8 +222,11 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/cart'
+    | '/evidence'
+    | '/healthz'
     | '/manifesto'
     | '/ops'
+    | '/readyz'
     | '/registry/$id'
     | '/space/daisy'
     | '/space/execution'
@@ -208,8 +241,11 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/cart'
+    | '/evidence'
+    | '/healthz'
     | '/manifesto'
     | '/ops'
+    | '/readyz'
     | '/registry'
     | '/space'
     | '/store'
@@ -228,8 +264,11 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   CartRoute: typeof CartRoute
+  EvidenceRoute: typeof EvidenceRoute
+  HealthzRoute: typeof HealthzRoute
   ManifestoRoute: typeof ManifestoRoute
   OpsRoute: typeof OpsRoute
+  ReadyzRoute: typeof ReadyzRoute
   RegistryRoute: typeof RegistryRouteWithChildren
   SpaceRoute: typeof SpaceRouteWithChildren
   StoreRoute: typeof StoreRouteWithChildren
@@ -251,6 +290,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CartRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/evidence': {
+      id: '/evidence'
+      path: '/evidence'
+      fullPath: '/evidence'
+      preLoaderRoute: typeof EvidenceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/healthz': {
+      id: '/healthz'
+      path: '/healthz'
+      fullPath: '/healthz'
+      preLoaderRoute: typeof HealthzRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/manifesto': {
       id: '/manifesto'
       path: '/manifesto'
@@ -263,6 +316,13 @@ declare module '@tanstack/react-router' {
       path: '/ops'
       fullPath: '/ops'
       preLoaderRoute: typeof OpsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/readyz': {
+      id: '/readyz'
+      path: '/readyz'
+      fullPath: '/readyz'
+      preLoaderRoute: typeof ReadyzRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/registry': {
@@ -408,8 +468,11 @@ const StoreRouteWithChildren = StoreRoute._addFileChildren(StoreRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   CartRoute: CartRoute,
+  EvidenceRoute: EvidenceRoute,
+  HealthzRoute: HealthzRoute,
   ManifestoRoute: ManifestoRoute,
   OpsRoute: OpsRoute,
+  ReadyzRoute: ReadyzRoute,
   RegistryRoute: RegistryRouteWithChildren,
   SpaceRoute: SpaceRouteWithChildren,
   StoreRoute: StoreRouteWithChildren,

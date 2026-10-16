@@ -4,7 +4,6 @@ import { PageShell } from "@/components/nav";
 import { Button } from "@/components/ui/button";
 import { StateChip } from "@/components/ui/badge";
 import { productBySku } from "@/lib/catalog";
-import { persistOrder, recordAudit } from "@/lib/ledger";
 import { useAppStore } from "@/lib/store";
 import { formatUsd, shortHash } from "@/lib/utils";
 
@@ -30,30 +29,7 @@ function CartPage() {
     const res = checkout();
     if (!res.ok) toast.error(res.error);
     else {
-      toast.success(`Order ${res.order.id} created. Payment not claimed.`);
-      for (const item of res.order.items) {
-        const product = productBySku(item.sku);
-        void persistOrder({
-          data: {
-            id: `${res.order.id}:${item.sku}`,
-            sku: item.sku,
-            proof: product?.proofBundle ?? "NONE",
-            priceCents: item.priceCents * item.qty,
-            status: res.order.status,
-          },
-        });
-      }
-      void recordAudit({
-        data: {
-          action: "ORDER_CREATED",
-          target: "orders",
-          targetId: res.order.id,
-          payload: JSON.stringify({
-            items: res.order.items.map((i) => i.sku),
-            totalCents: res.order.totalCents,
-          }),
-        },
-      });
+      toast.success(`Order ${res.order.id} created locally. No payment was attempted.`);
     }
   }
 

@@ -14,6 +14,7 @@ function OpsPage() {
   const [health, setHealth] = useState<Health | null>(null);
   const [drill, setDrill] = useState<string | null>(null);
   const [drilling, setDrilling] = useState(false);
+  const recoveryDrillsEnabled = import.meta.env.VITE_AUTH_ENABLED === "true";
 
   async function refresh() {
     const [snapshot, status] = await Promise.all([getLedgerSnapshot(), getProductionHealth()]);
@@ -67,8 +68,9 @@ function OpsPage() {
               <p className="font-mono text-2xs uppercase tracking-kicker text-muted">Production recovery plane</p>
               <h2 className="mt-2 font-display text-2xl font-bold tracking-tight">Recursive self-healing evidence</h2>
               <p className="mt-2 max-w-2xl text-sm text-muted">This non-destructive drill creates a synthetic checkpoint, records an invariant breach, restores the checkpoint, and seals the result in the append-only audit chain.</p>
+              {!recoveryDrillsEnabled ? <p className="mt-2 text-xs text-muted">Operator sign-in is not configured, so recovery drills are fail-closed.</p> : null}
             </div>
-            <button type="button" onClick={executeRecoveryDrill} disabled={drilling} className="rounded-lg bg-ok px-4 py-2 font-mono text-2xs font-semibold uppercase tracking-kicker text-black disabled:opacity-50">{drilling ? "Running…" : "Run recovery drill"}</button>
+            <button type="button" onClick={executeRecoveryDrill} disabled={drilling || !recoveryDrillsEnabled} className="rounded-lg bg-ok px-4 py-2 font-mono text-2xs font-semibold uppercase tracking-kicker text-black disabled:opacity-50">{drilling ? "Running…" : recoveryDrillsEnabled ? "Run recovery drill" : "Sign-in required"}</button>
           </div>
           <div className="mt-5 grid gap-3 sm:grid-cols-3">
             <div><p className="font-mono text-3xs uppercase tracking-kicker text-muted">Binding</p><p className="mt-1 font-mono text-sm">{health?.ok ? health.db.toUpperCase() : "UNAVAILABLE"}</p></div>
