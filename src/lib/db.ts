@@ -116,8 +116,30 @@ function createNeonSql(): Promise<Sql> {
     if (!applicationDatabaseUrl) throw new Error("[db] No application database URL is configured.");
     const pool = new Pool({ connectionString: secureDatabaseUrl(applicationDatabaseUrl) });
     return toSql(async <T>(text: string, params: unknown[]) => {
-      const res = await pool.query(text, params);
-      return res.rows as T[];
+      // Neon-created login roles may themselves carry BYPASSRLS. When the
+      // dedicated runtime URL is selected, always assume the reviewed
+      // NOBYPASSRLS group role for each query, then reset before returning the
+      // pooled connection. A bad membership/configuration fails closed.
+      if (!runtimeDatabaseUrl) {
+        const res = await pool.query(text, params);
+        return res.rows as T[];
+      }
+      const client = await pool.connect();
+      try {
+        await client.query("SET ROLE solvex_app_runtime");
+        const res = await client.query(text, params);
+        await client.query("RESET ROLE");
+        client.release();
+        return res.rows as T[];
+      } catch (error) {
+        try {
+          await client.query("RESET ROLE");
+          client.release();
+        } catch {
+          client.release(error instanceof Error ? error : new Error(String(error)));
+        }
+        throw error;
+      }
     });
   })().catch((err) => {
     globalRef.__pgSqlPromise__ = undefined;
