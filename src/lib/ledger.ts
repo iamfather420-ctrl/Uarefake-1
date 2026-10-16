@@ -164,19 +164,26 @@ export const getLedgerSnapshot = createServerFn({ method: "GET" }).handler(async
   await ensureSeeded();
   const { getSql, dbSource } = await import("@/lib/db");
   const sql = await getSql();
-  const [paradoxes, nodes, offers, published, audit] = await Promise.all([
-    sql<{ n: number }>`select count(*)::int as n from paradoxes`,
-    sql<{ n: number }>`select count(*)::int as n from node_registry`,
-    sql<{ n: number }>`select count(*)::int as n from offers`,
-    dbSource === "neon"
-      ? sql<{ n: number }>`select count(*)::int as n from offers where published = true`
-      : sql<{ n: number }>`select count(*)::int as n from offers where published = 1`,
-    sql<{ n: number; h: string | null }>`select count(*)::int as n, max(record_hash) as h from audit_records`,
-  ]);
+  const rows = await sql<{
+    paradoxes: number;
+    nodes: number;
+    offers: number;
+    published: number;
+    audit_height: number;
+    last_hash: string | null;
+    checkpoints: number;
+    failures: number;
+    rollbacks: number;
+  }>`select * from solvex_private.public_ledger_snapshot()`;
+  const row = rows[0];
   return {
-    paradoxes: paradoxes[0]?.n ?? 0, nodes: nodes[0]?.n ?? 0, offers: offers[0]?.n ?? 0,
-    published: published[0]?.n ?? 0, auditHeight: audit[0]?.n ?? 0,
-    lastHash: audit[0]?.h ?? (shouldSeedDemoData(dbSource, process.env.NODE_ENV) ? dfrlRun.root : "NONE"), db: dbSource,
+    paradoxes: row?.paradoxes ?? 0,
+    nodes: row?.nodes ?? 0,
+    offers: row?.offers ?? 0,
+    published: row?.published ?? 0,
+    auditHeight: row?.audit_height ?? 0,
+    lastHash: row?.last_hash ?? (shouldSeedDemoData(dbSource, process.env.NODE_ENV) ? dfrlRun.root : "NONE"),
+    db: dbSource,
   } satisfies LedgerSnapshot;
 });
 
@@ -186,17 +193,30 @@ export const getProductionHealth = createServerFn({ method: "GET" }).handler(asy
     await ensureSeeded();
     const sql = await getSql();
     const rows = await sql<{
-      paradoxes: number; nodes: number; checkpoints: number; failures: number; rollbacks: number; audits: number;
-    }>`
-      select
-        (select count(*)::int from paradoxes) as paradoxes,
-        (select count(*)::int from node_registry) as nodes,
-        (select count(*)::int from checkpoints) as checkpoints,
-        (select count(*)::int from failures) as failures,
-        (select count(*)::int from rollback_records) as rollbacks,
-        (select count(*)::int from audit_records) as audits
-    `;
-    return { ok: true as const, db: dbSource, counts: rows[0] };
+      paradoxes: number;
+      nodes: number;
+      offers: number;
+      published: number;
+      audit_height: number;
+      last_hash: string | null;
+      checkpoints: number;
+      failures: number;
+      rollbacks: number;
+    }>`select * from solvex_private.public_ledger_snapshot()`;
+    const row = rows[0];
+    if (!row) throw new Error("Public ledger snapshot returned no row.");
+    return {
+      ok: true as const,
+      db: dbSource,
+      counts: {
+        paradoxes: row.paradoxes,
+        nodes: row.nodes,
+        checkpoints: row.checkpoints,
+        failures: row.failures,
+        rollbacks: row.rollbacks,
+        audits: row.audit_height,
+      },
+    };
   } catch (error) {
     return { ok: false as const, db: dbSource, error: error instanceof Error ? error.message : String(error) };
   }
