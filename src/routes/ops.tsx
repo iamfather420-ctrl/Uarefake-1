@@ -24,9 +24,27 @@ function OpsPage() {
 
   useEffect(() => {
     let alive = true;
-    refresh().catch(() => { if (alive) { setLedger(null); setHealth(null); } });
+    if (!recoveryDrillsEnabled) {
+      setLedger(null);
+      setHealth({
+        ok: false,
+        db: "neon",
+        error: "Operator sign-in is not configured; private ledger telemetry is blocked.",
+      });
+      return () => { alive = false; };
+    }
+    refresh().catch((error) => {
+      if (alive) {
+        setLedger(null);
+        setHealth({
+          ok: false,
+          db: "neon",
+          error: error instanceof Error ? error.message : String(error),
+        });
+      }
+    });
     return () => { alive = false; };
-  }, []);
+  }, [recoveryDrillsEnabled]);
 
   async function executeRecoveryDrill() {
     setDrilling(true);
