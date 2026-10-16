@@ -11,8 +11,8 @@ export const Route = createFileRoute("/readyz")({
       GET: async () => {
         try {
           if (process.env.VERCEL_ENV === "production") {
-            if (!process.env.DATABASE_URL?.trim()) {
-              throw new Error("DATABASE_URL is not configured");
+            if (!process.env.DATABASE_RUNTIME_URL?.trim()) {
+              throw new Error("DATABASE_RUNTIME_URL (least-privilege runtime role) is not configured");
             }
             const { authConfigured, authDisabled } = await import("@/lib/auth/server");
             if (!authDisabled && !authConfigured) {
