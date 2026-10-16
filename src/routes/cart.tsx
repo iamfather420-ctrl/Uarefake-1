@@ -1,15 +1,24 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useState } from "react";
 import { PageShell } from "@/components/nav";
 import { Button } from "@/components/ui/button";
 import { productBySku } from "@/lib/catalog";
 import { useAppStore } from "@/lib/store";
 import { formatUsd } from "@/lib/utils";
+import {
+  capturePayPalSandboxOrder,
+  createPayPalSandboxOrder,
+} from "@/lib/paypal";
 
 export const Route = createFileRoute("/cart")({ component: CartPage });
 
 function CartPage() {
   const cart = useAppStore((s) => s.cart);
   const setQty = useAppStore((s) => s.setQty);
+  const clearCart = useAppStore((s) => s.clearCart);
+  const [checkoutBusy, setCheckoutBusy] = useState(false);
+  const [paymentMessage, setPaymentMessage] = useState<string | null>(null);
+  const [paymentError, setPaymentError] = useState<string | null>(null);
 
   const lines = cart
     .map((l) => {
@@ -18,6 +27,75 @@ function CartPage() {
     })
     .filter((x): x is NonNullable<typeof x> => x !== null);
   const total = lines.reduce((n, l) => n + l.product.priceCents * l.qty, 0);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const paypal = params.get("paypal");
+    if (paypal === "cancel") {
+      window.history.replaceState({}, "", window.location.pathname);
+      setPaymentMessage("PayPal Sandbox checkout was cancelled. No payment was captured.");
+      return;
+    }
+    if (paypal !== "return") return;
+    const orderId = params.get("token");
+    window.history.replaceState({}, "", window.location.pathname);
+    if (!orderId) {
+      setPaymentError("PayPal returned without an order ID. No access was granted.");
+      return;
+    }
+    let active = true;
+    setCheckoutBusy(true);
+    setPaymentMessage("Verifying the PayPal Sandbox order and capture…");
+    void capturePayPalSandboxOrder({ data: { orderId } })
+      .then((result) => {
+        if (!active) return;
+        if (result.status !== "COMPLETED") {
+          setPaymentError("PayPal did not confirm a completed capture. No access was granted.");
+          return;
+        }
+        clearCart();
+        setPaymentMessage(
+          `SANDBOX CAPTURE VERIFIED · ${result.currency} ${result.amount} · capture ${result.captureId ?? "ID unavailable"}. This confirms a test payment only; marketplace access still requires separate human authorization.`,
+        );
+      })
+      .catch((error: unknown) => {
+        if (!active) return;
+        setPaymentError(
+          error instanceof Error
+            ? error.message
+            : "PayPal Sandbox capture verification failed. No access was granted.",
+        );
+      })
+      .finally(() => {
+        if (active) setCheckoutBusy(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [clearCart]);
+
+  async function beginCheckout() {
+    setCheckoutBusy(true);
+    setPaymentError(null);
+    setPaymentMessage("Creating a PayPal Sandbox order…");
+    try {
+      const order = await createPayPalSandboxOrder({
+        data: { items: cart },
+      });
+      if (order.environment !== "sandbox" || !order.approvalUrl.startsWith("https://")) {
+        throw new Error("Checkout blocked: PayPal did not return a trusted Sandbox approval URL.");
+      }
+      window.location.assign(order.approvalUrl);
+    } catch (error) {
+      setPaymentError(
+        error instanceof Error
+          ? error.message
+          : "PayPal Sandbox checkout could not be started.",
+      );
+      setPaymentMessage(null);
+      setCheckoutBusy(false);
+    }
+  }
 
   return (
     <PageShell>
@@ -53,6 +131,7 @@ function CartPage() {
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
+                      aria-label={`Decrease ${l.product.title} quantity`}
                       className="grid size-10 place-items-center rounded-md hairline"
                       onClick={() => setQty(l.sku, l.qty - 1)}
                     >
@@ -63,6 +142,7 @@ function CartPage() {
                     </span>
                     <button
                       type="button"
+                      aria-label={`Increase ${l.product.title} quantity`}
                       className="grid size-10 place-items-center rounded-md hairline"
                       onClick={() => setQty(l.sku, l.qty + 1)}
                     >
@@ -75,15 +155,27 @@ function CartPage() {
           )}
           {lines.length > 0 ? (
             <div className="mt-6 space-y-3">
-              <div className="flex items-center justify-between">
+              <div className="flex items-center justify-between gap-4">
                 <p className="font-mono text-lg tabular-nums">{formatUsd(total)}</p>
-                <Button disabled>Access request blocked</Button>
+                <Button onClick={beginCheckout} disabled={checkoutBusy}>
+                  {checkoutBusy ? "Working…" : "Pay with PayPal Sandbox"}
+                </Button>
               </div>
-              <p className="text-sm text-stamp">
-                Production sign-in and tenant-scoped request persistence have not been verified.
-                No order or payment will be created from this browser-only cart.
+              <p className="text-xs text-muted">
+                Sandbox only. The server recomputes prices from the verified catalog and
+                confirms capture directly with PayPal. No live-money payments are enabled.
               </p>
             </div>
+          ) : null}
+          {paymentMessage ? (
+            <p role="status" className="mt-4 rounded-lg bg-surface p-3 text-sm text-muted hairline">
+              {paymentMessage}
+            </p>
+          ) : null}
+          {paymentError ? (
+            <p role="alert" className="mt-4 rounded-lg border border-red-500/40 bg-red-950/20 p-3 text-sm text-red-200">
+              PayPal Sandbox: {paymentError}
+            </p>
           ) : null}
         </section>
         <section>
@@ -94,11 +186,14 @@ function CartPage() {
             Human authorization required.
           </h2>
           <p className="mt-6 text-sm leading-relaxed text-muted">
-            This build does not yet have verified operator sign-in and tenant-scoped request persistence.
-            Access requests are therefore blocked instead of being recorded in local browser storage.
+            A successful Sandbox capture is payment-test evidence only. It does not create an
+            entitlement, authorize execution, or replace a durable, tenant-scoped fulfillment
+            record. Those steps remain separate and fail-closed until production identity,
+            persistence, and fulfillment are verified.
           </p>
           <p className="mt-3 text-sm leading-relaxed text-muted">
-            Browsing is available. Entitlement approval and execution remain separate, explicitly authorized steps.
+            Browsing is available. Payment approval, entitlement approval, and execution remain
+            distinct states.
           </p>
         </section>
       </div>
