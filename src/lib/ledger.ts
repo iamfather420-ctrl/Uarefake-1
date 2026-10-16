@@ -210,6 +210,7 @@ export const runRecoveryDrill = createServerFn({ method: "POST" })
     production: process.env.VERCEL_ENV === "production" || process.env.NODE_ENV === "production",
     operatorUserIds: process.env.SOLVEX_OPERATOR_USER_IDS,
     recoveryTenantId: process.env.SOLVEX_RECOVERY_TENANT_ID,
+    runtimeDatabaseConfigured: Boolean(process.env.DATABASE_RUNTIME_URL?.trim()),
   });
   if (!authorization.allowed) throw new Error(authorization.reason);
   await ensureSeeded();
