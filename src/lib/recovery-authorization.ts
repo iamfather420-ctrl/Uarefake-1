@@ -2,6 +2,7 @@ export type RecoveryAuthorizationConfig = {
   production: boolean;
   operatorUserIds?: string;
   recoveryTenantId?: string;
+  runtimeDatabaseConfigured?: boolean;
 };
 
 export type RecoveryAuthorization =
@@ -22,6 +23,12 @@ export function authorizeRecoveryDrill(
   }
   if (!config.production) {
     return { allowed: true, tenantId: config.recoveryTenantId?.trim() || undefined };
+  }
+  if (!config.runtimeDatabaseConfigured) {
+    return {
+      allowed: false,
+      reason: "Recovery drill blocked: DATABASE_RUNTIME_URL is not configured for least-privilege database access.",
+    };
   }
   const allowedUsers = new Set(
     (config.operatorUserIds ?? "").split(",").map((value) => value.trim()).filter(Boolean),
