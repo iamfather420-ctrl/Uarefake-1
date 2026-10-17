@@ -1,0 +1,265 @@
+name: Consolidate real source repositories
+
+on:
+  push:
+    branches:
+      - integration/cross-repo-purity-match-20261015
+    paths-ignore:
+      - "integrations/source-repos/**"
+      - "integration/reports/**"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: source-consolidation-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  consolidate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout Uarefake-1 integration branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          fetch-depth: 1
+
+      - name: Install archive and sync tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y rsync unzip
+          mkdir -p integration/reports integrations/source-repos
+
+      - name: Fetch and preserve real public source trees
+        shell: bash
+        run: |
+          set -euo pipefail
+          ROOT="$GITHUB_WORKSPACE"
+          TMP="$RUNNER_TEMP/source-inputs"
+          DEST="$ROOT/integrations/source-repos"
+          mkdir -p "$TMP" "$DEST" "$ROOT/integration/reports"
+          # Full-Build is already imported into integrated-sources on the canonical import branch; avoid a second copy.
+          rm -rf "$DEST/full-build"
+          : > "$TMP/provenance.tsv"
+
+          SOURCES=$(cat <<'EOF'
+          daisy-haminja-ai-ui-os-v3|https://github.com/Solvex-Paradox-Box/Daisy-Himinja-AI-UI-OS-v3.git|main|source
+          daisy-haminja-120-evidence|https://github.com/Solvex-Paradox-Box/daisy-haminja-120-evidence.git|main|source
+          daisy-registry-engine|https://github.com/Solvex-Paradox-Box/Daisy-Haminja-AI---UAREFAKE-Registry-Problem-Solving-Engine.git|main|source
+          daisy-app-forge|https://github.com/Solvex-Paradox-Box/Daisy-Haminja-App-Forge.git|main|source
+          solvex-repo-unify|https://github.com/iamfather420-ctrl/SolveXRepoUnify.git|master|source
+          freedom-sim-ai-os|https://github.com/iamfather420-ctrl/FREEDOM-SIM-AI-OS.git|main|source
+          paradox-verification|https://github.com/Solvex-Paradox-Box/Paradox-verification.git|main|source
+          solvex-storefront|https://github.com/Solvex-Paradox-Box/Uarefake.com-storefront.git|main|source
+          storefront|https://github.com/Solvex-Paradox-Box/Storefront.git|main|source
+          autonomous-b2b-consolidated|https://github.com/Solvex-Paradox-Box/Autonomous-consolidated-B2B-solutions.git|main|source
+          clean-web-consolidated|https://github.com/Solvex-Paradox-Box/CLEAN-WEB-CONSOLIDATED.git|main|source
+          solvex-crystal-clear-black-box|https://github.com/Solvex-Paradox-Box/Solvex-Crystal-Clear-Black-Box.git|main|source
+          solvex-hub|https://github.com/iamfather420-ctrl/Solvex-Hub.git|main|source
+          agate-unified-monorepo|https://github.com/iamfather420-ctrl/agate-unified-monorepo.git|master|source
+          agate-veritas|https://github.com/iamfather420-ctrl/agate-veritas.git|main|source
+          reclamation-experts|https://github.com/iamfather420-ctrl/Reclamation-Experts.git|main|source
+          base-waste-harvester|https://github.com/iamfather420-ctrl/Base-Waste-Harvester.git|main|source
+          ai-linkey|https://github.com/iamfather420-ctrl/AI-Linkey.git|main|source
+          anonymous-identity-financial|https://github.com/iamfather420-ctrl/Anonymous-Identity-Financial.git|main|source
+          agate-sovereign-wallet|https://github.com/iamfather420-ctrl/AGate-Sovergine-Wallet.git|main|source
+          solvex-react-build|https://github.com/iamfather420-ctrl/solvex-react-build.git|main|source
+          crystal-clear-box|https://github.com/iamfather420-ctrl/Crystal-Clear-Box.git|main|source
+          solvex-crystal-clear-compliance|https://github.com/iamfather420-ctrl/SolveX-Crystal-Clear-Box-Compliance-Immutibility.git|main|source
+          planetary-harvester|https://github.com/iamfather420-ctrl/Planetary-Harvester.git|main|source
+          pro-validator|https://github.com/iamfather420-ctrl/Pro-Validator.git|main|source
+          paradox-compliance-dashboard|https://github.com/iamfather420-ctrl/Paradox-compliance-dashboard.git|main|source
+          bloom-clear-tiger-meadow|https://github.com/iamfather420-ctrl/bloom-clear-tiger-meadow.git|main|source
+          uarefake-small|https://github.com/iamfather420-ctrl/uarefake.git|main|source
+          web-build|https://github.com/iamfather420-ctrl/web-build.git|main|source
+          proof-before-power|https://github.com/iamfather420-ctrl/proof-before-power.git|main|source
+          solvex-b2b-autonomy|https://github.com/Solvex-Paradox-Box/Solvex-B2B-Autonomy.git|main|source
+          solvex-paradox-marketplace-b2b|https://github.com/Solvex-Paradox-Box/Solvex-Paradox-Marketplace-B2B-Solutions.git|main|source
+          solvex-unity|https://github.com/Solvex-Paradox-Box/solvex-Unity.git|main|source
+          marketplace-p|https://github.com/Solvex-Paradox-Box/Marketplace-p.git|main|source
+          autonomous-b2b-marketplace|https://github.com/Solvex-Paradox-Box/Autonomous-B2B-Solutions-Marketplace-.git|main|source
+          solvex-core|https://github.com/Solvex-Paradox-Box/Solvex-core.git|main|source
+          monorepo|https://github.com/Solvex-Paradox-Box/Monorepo.git|main|source
+          solvex-uarefake-marketplace|https://github.com/Solvex-Paradox-Box/SolveX-U-ARE-FAKE-B2B--Solutions-Marketplace.git|main|source
+          quantum-ai-optimizer|https://github.com/Solvex-Paradox-Box/Quantum-AI-Optimizer-.git|main|source
+          project-a|https://github.com/Solvex-Paradox-Box/A.git|main|source
+          blaze-1|https://github.com/Solvex-Paradox-Box/Blaze-1.0.git|main|source
+          ai-studio-marketplace-archives|https://github.com/Solvex-Paradox-Box/Ai-studio-marketplace-build.git|main|archives
+          EOF
+          )
+
+          while IFS='|' read -r key url ref mode; do
+            [[ -z "$key" ]] && continue
+            checkout="$TMP/$key"
+            echo "::group::Fetch $key ($ref)"
+            if ! git clone --quiet --depth 1 --filter=blob:none --sparse --branch "$ref" "$url" "$checkout"; then
+              echo "$key|$url|$ref|UNAVAILABLE|$mode" >> "$TMP/provenance.tsv"
+              echo "::warning::Could not clone $key; recorded as unavailable and continued."
+              echo "::endgroup::"
+              continue
+            fi
+            if ! git -C "$checkout" sparse-checkout set --no-cone               '/*'               '!/node_modules/**' '!/**/node_modules/**'               '!/.cargo/**' '!/**/.cargo/**'               '!/.local/**' '!/**/.local/**'               '!/.cache/**' '!/**/.cache/**'               '!/.vercel/output/**' '!/**/.vercel/output/**'               '!/target/**' '!/**/target/**'               '!/dist/**' '!/**/dist/**'               '!/build/**' '!/**/build/**'               '!/.next/**' '!/**/.next/**'               '!/**/__pycache__/**' '!/**/*.pyc'               '!/artifacts/.tmp/**'               '!/**/*.tgz' '!/**/*.tar.gz'; then
+              echo "$key|$url|$ref|SPARSE_CHECKOUT_FAILED|$mode" >> "$TMP/provenance.tsv"
+              echo "::warning::Sparse checkout failed for $key; recorded and continued."
+              echo "::endgroup::"
+              continue
+            fi
+            commit="$(git -C "$checkout" rev-parse HEAD)"
+            out="$DEST/$key"
+            rm -rf "$out"
+            mkdir -p "$out"
+
+            if [[ "$mode" == "archives" ]]; then
+              mkdir -p "$TMP/extracted/$key"
+              while IFS= read -r -d '' archive; do
+                archive_name="$(basename "$archive" .zip)"
+                mkdir -p "$TMP/extracted/$key/$archive_name"
+                unzip -q "$archive" -d "$TMP/extracted/$key/$archive_name"
+              done < <(find "$checkout" -maxdepth 1 -type f -name '*.zip' -print0)
+              rsync -a                 --exclude='.git/' --exclude='node_modules/' --exclude='**/node_modules/**'                 --exclude='.env' --exclude='**/.env' --exclude='**/.env.*' --exclude='**/.bash_history' --exclude='**/.gitconfig' --exclude='**/.git-credentials' --exclude='**/.ssh/**' --exclude='**/.termux/**' --exclude='**/user_registry.json' --exclude='**/credentials*.json' --exclude='**/secrets*.json' --exclude='**/*.pem' --exclude='**/*.key' --exclude='**/*.p12' --exclude='**/*.pfx' --exclude='**/*.db' --exclude='**/*.sqlite*'                 --exclude='.cargo/' --exclude='**/.cargo/**'                 --exclude='.local/' --exclude='**/.local/**'                 --exclude='.cache/' --exclude='**/.cache/**'                 --exclude='**/__pycache__/**' --exclude='*.pyc'                 --exclude='.vercel/output/' --exclude='**/.vercel/output/**'                 --exclude='dist/' --exclude='**/dist/**' --exclude='build/' --exclude='**/build/**'                 "$TMP/extracted/$key/" "$out/"
+            else
+              rsync -a                 --exclude='.git/' --exclude='node_modules/' --exclude='**/node_modules/**'                 --exclude='.env' --exclude='**/.env' --exclude='**/.env.*' --exclude='**/.bash_history' --exclude='**/.gitconfig' --exclude='**/.git-credentials' --exclude='**/.ssh/**' --exclude='**/.termux/**' --exclude='**/user_registry.json' --exclude='**/credentials*.json' --exclude='**/secrets*.json' --exclude='**/*.pem' --exclude='**/*.key' --exclude='**/*.p12' --exclude='**/*.pfx' --exclude='**/*.db' --exclude='**/*.sqlite*'                 --exclude='.cargo/' --exclude='**/.cargo/**'                 --exclude='.local/' --exclude='**/.local/**'                 --exclude='.cache/' --exclude='**/.cache/**'                 --exclude='**/__pycache__/**' --exclude='*.pyc'                 --exclude='.vercel/output/' --exclude='**/.vercel/output/**'                 --exclude='dist/' --exclude='**/dist/**' --exclude='build/' --exclude='**/build/**'                 --exclude='*.zip' --exclude='*.tgz' --exclude='*.tar.gz'                 --exclude='artifacts/.tmp/mcp-results/'                 "$checkout/" "$out/"
+            fi
+
+            cat > "$out/.source-provenance.json" <<JSON
+          {
+            "repository": "$url",
+            "ref": "$ref",
+            "commit": "$commit",
+            "mode": "$mode",
+            "generatedByRun": "$GITHUB_RUN_ID",
+            "note": "Source preserved under integrations/source-repos; root application files were not overwritten."
+          }
+          JSON
+            echo "$key|$url|$ref|$commit|$mode" >> "$TMP/provenance.tsv"
+            echo "::endgroup::"
+          done <<< "$SOURCES"
+
+          cp "$TMP/provenance.tsv" "$ROOT/integration/reports/source-provenance.tsv"
+          # Defense-in-depth cleanup for local histories, credentials, and local database files.
+          find "$DEST" -type f \( -name '.bash_history' -o -name '.gitconfig' -o -name '.git-credentials' -o -name 'user_registry.json' -o -name 'credentials*.json' -o -name 'secrets*.json' -o -name '*.pem' -o -name '*.key' -o -name '*.p12' -o -name '*.pfx' -o -name '*.db' -o -name '*.sqlite*' \) -delete
+
+          # Preserve the target's large workspace attachment as extracted source, not an opaque ZIP.
+          if [[ -f "$ROOT/attachments/grok-workspace.zip" ]]; then
+            archive="$ROOT/attachments/grok-workspace.zip"
+            out="$DEST/grok-workspace-attachment"
+            mkdir -p "$TMP/grok-workspace" "$out"
+            unzip -q "$archive" -d "$TMP/grok-workspace"
+            rsync -a --exclude='.git/' --exclude='node_modules/' --exclude='**/node_modules/**' --exclude='.env' --exclude='**/.env' --exclude='**/.env.*' --exclude='**/.bash_history' --exclude='**/.gitconfig' --exclude='**/.git-credentials' --exclude='**/.ssh/**' --exclude='**/.termux/**' --exclude='**/user_registry.json' --exclude='**/credentials*.json' --exclude='**/secrets*.json' --exclude='**/*.pem' --exclude='**/*.key' --exclude='**/*.p12' --exclude='**/*.pfx' --exclude='**/*.db' --exclude='**/*.sqlite*' --exclude='.cargo/' --exclude='**/.cargo/**' --exclude='.local/' --exclude='**/.local/**' --exclude='.cache/' --exclude='**/.cache/**' --exclude='**/__pycache__/**' --exclude='*.pyc' --exclude='.vercel/output/' --exclude='**/.vercel/output/**' --exclude='dist/' --exclude='**/dist/**' --exclude='build/' --exclude='**/build/**' "$TMP/grok-workspace/" "$out/"
+            archive_sha="$(sha256sum "$archive" | cut -d' ' -f1)"
+            cat > "$out/.source-provenance.json" <<JSON
+          {
+            "repository": "iamfather420-ctrl/Uarefake-1",
+            "ref": "${GITHUB_REF_NAME}",
+            "commit": "${GITHUB_SHA}",
+            "sourceArchive": "attachments/grok-workspace.zip",
+            "sourceArchiveSha256": "$archive_sha",
+            "generatedByRun": "$GITHUB_RUN_ID",
+            "note": "Archive extracted and filtered; source archive is excluded from the release ZIP to avoid double-packaging."
+          }
+          JSON
+            echo "grok-workspace-attachment|iamfather420-ctrl/Uarefake-1/attachments/grok-workspace.zip|${GITHUB_REF_NAME}|${GITHUB_SHA}|extracted-archive sha256=$archive_sha" >> "$ROOT/integration/reports/source-provenance.tsv"
+          fi
+
+      - name: Hash inventory and duplicate/collision report
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 - <<'PY'
+          import hashlib, json, os
+          from collections import defaultdict
+          root = "integrations/source-repos"
+          by_repo, by_rel, by_hash = {}, defaultdict(list), defaultdict(list)
+          for repo in sorted(os.listdir(root)):
+              base = os.path.join(root, repo)
+              if not os.path.isdir(base): continue
+              files = 0
+              total = 0
+              for parent, dirs, names in os.walk(base):
+                  dirs[:] = [d for d in dirs if d not in {".git", "node_modules", ".cache", ".cargo", ".local", "dist", "build", ".next", "__pycache__"}]
+                  for name in names:
+                      path = os.path.join(parent, name)
+                      rel = os.path.relpath(path, base)
+                      if rel == ".source-provenance.json": continue
+                      if name.startswith(".env") and name != ".env.example": continue
+                      try:
+                          h = hashlib.sha256()
+                          size = 0
+                          with open(path, "rb") as f:
+                              for chunk in iter(lambda: f.read(1024*1024), b""):
+                                  h.update(chunk); size += len(chunk)
+                      except (OSError, IsADirectoryError):
+                          continue
+                      digest = h.hexdigest()
+                      files += 1; total += size
+                      by_rel[rel].append({"repo": repo, "sha256": digest, "size": size})
+                      by_hash[digest].append({"repo": repo, "path": rel, "size": size})
+              by_repo[repo] = {"files": files, "bytes": total}
+          duplicates = []
+          for rel, entries in sorted(by_rel.items()):
+              repos = sorted({e["repo"] for e in entries})
+              if len(repos) > 1:
+                  groups = defaultdict(list)
+                  for e in entries: groups[e["sha256"]].append(e["repo"])
+                  duplicates.append({"relativePath": rel, "repos": repos, "identicalGroups": [sorted(set(v)) for v in groups.values() if len(set(v)) > 1], "conflicting": len({e["sha256"] for e in entries}) > 1})
+          same_content = [{"sha256": h, "copies": entries} for h, entries in by_hash.items() if len(entries) > 1]
+          report = {
+              "schemaVersion": 1,
+              "method": "SHA-256 byte hashes; paths compared relative to each source snapshot",
+              "sourceRepositories": by_repo,
+              "totalFiles": sum(x["files"] for x in by_repo.values()),
+              "totalBytes": sum(x["bytes"] for x in by_repo.values()),
+              "sameRelativePathGroups": duplicates,
+              "sameContentAcrossAnyPaths": same_content,
+              "warning": "A content match is a duplicate signal, not a reason to discard provenance. Conflicting same-path files remain separated under their source repository."
+          }
+          os.makedirs("integration/reports", exist_ok=True)
+          with open("integration/reports/source-match.json", "w") as f: json.dump(report, f, indent=2)
+          with open("integration/reports/source-match-summary.md", "w") as f:
+              f.write("# Source snapshot match summary\n\n")
+              f.write(f"- Repositories: {len(by_repo)}\n- Files: {report['totalFiles']}\n- Bytes: {report['totalBytes']}\n")
+              f.write(f"- Same-relative-path groups: {len(duplicates)}\n- Same-content duplicate groups: {len(same_content)}\n")
+              f.write(f"- Conflicting same-relative-path groups: {sum(1 for d in duplicates if d['conflicting'])}\n\n")
+              f.write("All source snapshots are isolated under integrations/source-repos/; this step never overwrites the root app. Review source-match.json before moving modules into the runtime.\n")
+          PY
+
+      - name: Commit source snapshots to integration branch
+        shell: bash
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add integrations/source-repos integration/reports
+          if git diff --cached --quiet; then
+            echo "No source snapshot changes to commit."
+          else
+            git commit -m "build: preserve audited source repositories under Uarefake-1"
+            git push origin "HEAD:${GITHUB_REF_NAME}"
+          fi
+
+      - name: Build current Uarefake-1 web application
+        run: |
+          npm ci
+          npm run build:dev
+          npm run typecheck
+          npm test
+          npx eslint src server scripts
+
+      - name: Package unified source snapshot
+        if: always()
+        shell: bash
+        run: |
+          mkdir -p release
+          zip -qr release/SOLVEX-DAISY-HAMINJA-UAREFAKE-UNIFIED-SOURCE.zip . -x './.git/**' '.git/**' './node_modules/**' 'node_modules/**' '**/node_modules/**' './release/**' 'release/**' './attachments/grok-workspace.zip' 'attachments/grok-workspace.zip' './.cache/**' '.cache/**' '**/.cache/**' './.cargo/**' '.cargo/**' '**/.cargo/**' './.local/**' '.local/**' '**/.local/**' './.vercel/output/**' '.vercel/output/**' '**/.vercel/output/**'
+
+      - name: Upload unified source artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: SOLVEX-DAISY-HAMINJA-UAREFAKE-UNIFIED-SOURCE
+          path: release/SOLVEX-DAISY-HAMINJA-UAREFAKE-UNIFIED-SOURCE.zip
+          if-no-files-found: error
+          retention-days: 30

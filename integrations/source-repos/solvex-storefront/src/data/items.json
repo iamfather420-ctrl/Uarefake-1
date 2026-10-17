@@ -1,0 +1,58 @@
+[
+  {
+    "id": "sol-001",
+    "lotNumber": 1,
+    "title": "Solvex Paradox Sovereign Storefront Platform",
+    "category": "E-Commerce Core",
+    "price": 999.00,
+    "currency": "USD",
+    "shortDesc": "Complete unified customer storefront housing 128 turnkey digital solutions, live node synthesis, and PayPal B2B escrow captures.",
+    "repo": "github.com/solvex-paradox-box/storefront",
+    "stars": 492,
+    "deliveryType": "INSTANT_DOWNLOAD",
+    "tags": ["Storefront", "PayPal", "React", "Tailwind", "NeonDB"],
+    "techStack": ["TypeScript", "React 19", "Express", "Vite", "Neon Postgres", "PayPal SDK"]
+  },
+  {
+    "id": "sol-002",
+    "lotNumber": 2,
+    "title": "Solvex Crystal Clear Box & Scientific Truth Sandbox",
+    "category": "Security & Cryptography",
+    "price": 1499.00,
+    "currency": "USD",
+    "shortDesc": "Mathematical proof engine executing Groth16 zk-SNARK constraint systems, Poseidon hash trees, and Lyapunov stability proofs.",
+    "repo": "github.com/solvex-paradox-box/crystal-clear-box",
+    "stars": 618,
+    "deliveryType": "INSTANT_DOWNLOAD",
+    "tags": ["Zero-Knowledge", "zk-SNARK", "Formal-Proof", "FINRA-4511"],
+    "techStack": ["TypeScript", "R1CS", "Poseidon", "Neon DB", "Tailwind"]
+  },
+  {
+    "id": "sol-003",
+    "lotNumber": 3,
+    "title": "MMTAI Zero-Trust 380-Byte Perimeter Router",
+    "category": "Enterprise Infrastructure",
+    "price": 1250.00,
+    "currency": "USD",
+    "shortDesc": "Sub-millisecond packet filter enforcing 380-character cryptographically signed headers across multi-cloud perimeter nodes.",
+    "repo": "github.com/solvex-paradox-box/mmtai-perimeter",
+    "stars": 540,
+    "deliveryType": "INSTANT_DOWNLOAD",
+    "tags": ["Zero-Trust", "Perimeter", "MMTAI", "380-Char-Header"],
+    "techStack": ["TypeScript", "SHA-256", "Express", "Vite", "Node.js"]
+  },
+  {
+    "id": "sol-004",
+    "lotNumber": 4,
+    "title": "Daisy Haminja Recursive Agentic Brain Engine",
+    "category": "Cognitive AI Systems",
+    "price": 2499.00,
+    "currency": "USD",
+    "shortDesc": "Multi-agent cognitive orchestrator with 88 paradox anomaly detectors, dynamic DAG pipeline scheduling, and goal decomposition.",
+    "repo": "github.com/solvex-paradox-box/daisy-brain",
+    "stars": 782,
+    "deliveryType": "INSTANT_DOWNLOAD",
+    "tags": ["Agentic-AI", "Cognitive-Engine", "88-Paradoxes", "DAG"],
+    "techStack": ["TypeScript", "Google GenAI", "React", "Tailwind"]
+  }
+]

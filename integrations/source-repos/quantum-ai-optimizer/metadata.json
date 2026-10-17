@@ -1,0 +1,6 @@
+{
+  "name": "Quantum AI Optimizer",
+  "description": "Solve complex optimization problems in real-time using simulated quantum distributed processing, Neural Architecture Search, and Gemini generative visualization blueprints.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

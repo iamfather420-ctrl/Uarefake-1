@@ -1,0 +1,378 @@
+# ==============================================================================
+# DAISY — Distributed Autonomous Software Intelligence Yield Engine
+# MODULE: Kubernetes CRD — DAISYCluster
+# AUTHOR: SolveX / TJ Ites Jr.
+# GENESIS: 2025-12-25 | AGATE CORE INTEGRATION BUILD
+# ==============================================================================
+
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  name: daisyclusters.solvex.io
+  annotations:
+    solvex.io/author: "TJ Ites Jr."
+    solvex.io/genesis: "2025-12-25"
+    solvex.io/ip-anchor: "MAESTRO_AGE_2026"
+spec:
+  group: solvex.io
+  names:
+    plural: daisyclusters
+    singular: daisycluster
+    kind: DAISYCluster
+    shortNames:
+      - daisy
+  scope: Namespaced
+  versions:
+    - name: v1alpha1
+      served: true
+      storage: true
+      schema:
+        openAPIV3Schema:
+          type: object
+          required: ["spec"]
+          properties:
+            spec:
+              type: object
+              required: ["bubbles", "evc", "security"]
+              properties:
+
+                # -------------------------------------------------------
+                # BUBBLE POOL — Execution Node Configuration
+                # -------------------------------------------------------
+                bubbles:
+                  type: object
+                  required: ["minReplicas", "maxReplicas", "resources"]
+                  properties:
+                    minReplicas:
+                      type: integer
+                      minimum: 1
+                      default: 2
+                    maxReplicas:
+                      type: integer
+                      minimum: 2
+                      default: 20
+                    resources:
+                      type: object
+                      properties:
+                        requests:
+                          type: object
+                          properties:
+                            cpu:
+                              type: string
+                              default: "250m"
+                            memory:
+                              type: string
+                              default: "512Mi"
+                        limits:
+                          type: object
+                          properties:
+                            cpu:
+                              type: string
+                              default: "2000m"
+                            memory:
+                              type: string
+                              default: "4Gi"
+                    hotSwapEnabled:
+                      type: boolean
+                      default: true
+                    rollingUpdateStrategy:
+                      type: object
+                      properties:
+                        maxUnavailable:
+                          type: string
+                          default: "0"          # Zero-downtime only
+                        maxSurge:
+                          type: string
+                          default: "25%"
+                        progressDeadlineSeconds:
+                          type: integer
+                          default: 300
+
+                # -------------------------------------------------------
+                # gRPC INGRESS / EGRESS
+                # -------------------------------------------------------
+                grpc:
+                  type: object
+                  properties:
+                    port:
+                      type: integer
+                      default: 50051
+                    tlsEnabled:
+                      type: boolean
+                      default: true
+                    tlsSecretName:
+                      type: string
+                      default: "daisy-grpc-tls"
+                    maxConcurrentStreams:
+                      type: integer
+                      default: 1000
+                    keepaliveTimeSeconds:
+                      type: integer
+                      default: 30
+                    keepaliveTimeoutSeconds:
+                      type: integer
+                      default: 10
+                    ingressAnnotations:
+                      type: object
+                      x-kubernetes-preserve-unknown-fields: true
+
+                # -------------------------------------------------------
+                # CIRCUIT BREAKER SETTINGS
+                # -------------------------------------------------------
+                circuitBreaker:
+                  type: object
+                  properties:
+                    maxFailures:
+                      type: integer
+                      default: 5
+                    resetWindowSeconds:
+                      type: integer
+                      default: 30
+                    halfOpenProbeRequests:
+                      type: integer
+                      default: 3
+                    consecutiveGatewayErrors:
+                      type: integer
+                      default: 5
+                    interval:
+                      type: string
+                      default: "10s"
+                    baseEjectionTime:
+                      type: string
+                      default: "30s"
+                    maxEjectionPercent:
+                      type: integer
+                      default: 50
+
+                # -------------------------------------------------------
+                # EVC — Enterprise Viability Control
+                # -------------------------------------------------------
+                evc:
+                  type: object
+                  required: ["budgetUSDPerHour"]
+                  properties:
+                    budgetUSDPerHour:
+                      type: number
+                      description: "Maximum allowed cluster-wide cost per hour in USD"
+                    budgetAlertThreshold:
+                      type: number
+                      default: 0.8
+                      description: "Alert at this fraction of budget (0.8 = 80%)"
+                    costEnginePollIntervalSeconds:
+                      type: integer
+                      default: 15
+                    autoScaleOnBudget:
+                      type: boolean
+                      default: true
+                    mutationOnViolation:
+                      type: boolean
+                      default: true
+
+                # -------------------------------------------------------
+                # SECURITY — Encryption + Compliance Tags
+                # -------------------------------------------------------
+                security:
+                  type: object
+                  required: ["encryptionRequired", "compliance"]
+                  properties:
+                    encryptionRequired:
+                      type: boolean
+                      default: true
+                    tlsVersion:
+                      type: string
+                      enum: ["TLSv1.2", "TLSv1.3"]
+                      default: "TLSv1.3"
+                    encryptionAlgorithm:
+                      type: string
+                      default: "AES-256-GCM"
+                    mTLSEnabled:
+                      type: boolean
+                      default: true
+                    packetHeaderSizeBytes:
+                      type: integer
+                      default: 380
+                      description: "Agate Core 380-byte cryptographic header requirement"
+                    compliance:
+                      type: object
+                      properties:
+                        gdprEnabled:
+                          type: boolean
+                          default: true
+                        ccpaEnabled:
+                          type: boolean
+                          default: true
+                        hipaaEnabled:
+                          type: boolean
+                          default: false
+                        pipedaEnabled:
+                          type: boolean
+                          default: true
+                          description: "Canadian PIPEDA compliance (BDC requirement)"
+                        dataResidency:
+                          type: array
+                          items:
+                            type: string
+                          default: ["us-east-1", "ca-central-1"]
+                          description: "Allowed cloud regions for data routing"
+                        euDataMustStayInEU:
+                          type: boolean
+                          default: true
+                        auditLogRetentionDays:
+                          type: integer
+                          default: 365
+                        immutableLedgerEnabled:
+                          type: boolean
+                          default: true
+
+                # -------------------------------------------------------
+                # AI OPTIMIZER — DAISY Reinforcement Learning Loop
+                # -------------------------------------------------------
+                optimizer:
+                  type: object
+                  properties:
+                    enabled:
+                      type: boolean
+                      default: true
+                    cycleIntervalSeconds:
+                      type: integer
+                      default: 60
+                    rewardFunction:
+                      type: string
+                      default: "speed_stability_over_cost_risk"
+                    graphBackend:
+                      type: string
+                      enum: ["neo4j", "pgvector", "qdrant"]
+                      default: "neo4j"
+                    embeddingDimensions:
+                      type: integer
+                      default: 8
+                    mutationEnabled:
+                      type: boolean
+                      default: true
+
+                # -------------------------------------------------------
+                # TELEMETRY — Prometheus-style metrics ingestion
+                # -------------------------------------------------------
+                telemetry:
+                  type: object
+                  properties:
+                    prometheusEnabled:
+                      type: boolean
+                      default: true
+                    scrapeIntervalSeconds:
+                      type: integer
+                      default: 15
+                    metricsPort:
+                      type: integer
+                      default: 9090
+                    neo4jSyncEnabled:
+                      type: boolean
+                      default: true
+                      description: "Push live metrics to Neo4j graph node metadata"
+                    retentionDays:
+                      type: integer
+                      default: 30
+
+      additionalPrinterColumns:
+        - name: Bubbles
+          type: integer
+          jsonPath: .spec.bubbles.minReplicas
+        - name: Budget/Hr
+          type: number
+          jsonPath: .spec.evc.budgetUSDPerHour
+        - name: GDPR
+          type: boolean
+          jsonPath: .spec.security.compliance.gdprEnabled
+        - name: HotSwap
+          type: boolean
+          jsonPath: .spec.bubbles.hotSwapEnabled
+
+---
+# ==============================================================================
+# EXAMPLE DAISYCluster INSTANCE — SolveX Production
+# ==============================================================================
+
+apiVersion: solvex.io/v1alpha1
+kind: DAISYCluster
+metadata:
+  name: solvex-production
+  namespace: solvex-system
+  labels:
+    app: daisy
+    env: production
+    owner: "tj-ites-jr"
+    ip-anchor: "MAESTRO_AGE_2026"
+spec:
+  bubbles:
+    minReplicas: 3
+    maxReplicas: 50
+    resources:
+      requests:
+        cpu: "500m"
+        memory: "1Gi"
+      limits:
+        cpu: "4000m"
+        memory: "8Gi"
+    hotSwapEnabled: true
+    rollingUpdateStrategy:
+      maxUnavailable: "0"
+      maxSurge: "25%"
+      progressDeadlineSeconds: 300
+
+  grpc:
+    port: 50051
+    tlsEnabled: true
+    tlsSecretName: "solvex-grpc-tls"
+    maxConcurrentStreams: 2000
+    keepaliveTimeSeconds: 30
+    keepaliveTimeoutSeconds: 10
+
+  circuitBreaker:
+    maxFailures: 5
+    resetWindowSeconds: 30
+    halfOpenProbeRequests: 3
+    consecutiveGatewayErrors: 5
+    interval: "10s"
+    baseEjectionTime: "30s"
+    maxEjectionPercent: 50
+
+  evc:
+    budgetUSDPerHour: 25.00
+    budgetAlertThreshold: 0.8
+    costEnginePollIntervalSeconds: 15
+    autoScaleOnBudget: true
+    mutationOnViolation: true
+
+  security:
+    encryptionRequired: true
+    tlsVersion: "TLSv1.3"
+    encryptionAlgorithm: "AES-256-GCM"
+    mTLSEnabled: true
+    packetHeaderSizeBytes: 380
+    compliance:
+      gdprEnabled: true
+      ccpaEnabled: true
+      hipaaEnabled: false
+      pipedaEnabled: true
+      dataResidency:
+        - "us-east-1"
+        - "ca-central-1"
+        - "eu-west-1"
+      euDataMustStayInEU: true
+      auditLogRetentionDays: 365
+      immutableLedgerEnabled: true
+
+  optimizer:
+    enabled: true
+    cycleIntervalSeconds: 60
+    rewardFunction: "speed_stability_over_cost_risk"
+    graphBackend: "neo4j"
+    embeddingDimensions: 8
+    mutationEnabled: true
+
+  telemetry:
+    prometheusEnabled: true
+    scrapeIntervalSeconds: 15
+    metricsPort: 9090
+    neo4jSyncEnabled: true
+    retentionDays: 30

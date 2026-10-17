@@ -1,0 +1,38 @@
+{
+  "url": "http://127.0.0.1:8081/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "UAREFAKE",
+      "hasCanvas": true,
+      "bodyTextLen": 2860,
+      "bodyTextHash": "052902a57cc2a968a54ea43a6f0ec46995d012e5c771c11360ab5fefed9f24ce",
+      "bodyTextPrefix": "U UAREFAKE .com 00AIRLOCK 01BAZAAR 02CENSUS 03BRIDGE 04CONTRACT ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "UAREFAKE",
+      "hasCanvas": true,
+      "bodyTextLen": 2725,
+      "bodyTextHash": "eb90c13c5cf2b30923d2cbbf6dbb576b44d417662d4f34841984a4e3ac591c44",
+      "bodyTextPrefix": "U UAREFAKE .com SEC-00 · AIRLOCK · ARRIVAL UAREFAKE ENGINE OPEN ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-built-mobile.png"
+    }
+  },
+  "brandWarnings": [],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-built.json",
+  "divergesFromBaseline": false,
+  "baselineReasons": []
+}

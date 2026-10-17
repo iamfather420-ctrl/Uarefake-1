@@ -1,0 +1,39 @@
+{
+  "url": "http://127.0.0.1:8080/",
+  "viewports": {
+    "desktop": {
+      "width": 1280,
+      "height": 800,
+      "status": 200,
+      "title": "UAREFAKE",
+      "hasCanvas": true,
+      "bodyTextLen": 3293,
+      "bodyTextHash": "bb45817829fff3383dba9fd2578a3bb7a28084b4658f5d319cef29750ca4e891",
+      "bodyTextPrefix": "U UAREFAKE .com 00AIRLOCK 01BAZAAR 02CENSUS 03BRIDGE 04CONTRACT ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview.png"
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "status": 200,
+      "title": "UAREFAKE",
+      "hasCanvas": true,
+      "bodyTextLen": 3158,
+      "bodyTextHash": "cab675b5422e21412f77be02d0238d5823272f37156ee1a9532f79de64e21469",
+      "bodyTextPrefix": "U UAREFAKE .com SEC-00 · AIRLOCK · ARRIVAL UAREFAKE ENGINE OPEN ",
+      "horizontalOverflow": false,
+      "consoleErrors": [],
+      "pageErrors": [],
+      "screenshot": "/workspace/screenshots/app-builder-preview-mobile.png"
+    }
+  },
+  "brandWarnings": [
+    "BRAND WARNING: this looks like a game/canvas app but src/lib/og/site.json is missing \"type\": \"x:game\". X uses og:type=x:game to present the unfurl as a game card — set it in /workspace/src/lib/og/site.json per /workspace/.grok/skills/og/SKILL.md. Do not invent x:type or overload twitter:card as the game signal.",
+    "BRAND WARNING: this looks like a game/canvas app but /workspace/public/x-banner.jpg is missing. Games need a 50:11 X feed card (1200×264 JPEG) at public/x-banner.jpg — open /workspace/.grok/skills/og/SKILL.md and finish the brand-asset pass."
+  ],
+  "authWarnings": [],
+  "verdictFile": "/workspace/screenshots/app-builder-preview.json"
+}

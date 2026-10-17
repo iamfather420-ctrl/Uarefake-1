@@ -1,0 +1,6 @@
+{
+  "name": "Paradox Exchange",
+  "description": "Sovereign high-tech marketplace solving cryptographic, mathematical, and systemic paradoxes with secure, zero-knowledge, hardware-isolated enclaves.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

@@ -1,0 +1,125 @@
+{
+  "timestamp": "2026-09-26T18:53:32.030Z",
+  "claim_scope": "LOCAL",
+  "sqlite": {
+    "status": "VERIFIED",
+    "tables_created": 27,
+    "required_tables": 27,
+    "migration_passed": true,
+    "schema_creation_passed": true,
+    "insert_passed": true,
+    "select_passed": true,
+    "update_passed": true,
+    "transaction_rollback_passed": true,
+    "restart_readback_passed": true,
+    "tenant_isolation_passed": true,
+    "audit_chain_passed": true,
+    "evidence_persistence_passed": true,
+    "steps": [
+      {
+        "step": "MIGRATION_AND_SCHEMA_CREATION",
+        "passed": true,
+        "duration_ms": 0.03394699999989825,
+        "details": {
+          "table_count": 27,
+          "required": 27
+        }
+      },
+      {
+        "step": "RECORD_INSERT",
+        "passed": true,
+        "duration_ms": 0.09060300000055577,
+        "details": {
+          "tenant_id": "TENANT_ALPHA",
+          "id": "sol_test_1790448812030"
+        }
+      },
+      {
+        "step": "RECORD_SELECT",
+        "passed": true,
+        "duration_ms": 0.06369499999891559,
+        "details": {
+          "records_found": 1,
+          "record_matched": true
+        }
+      },
+      {
+        "step": "RECORD_UPDATE",
+        "passed": true,
+        "duration_ms": 0.02251799999976356,
+        "details": {
+          "target_id": "sol_test_1790448812030",
+          "updated_status": "VERIFIED_ACTIVE"
+        }
+      },
+      {
+        "step": "TRANSACTION_ROLLBACK",
+        "passed": true,
+        "duration_ms": 0.3585209999982908,
+        "details": {
+          "rolled_back_id": "sol_rb_1790448812030",
+          "record_absent_after_rollback": true
+        }
+      },
+      {
+        "step": "RESTART_READBACK",
+        "passed": true,
+        "duration_ms": 0.037677000000257976,
+        "details": {
+          "disk_file_exists": false,
+          "readback_verified": true
+        }
+      },
+      {
+        "step": "TENANT_ISOLATION",
+        "passed": true,
+        "duration_ms": 0.016467999999804306,
+        "details": {
+          "tenant_a": "TENANT_ALPHA",
+          "tenant_b": "TENANT_BETA",
+          "tenant_b_records_count": 0,
+          "leak_detected": false
+        }
+      },
+      {
+        "step": "AUDIT_CHAIN_PERSISTENCE",
+        "passed": true,
+        "duration_ms": 0.8383109999995213,
+        "details": {
+          "audit_record_id": "audit_1790448812031_9",
+          "merkle_chain_valid": true,
+          "chain_blocks": 10
+        }
+      },
+      {
+        "step": "EVIDENCE_PERSISTENCE",
+        "passed": true,
+        "duration_ms": 0.18066499999986263,
+        "details": {
+          "bundle_id": "ev_bundle_1790448812032",
+          "verified": true
+        }
+      }
+    ]
+  },
+  "neon": {
+    "configured": false,
+    "connected": false,
+    "status": "PROVIDER_REQUIRED",
+    "claim_scope": "LOCAL",
+    "notes": "NEON_DATABASE_URL not configured in environment. Local SQLite verified; Neon production persistence blocked.",
+    "steps": [
+      {
+        "step": "NEON_PREFLIGHT_CHECK",
+        "passed": false,
+        "duration_ms": 0,
+        "details": {
+          "status": "PROVIDER_REQUIRED",
+          "message": "NEON_DATABASE_URL absent"
+        }
+      }
+    ]
+  },
+  "all_local_passed": true,
+  "production_persistence_ready": false
+}

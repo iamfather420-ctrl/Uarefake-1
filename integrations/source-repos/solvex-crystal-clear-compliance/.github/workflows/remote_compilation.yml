@@ -1,0 +1,40 @@
+name: Remote Compilation Pipeline
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build-android-apk:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Provision Core Ubuntu Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential libltdl-dev libffi-dev libssl-dev python3-dev zip unzip zlib1g-dev openjdk-17-jdk
+
+      - name: Provision Python Build Architecture
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Buildozer Framework
+        run: |
+          pip install --upgrade pip
+          pip install buildozer cython virtualenv
+
+      - name: Execute Android Compilation
+        run: |
+          cd vault/
+          yes | buildozer -v android debug
+
+      - name: Secure Final APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: AGATE_Base_Waste_Harvester_Release
+          path: vault/bin/*.apk

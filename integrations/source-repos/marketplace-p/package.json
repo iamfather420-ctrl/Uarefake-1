@@ -1,0 +1,27 @@
+{
+  "name": "daisy-brain",
+  "version": "1.0.0",
+  "description": "DAISY Core multi-agent autonomous corporate brain. Consolidates DAISY Core, SolveX B2B Marketplace, and the U.A.R.E.F.A.K.E. closed-loop cognitive engine.",
+  "main": "ParadoxOperator.ts",
+  "scripts": {
+    "lint": "gradle :app:lint",
+    "build": "gradle assembleDebug",
+    "test": "gradle :app:testDebugUnitTest",
+    "clean": "gradle clean"
+  },
+  "keywords": [
+    "autonomous",
+    "corporation",
+    "sovereign",
+    "android",
+    "kotlin",
+    "compose",
+    "typescript"
+  ],
+  "author": "opinionuncuffed@gmail.com",
+  "license": "UNLICENSED",
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
