@@ -16,7 +16,7 @@ import { readdir, readFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import pg from "pg";
-import { pendingMigrations } from "./migration-plan.mjs";
+import { migrationSources, pendingMigrations } from "./migration-plan.mjs";
 
 const databaseUrl = process.env.DATABASE_URL;
 if (!databaseUrl) {
@@ -27,6 +27,15 @@ if (!databaseUrl) {
 }
 
 const migrationsDir = join(dirname(fileURLToPath(import.meta.url)), "..", "migrations");
+const authEnabled = process.env.VITE_AUTH_ENABLED === "true";
+const requiredAuthEnvironment = ["GROK_AUTH_CLIENT_ID", "GROK_AUTH_CLIENT_SECRET", "GROK_AUTH_ISSUER", "BETTER_AUTH_SECRET", "BETTER_AUTH_URL"];
+if (authEnabled) {
+  const missing = requiredAuthEnvironment.filter((key) => !process.env[key]?.trim());
+  if (missing.length) {
+    console.error("[migrate] VITE_AUTH_ENABLED=true but required auth configuration is missing: " + missing.join(", "));
+    process.exit(1);
+  }
+}
 
 async function main() {
   let entries;
@@ -36,8 +45,16 @@ async function main() {
     console.log("[migrate] no migrations/ directory — nothing to do.");
     return;
   }
+  const basePaths = entries.map((name) => join(migrationsDir, name));
+  let authPaths = [];
+  if (authEnabled) {
+    const authDir = join(migrationsDir, "auth");
+    const authEntries = await readdir(authDir);
+    authPaths = authEntries.map((name) => join(authDir, name));
+  }
+  const sources = migrationSources(basePaths, authPaths, authEnabled);
   // An app with no schema of its own must not pay for a database connection.
-  if (pendingMigrations(entries, []).length === 0) {
+  if (pendingMigrations(sources, []).length === 0) {
     console.log("[migrate] no migrations — nothing to do.");
     return;
   }
@@ -53,8 +70,8 @@ async function main() {
     );
 
     let count = 0;
-    for (const { name } of pendingMigrations(entries, applied)) {
-      const text = await readFile(join(migrationsDir, name), "utf8");
+    for (const { name, path } of pendingMigrations(sources, applied)) {
+      const text = await readFile(path, "utf8");
       try {
         await client.query("BEGIN");
         // pg's simple-query protocol runs a whole multi-statement file at once.

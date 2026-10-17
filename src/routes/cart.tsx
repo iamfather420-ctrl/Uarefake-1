@@ -1,21 +1,24 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { toast } from "sonner";
+import { useEffect, useState } from "react";
 import { PageShell } from "@/components/nav";
 import { Button } from "@/components/ui/button";
-import { StateChip } from "@/components/ui/badge";
 import { productBySku } from "@/lib/catalog";
 import { useAppStore } from "@/lib/store";
-import { formatUsd, shortHash } from "@/lib/utils";
+import { formatUsd } from "@/lib/utils";
+import {
+  capturePayPalSandboxOrder,
+  createPayPalSandboxOrder,
+} from "@/lib/paypal";
 
 export const Route = createFileRoute("/cart")({ component: CartPage });
 
 function CartPage() {
   const cart = useAppStore((s) => s.cart);
-  const orders = useAppStore((s) => s.orders);
   const setQty = useAppStore((s) => s.setQty);
-  const checkout = useAppStore((s) => s.checkout);
-  const attemptPay = useAppStore((s) => s.attemptPay);
-  const reverseOrder = useAppStore((s) => s.reverseOrder);
+  const clearCart = useAppStore((s) => s.clearCart);
+  const [checkoutBusy, setCheckoutBusy] = useState(false);
+  const [paymentMessage, setPaymentMessage] = useState<string | null>(null);
+  const [paymentError, setPaymentError] = useState<string | null>(null);
 
   const lines = cart
     .map((l) => {
@@ -25,11 +28,72 @@ function CartPage() {
     .filter((x): x is NonNullable<typeof x> => x !== null);
   const total = lines.reduce((n, l) => n + l.product.priceCents * l.qty, 0);
 
-  function place() {
-    const res = checkout();
-    if (!res.ok) toast.error(res.error);
-    else {
-      toast.success(`Order ${res.order.id} created locally. No payment was attempted.`);
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const paypal = params.get("paypal");
+    if (paypal === "cancel") {
+      window.history.replaceState({}, "", window.location.pathname);
+      setPaymentMessage("PayPal Sandbox checkout was cancelled. No payment was captured.");
+      return;
+    }
+    if (paypal !== "return") return;
+    const orderId = params.get("token");
+    window.history.replaceState({}, "", window.location.pathname);
+    if (!orderId) {
+      setPaymentError("PayPal returned without an order ID. No access was granted.");
+      return;
+    }
+    let active = true;
+    setCheckoutBusy(true);
+    setPaymentMessage("Verifying the PayPal Sandbox order and capture…");
+    void capturePayPalSandboxOrder({ data: { orderId } })
+      .then((result) => {
+        if (!active) return;
+        if (result.status !== "COMPLETED") {
+          setPaymentError("PayPal did not confirm a completed capture. No access was granted.");
+          return;
+        }
+        clearCart();
+        setPaymentMessage(
+          `SANDBOX CAPTURE VERIFIED · ${result.currency} ${result.amount} · capture ${result.captureId ?? "ID unavailable"}. This confirms a test payment only; marketplace access still requires separate human authorization.`,
+        );
+      })
+      .catch((error: unknown) => {
+        if (!active) return;
+        setPaymentError(
+          error instanceof Error
+            ? error.message
+            : "PayPal Sandbox capture verification failed. No access was granted.",
+        );
+      })
+      .finally(() => {
+        if (active) setCheckoutBusy(false);
+      });
+    return () => {
+      active = false;
+    };
+  }, [clearCart]);
+
+  async function beginCheckout() {
+    setCheckoutBusy(true);
+    setPaymentError(null);
+    setPaymentMessage("Creating a PayPal Sandbox order…");
+    try {
+      const order = await createPayPalSandboxOrder({
+        data: { items: cart },
+      });
+      if (order.environment !== "sandbox" || !order.approvalUrl.startsWith("https://")) {
+        throw new Error("Checkout blocked: PayPal did not return a trusted Sandbox approval URL.");
+      }
+      window.location.assign(order.approvalUrl);
+    } catch (error) {
+      setPaymentError(
+        error instanceof Error
+          ? error.message
+          : "PayPal Sandbox checkout could not be started.",
+      );
+      setPaymentMessage(null);
+      setCheckoutBusy(false);
     }
   }
 
@@ -41,7 +105,7 @@ function CartPage() {
             Entitlement cart
           </p>
           <h1 className="mt-2 font-display text-4xl font-extrabold tracking-tight">
-            Proof before payment.
+            Verified access only.
           </h1>
           {lines.length === 0 ? (
             <p className="mt-6 text-sm text-muted">
@@ -67,6 +131,7 @@ function CartPage() {
                   <div className="flex items-center gap-2">
                     <button
                       type="button"
+                      aria-label={`Decrease ${l.product.title} quantity`}
                       className="grid size-10 place-items-center rounded-md hairline"
                       onClick={() => setQty(l.sku, l.qty - 1)}
                     >
@@ -77,6 +142,7 @@ function CartPage() {
                     </span>
                     <button
                       type="button"
+                      aria-label={`Increase ${l.product.title} quantity`}
                       className="grid size-10 place-items-center rounded-md hairline"
                       onClick={() => setQty(l.sku, l.qty + 1)}
                     >
@@ -88,56 +154,47 @@ function CartPage() {
             </ul>
           )}
           {lines.length > 0 ? (
-            <div className="mt-6 flex items-center justify-between">
-              <p className="font-mono text-lg tabular-nums">{formatUsd(total)}</p>
-              <Button onClick={place}>Create escrow order</Button>
+            <div className="mt-6 space-y-3">
+              <div className="flex items-center justify-between gap-4">
+                <p className="font-mono text-lg tabular-nums">{formatUsd(total)}</p>
+                <Button onClick={beginCheckout} disabled={checkoutBusy}>
+                  {checkoutBusy ? "Working…" : "Pay with PayPal Sandbox"}
+                </Button>
+              </div>
+              <p className="text-xs text-muted">
+                Sandbox only. The server recomputes prices from the verified catalog and
+                confirms capture directly with PayPal. No live-money payments are enabled.
+              </p>
             </div>
+          ) : null}
+          {paymentMessage ? (
+            <p role="status" className="mt-4 rounded-lg bg-surface p-3 text-sm text-muted hairline">
+              {paymentMessage}
+            </p>
+          ) : null}
+          {paymentError ? (
+            <p role="alert" className="mt-4 rounded-lg border border-red-500/40 bg-red-950/20 p-3 text-sm text-red-200">
+              PayPal Sandbox: {paymentError}
+            </p>
           ) : null}
         </section>
         <section>
           <p className="font-mono text-2xs uppercase tracking-mark text-muted">
-            Crystal Clear Box · orders
+            SOLVEX access requests
           </p>
           <h2 className="mt-2 font-display text-2xl font-bold tracking-tight">
-            Observable commerce.
+            Human authorization required.
           </h2>
-          {orders.length === 0 ? (
-            <p className="mt-6 text-sm text-muted">No orders yet.</p>
-          ) : (
-            <ul className="mt-6 space-y-3">
-              {orders.map((o) => (
-                <li key={o.id} className="rounded-xl bg-surface p-4 hairline">
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <p className="font-mono text-3xs text-muted">{o.id}</p>
-                      <p className="mt-1 font-mono text-sm tabular-nums">
-                        {formatUsd(o.totalCents)}
-                      </p>
-                    </div>
-                    <StateChip state={o.status} />
-                  </div>
-                  <p className="mt-2 font-mono text-3xs text-muted">
-                    {shortHash(o.receipt, 12)}
-                  </p>
-                  {o.reason ? (
-                    <p className="mt-2 text-xs leading-relaxed text-stamp">{o.reason}</p>
-                  ) : null}
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {o.status === "ORDER_CREATED" ? (
-                      <Button size="sm" variant="stamp" onClick={() => attemptPay(o.id)}>
-                        Capture PayPal
-                      </Button>
-                    ) : null}
-                    {o.status === "FAIL_CLOSED" || o.status === "ORDER_CREATED" ? (
-                      <Button size="sm" variant="outline" onClick={() => reverseOrder(o.id)}>
-                        Reverse
-                      </Button>
-                    ) : null}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          )}
+          <p className="mt-6 text-sm leading-relaxed text-muted">
+            A successful Sandbox capture is payment-test evidence only. It does not create an
+            entitlement, authorize execution, or replace a durable, tenant-scoped fulfillment
+            record. Those steps remain separate and fail-closed until production identity,
+            persistence, and fulfillment are verified.
+          </p>
+          <p className="mt-3 text-sm leading-relaxed text-muted">
+            Browsing is available. Payment approval, entitlement approval, and execution remain
+            distinct states.
+          </p>
         </section>
       </div>
     </PageShell>

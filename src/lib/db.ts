@@ -1,4 +1,4 @@
-import { pendingMigrations } from "../../scripts/migration-plan.mjs";
+import { migrationSources, pendingMigrations } from "../../scripts/migration-plan.mjs";
 
 /** Which database backend is active. */
 export type DbSource = "neon" | "pglite";
@@ -9,14 +9,20 @@ const rawDatabaseUrl =
   typeof process !== "undefined" ? process.env.DATABASE_URL : undefined;
 const databaseUrl =
   rawDatabaseUrl && rawDatabaseUrl.trim() ? rawDatabaseUrl : undefined;
+const rawRuntimeDatabaseUrl =
+  typeof process !== "undefined" ? process.env.DATABASE_RUNTIME_URL : undefined;
+const runtimeDatabaseUrl =
+  rawRuntimeDatabaseUrl && rawRuntimeDatabaseUrl.trim() ? rawRuntimeDatabaseUrl : undefined;
 
 /**
- * Active backend: real **Neon** when `DATABASE_URL` is set (deployed / configured
- * sandbox), otherwise a local embedded **PGLite** (Postgres compiled to WASM) so
+ * Active backend: real **Neon** when `DATABASE_RUNTIME_URL` or `DATABASE_URL` is
+ * set. Application SQL prefers the least-privilege runtime URL; `DATABASE_URL`
+ * remains available for deploy-time migrations and Better Auth. Otherwise use a
+ * local embedded **PGLite** (Postgres compiled to WASM) so
  * the app has a working database even with nothing configured — the live preview
  * included. Swap in Neon later by just setting `DATABASE_URL`; no code changes.
  */
-export const dbSource: DbSource = databaseUrl ? "neon" : "pglite";
+export const dbSource: DbSource = runtimeDatabaseUrl || databaseUrl ? "neon" : "pglite";
 
 /**
  * Pin node-postgres to certificate-and-hostname verification when a deployment
@@ -106,7 +112,9 @@ function createNeonSql(): Promise<Sql> {
     types.setTypeParser(OID_INT8, Number);
     types.setTypeParser(OID_DATE, identity);
     types.setTypeParser(OID_INTERVAL, identity);
-    const pool = new Pool({ connectionString: secureDatabaseUrl(databaseUrl ?? "") });
+    const applicationDatabaseUrl = runtimeDatabaseUrl ?? databaseUrl;
+    if (!applicationDatabaseUrl) throw new Error("[db] No application database URL is configured.");
+    const pool = new Pool({ connectionString: secureDatabaseUrl(applicationDatabaseUrl) });
     return toSql(async <T>(text: string, params: unknown[]) => {
       const res = await pool.query(text, params);
       return res.rows as T[];
@@ -150,16 +158,24 @@ async function createPgliteSql(): Promise<Sql> {
   // passes serialized on a global chain so concurrent callers never
   // double-apply.
   const migrate = async (): Promise<void> => {
-    const migrations = import.meta.glob("/migrations/*.sql", {
+    const baseMigrations = import.meta.glob("/migrations/*.sql", {
       query: "?raw",
       import: "default",
       eager: true,
     }) as Record<string, string>;
+    const authMigrations = import.meta.glob("/migrations/auth/*.sql", {
+      query: "?raw",
+      import: "default",
+      eager: true,
+    }) as Record<string, string>;
+    const authEnabled = process.env.VITE_AUTH_ENABLED === "true";
+    const migrations = authEnabled ? { ...baseMigrations, ...authMigrations } : baseMigrations;
     const doneRows = await pg.query<{ name: string }>(
       "select name from _migrations",
     );
     const done = doneRows.rows.map((r) => r.name);
-    for (const { name, path } of pendingMigrations(Object.keys(migrations), done)) {
+    const sources = migrationSources(Object.keys(baseMigrations), Object.keys(authMigrations), authEnabled);
+    for (const { name, path } of pendingMigrations(sources, done)) {
       // Apply + record atomically (parity with scripts/migrate.mjs) so a failed
       // statement can't leave a file half-applied but untracked.
       await pg.transaction(async (tx) => {
@@ -189,7 +205,8 @@ async function createSql(): Promise<Sql> {
   if (
     typeof window === "undefined" &&
     process.env.VERCEL_ENV === "production" &&
-    !databaseUrl
+    !databaseUrl &&
+    !runtimeDatabaseUrl
   ) {
     throw new Error(
       "[db] DATABASE_URL is required in the Vercel production environment; refusing the PGLite fallback.",

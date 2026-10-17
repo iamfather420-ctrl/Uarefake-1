@@ -48,7 +48,7 @@ function OpsPage() {
         <div className="mx-auto max-w-6xl px-4 py-10">
           <p className="font-mono text-2xs uppercase tracking-mark text-muted">Attached planes · GitHub · Vercel · Neon</p>
           <h1 className="mt-3 font-display text-4xl font-extrabold tracking-tight md:text-5xl">Evidence of the stack.</h1>
-          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted">These records are read from the connected production stack and bound to the Solvex schema. Missing credentials fail closed.</p>
+          <p className="mt-4 max-w-2xl text-sm leading-relaxed text-muted">Counts are queried from the connected database. Existing rows may include data written by earlier seed-enabled releases; counts alone are not proof of provenance or fresh formal verification. Production seed writes are now disabled. Missing credentials fail closed.</p>
         </div>
       </section>
 
