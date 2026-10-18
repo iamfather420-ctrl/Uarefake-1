@@ -76,6 +76,10 @@ CREATE TABLE IF NOT EXISTS payment_fulfillments (
 );
 CREATE INDEX IF NOT EXISTS payment_fulfillments_tenant_user_idx ON payment_fulfillments (tenant_id, user_id, status);
 
+-- Grant only the basic DML needed by the non-login runtime role. RLS without a
+-- permissive policy still denies access; DELETE is deliberately not granted.
+GRANT SELECT, INSERT, UPDATE ON payment_orders, payment_events, payment_refunds, payment_fulfillments TO solvex_app_runtime;
+
 -- Deny-by-default until reviewed policies and per-transaction tenant context ship.
 ALTER TABLE payment_orders ENABLE ROW LEVEL SECURITY;
 ALTER TABLE payment_events ENABLE ROW LEVEL SECURITY;
