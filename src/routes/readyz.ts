@@ -1,9 +1,9 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 /**
- * Readiness is stricter than liveness. Production traffic is not ready until
- * the real database and explicit per-deployment auth configuration are present
- * and the database can answer a query.
+ * Readiness is stricter than liveness. Production is ready only when the
+ * privileged migration/auth connection and separate least-privilege runtime
+ * connection are configured, trusted auth is enabled, and the DB answers.
  */
 export const Route = createFileRoute("/readyz")({
   server: {
@@ -14,9 +14,12 @@ export const Route = createFileRoute("/readyz")({
             if (!process.env.DATABASE_URL?.trim()) {
               throw new Error("DATABASE_URL is not configured");
             }
+            if (!process.env.DATABASE_RUNTIME_URL?.trim()) {
+              throw new Error("DATABASE_RUNTIME_URL least-privilege runtime role is not configured");
+            }
             const { authConfigured, authDisabled } = await import("@/lib/auth/server");
-            if (!authDisabled && !authConfigured) {
-              throw new Error("production authentication is not configured");
+            if (authDisabled || !authConfigured) {
+              throw new Error("trusted production authentication is not configured");
             }
           }
 
