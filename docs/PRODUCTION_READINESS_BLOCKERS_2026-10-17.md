@@ -15,7 +15,7 @@ Scope: read-only inspection of the connected `iamfather420-ctrl/Uarefake-1` Verc
 | Neon tenant-table RLS | 31 tenant-bearing public tables plus `schema_migrations` have RLS enabled and forced | RLS flags are present; this alone does not prove application requests set valid signed tenant context. |
 | Runtime login role attributes | The inspected `solvex_runtime_login` role has database/role creation privileges and `BYPASSRLS`, and is a member of `neon_superuser` | This is not an acceptable least-privilege login role. Do not use it without resolving the role design. |
 | Restore-branch schema comparison | The existing recovery-drill branch differs from current production: it lacks `solvex_private.auth_context_ready()` and its runtime-role schema grant | The prior restore branch is not an exact current-schema rehearsal. Rehearse from a fresh production snapshot and verify schema plus application-level behavior. |
-| PayPal environment | Production variable is `PAYPAL_ENVIRONMENT=LIVE` | The active adapter is Sandbox-only and rejects Live. The new release gate also requires exact lowercase literals and explicit approval; no Live payment should run. |
+| PayPal environment | Production variable is `PAYPAL_ENVIRONMENT=LIVE`; no `PAYMENTS_ENABLED`, `PAYPAL_LIVE_CLIENT_ID`, `PAYPAL_LIVE_CLIENT_SECRET`, or `PAYPAL_LIVE_WEBHOOK_ID` entry was observed | The active adapter is Sandbox-only and rejects Live. The new release gate requires exact lowercase literals and explicit approval; no Live payment should run. |
 
 ## Required before production can be called ready
 
