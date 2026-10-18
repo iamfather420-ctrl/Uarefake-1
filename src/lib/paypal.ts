@@ -18,7 +18,7 @@ function validateCartInput(value: unknown): CartLineInput[] {
 
 export const createPayPalSandboxOrder = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
-  .inputValidator(validateCartInput)
+  .validator(validateCartInput)
   .handler(async ({ data, context }) => {
     const { createSandboxOrder } = await import("./paypal.server");
     return createSandboxOrder(context.userId, data);
@@ -26,7 +26,7 @@ export const createPayPalSandboxOrder = createServerFn({ method: "POST" })
 
 export const capturePayPalSandboxOrder = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
-  .inputValidator((value: unknown) => {
+  .validator((value: unknown) => {
     if (!value || typeof value !== "object" || !("orderId" in value) || typeof value.orderId !== "string") {
       throw new Error("Invalid PayPal capture request.");
     }
