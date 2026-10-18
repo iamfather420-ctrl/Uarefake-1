@@ -13,8 +13,9 @@ test("payment ledger is tenant/user scoped, idempotent, and uses minor-unit amou
   assert.match(migration, /ALTER TABLE payment_orders ENABLE ROW LEVEL SECURITY/);
   assert.match(migration, /ALTER TABLE payment_fulfillments ENABLE ROW LEVEL SECURITY/);
 });
-test("Live release gate is explicit, production-only, and fail-closed until acceptance verification", () => {
-  assert.match(gate, /PAYMENTS_ENABLED/);
+test("Live release gate requires exact environment literals and explicit acceptance verification", () => {
+  assert.match(gate, /PAYMENTS_ENABLED\?\.trim\(\) !== "true"/);
+  assert.match(gate, /rawEnvironment === "sandbox" \|\| rawEnvironment === "live"/);
   assert.match(gate, /PAYPAL_LIVE_CLIENT_SECRET/);
   assert.match(gate, /PAYPAL_LIVE_WEBHOOK_ID/);
   assert.match(gate, /DATABASE_RUNTIME_URL/);
