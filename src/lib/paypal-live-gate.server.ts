@@ -11,9 +11,11 @@ type Env = Record<string, string | undefined>;
 const present = (env: Env, key: string): boolean => Boolean(env[key]?.trim());
 
 export function evaluatePaymentReleaseGate(env: Env): PaymentGateResult {
-  const rawEnvironment = env.PAYPAL_ENVIRONMENT?.trim().toLowerCase();
+  // Environment values are intentionally case-sensitive: "Live" and "SANDBOX"
+  // are configuration errors, not aliases for the approved literal values.
+  const rawEnvironment = env.PAYPAL_ENVIRONMENT?.trim();
   const environment = rawEnvironment === "sandbox" || rawEnvironment === "live" ? rawEnvironment : null;
-  if (env.PAYMENTS_ENABLED?.trim().toLowerCase() !== "true") {
+  if (env.PAYMENTS_ENABLED?.trim() !== "true") {
     return { enabled: false, environment, reason: "payments_disabled" };
   }
   if (!environment) return { enabled: false, environment: null, reason: "invalid_environment" };
