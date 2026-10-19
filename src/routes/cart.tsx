@@ -6,8 +6,8 @@ import { productBySku } from "@/lib/catalog";
 import { useAppStore } from "@/lib/store";
 import { formatUsd } from "@/lib/utils";
 import {
-  capturePayPalSandboxOrder,
-  createPayPalSandboxOrder,
+  capturePayPalOrder,
+  createPayPalOrder,
 } from "@/lib/paypal";
 
 export const Route = createFileRoute("/cart")({ component: CartPage });
@@ -33,7 +33,7 @@ function CartPage() {
     const paypal = params.get("paypal");
     if (paypal === "cancel") {
       window.history.replaceState({}, "", window.location.pathname);
-      setPaymentMessage("PayPal Sandbox checkout was cancelled. No payment was captured.");
+      setPaymentMessage("PayPal checkout was cancelled. No payment was captured.");
       return;
     }
     if (paypal !== "return") return;
@@ -45,8 +45,8 @@ function CartPage() {
     }
     let active = true;
     setCheckoutBusy(true);
-    setPaymentMessage("Verifying the PayPal Sandbox order and capture…");
-    void capturePayPalSandboxOrder({ data: { orderId } })
+    setPaymentMessage("Verifying the PayPal order and capture…");
+    void capturePayPalOrder({ data: { orderId } })
       .then((result) => {
         if (!active) return;
         if (result.status !== "COMPLETED") {
@@ -55,7 +55,7 @@ function CartPage() {
         }
         clearCart();
         setPaymentMessage(
-          `SANDBOX CAPTURE VERIFIED · ${result.currency} ${result.amount} · capture ${result.captureId ?? "ID unavailable"}. This confirms a test payment only; marketplace access still requires separate human authorization.`,
+          `PAYMENT CAPTURE VERIFIED · ${result.currency} ${result.amount} · capture ${result.captureId ?? "ID unavailable"}. Fulfillment remains separately authorized.`,
         );
       })
       .catch((error: unknown) => {
@@ -63,7 +63,7 @@ function CartPage() {
         setPaymentError(
           error instanceof Error
             ? error.message
-            : "PayPal Sandbox capture verification failed. No access was granted.",
+            : "PayPal capture verification failed. No access was granted.",
         );
       })
       .finally(() => {
@@ -77,20 +77,21 @@ function CartPage() {
   async function beginCheckout() {
     setCheckoutBusy(true);
     setPaymentError(null);
-    setPaymentMessage("Creating a PayPal Sandbox order…");
+    setPaymentMessage("Creating a PayPal order…");
     try {
-      const order = await createPayPalSandboxOrder({
-        data: { items: cart },
+      const idempotencyKey = `checkout-${globalThis.crypto.randomUUID()}`;
+      const order = await createPayPalOrder({
+        data: { items: cart, idempotencyKey },
       });
-      if (order.environment !== "sandbox" || !order.approvalUrl.startsWith("https://")) {
-        throw new Error("Checkout blocked: PayPal did not return a trusted Sandbox approval URL.");
+      if (!order.approvalUrl.startsWith("https://")) {
+        throw new Error("Checkout blocked: PayPal did not return a trusted approval URL.");
       }
       window.location.assign(order.approvalUrl);
     } catch (error) {
       setPaymentError(
         error instanceof Error
           ? error.message
-          : "PayPal Sandbox checkout could not be started.",
+          : "PayPal checkout could not be started.",
       );
       setPaymentMessage(null);
       setCheckoutBusy(false);
@@ -158,12 +159,12 @@ function CartPage() {
               <div className="flex items-center justify-between gap-4">
                 <p className="font-mono text-lg tabular-nums">{formatUsd(total)}</p>
                 <Button onClick={beginCheckout} disabled={checkoutBusy}>
-                  {checkoutBusy ? "Working…" : "Pay with PayPal Sandbox"}
+                  {checkoutBusy ? "Working…" : "Pay with PayPal"}
                 </Button>
               </div>
               <p className="text-xs text-muted">
-                Sandbox only. The server recomputes prices from the verified catalog and
-                confirms capture directly with PayPal. No live-money payments are enabled.
+                The server recomputes prices from the verified catalog and confirms capture
+                directly with PayPal. Payment availability is controlled server-side.
               </p>
             </div>
           ) : null}
@@ -174,7 +175,7 @@ function CartPage() {
           ) : null}
           {paymentError ? (
             <p role="alert" className="mt-4 rounded-lg border border-red-500/40 bg-red-950/20 p-3 text-sm text-red-200">
-              PayPal Sandbox: {paymentError}
+              PayPal: {paymentError}
             </p>
           ) : null}
         </section>
@@ -186,10 +187,8 @@ function CartPage() {
             Human authorization required.
           </h2>
           <p className="mt-6 text-sm leading-relaxed text-muted">
-            A successful Sandbox capture is payment-test evidence only. It does not create an
-            entitlement, authorize execution, or replace a durable, tenant-scoped fulfillment
-            record. Those steps remain separate and fail-closed until production identity,
-            persistence, and fulfillment are verified.
+            A successful capture does not automatically create an entitlement or authorize
+            execution. Durable, tenant-scoped fulfillment remains a separate server decision.
           </p>
           <p className="mt-3 text-sm leading-relaxed text-muted">
             Browsing is available. Payment approval, entitlement approval, and execution remain

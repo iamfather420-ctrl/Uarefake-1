@@ -29,6 +29,7 @@ import { Route as SpaceNodesRouteImport } from './routes/space/nodes'
 import { Route as SpaceProofsRouteImport } from './routes/space/proofs'
 import { Route as StoreIndexRouteImport } from './routes/store.index'
 import { Route as StoreSkuRouteImport } from './routes/store.$sku'
+import { Route as ApiPaypalWebhookRouteImport } from './routes/api.paypal.webhook'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -130,6 +131,11 @@ const StoreSkuRoute = StoreSkuRouteImport.update({
   path: '/$sku',
   getParentRoute: () => StoreRoute,
 } as any)
+const ApiPaypalWebhookRoute = ApiPaypalWebhookRouteImport.update({
+  id: '/api/paypal/webhook',
+  path: '/api/paypal/webhook',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -152,6 +158,7 @@ export interface FileRoutesByFullPath {
   '/registry/': typeof RegistryIndexRoute
   '/space/': typeof SpaceIndexRoute
   '/store/': typeof StoreIndexRoute
+  '/api/paypal/webhook': typeof ApiPaypalWebhookRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -171,6 +178,7 @@ export interface FileRoutesByTo {
   '/registry': typeof RegistryIndexRoute
   '/space': typeof SpaceIndexRoute
   '/store': typeof StoreIndexRoute
+  '/api/paypal/webhook': typeof ApiPaypalWebhookRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -194,6 +202,7 @@ export interface FileRoutesById {
   '/registry/': typeof RegistryIndexRoute
   '/space/': typeof SpaceIndexRoute
   '/store/': typeof StoreIndexRoute
+  '/api/paypal/webhook': typeof ApiPaypalWebhookRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -218,6 +227,7 @@ export interface FileRouteTypes {
     | '/registry/'
     | '/space/'
     | '/store/'
+    | '/api/paypal/webhook'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -237,6 +247,7 @@ export interface FileRouteTypes {
     | '/registry'
     | '/space'
     | '/store'
+    | '/api/paypal/webhook'
   id:
     | '__root__'
     | '/'
@@ -259,6 +270,7 @@ export interface FileRouteTypes {
     | '/registry/'
     | '/space/'
     | '/store/'
+    | '/api/paypal/webhook'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -272,6 +284,7 @@ export interface RootRouteChildren {
   RegistryRoute: typeof RegistryRouteWithChildren
   SpaceRoute: typeof SpaceRouteWithChildren
   StoreRoute: typeof StoreRouteWithChildren
+  ApiPaypalWebhookRoute: typeof ApiPaypalWebhookRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -416,6 +429,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof StoreSkuRouteImport
       parentRoute: typeof StoreRoute
     }
+    '/api/paypal/webhook': {
+      id: '/api/paypal/webhook'
+      path: '/api/paypal/webhook'
+      fullPath: '/api/paypal/webhook'
+      preLoaderRoute: typeof ApiPaypalWebhookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -476,6 +496,7 @@ const rootRouteChildren: RootRouteChildren = {
   RegistryRoute: RegistryRouteWithChildren,
   SpaceRoute: SpaceRouteWithChildren,
   StoreRoute: StoreRouteWithChildren,
+  ApiPaypalWebhookRoute: ApiPaypalWebhookRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
