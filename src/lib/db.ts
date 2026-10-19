@@ -199,6 +199,19 @@ async function createPgliteSql(): Promise<Sql> {
 let sqlPromise: Promise<Sql> | null = null;
 
 async function createSql(): Promise<Sql> {
+  // In production, never let application queries fall back to DATABASE_URL:
+  // that credential is reserved for deploy-time migrations and Better Auth.
+  // Until the separate least-privilege runtime role is provisioned, fail closed.
+  if (
+    typeof window === "undefined" &&
+    process.env.VERCEL_ENV === "production" &&
+    !runtimeDatabaseUrl
+  ) {
+    throw new Error(
+      "[db] DATABASE_RUNTIME_URL is required for production application queries; refusing the privileged DATABASE_URL fallback.",
+    );
+  }
+
   // Production must never silently fall back to ephemeral in-memory storage.
   // Vercel sets VERCEL_ENV during production builds and runtime; a missing
   // DATABASE_URL is a deployment configuration failure, not a PGLite request.
