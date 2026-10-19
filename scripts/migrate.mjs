@@ -19,6 +19,19 @@ import pg from "pg";
 import { migrationSources, pendingMigrations } from "./migration-plan.mjs";
 
 const databaseUrl = process.env.DATABASE_URL;
+
+// Vercel preview builds may inherit a production DATABASE_URL. Never mutate a
+// shared database from a preview build unless an operator explicitly opts in.
+if (
+  process.env.VERCEL_ENV === "preview" &&
+  process.env.SOLVEX_ALLOW_PREVIEW_MIGRATIONS !== "true"
+) {
+  console.log(
+    "[migrate] Vercel preview deployment — skipping database migrations unless SOLVEX_ALLOW_PREVIEW_MIGRATIONS=true.",
+  );
+  process.exit(0);
+}
+
 if (!databaseUrl) {
   console.log(
     "[migrate] DATABASE_URL not set — skipping (the PGLite fallback migrates itself).",
