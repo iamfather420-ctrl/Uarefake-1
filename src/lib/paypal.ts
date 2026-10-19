@@ -18,7 +18,7 @@ function validateCartInput(value: unknown): { items: CartLineInput[]; idempotenc
 
 export const createPayPalOrder = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
-  .inputValidator(validateCartInput)
+  .validator(validateCartInput)
   .handler(async ({ data, context }) => {
     const { createPayPalOrder: create } = await import("./paypal.server");
     return create(context.userId, data.items, data.idempotencyKey);
@@ -26,7 +26,7 @@ export const createPayPalOrder = createServerFn({ method: "POST" })
 
 export const capturePayPalOrder = createServerFn({ method: "POST" })
   .middleware([authMiddleware])
-  .inputValidator((value: unknown) => {
+  .validator((value: unknown) => {
     if (!value || typeof value !== "object" || !("orderId" in value) || typeof value.orderId !== "string") {
       throw new Error("Invalid PayPal capture request.");
     }

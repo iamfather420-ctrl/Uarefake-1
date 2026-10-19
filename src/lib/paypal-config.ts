@@ -9,6 +9,8 @@ export type PayPalConfig = {
   paymentsEnabled: boolean;
 };
 
+import { evaluatePaymentReleaseGate } from "./paypal-live-gate.server.ts";
+
 function environment(): PayPalEnvironment {
   const value = (process.env.PAYPAL_ENVIRONMENT ?? "").trim().toLowerCase();
   if (value !== "sandbox" && value !== "live") {
@@ -50,6 +52,9 @@ export function getPayPalConfig(): PayPalConfig {
     if (!config.webhookId) throw new Error("PayPal Live payments require PAYPAL_WEBHOOK_ID.");
     if (!(process.env.DATABASE_RUNTIME_URL?.trim() || process.env.DATABASE_URL?.trim())) throw new Error("PayPal Live payments require a durable Neon database.");
     required("BETTER_AUTH_URL");
+    const gate = evaluatePaymentReleaseGate(process.env);
+    if ("reason" in gate) throw new Error(`PayPal Live release gate blocked: ${gate.reason}.`);
+    if (gate.environment !== "live") throw new Error("PayPal Live release gate blocked: environment mismatch.");
   }
   return config;
 }
