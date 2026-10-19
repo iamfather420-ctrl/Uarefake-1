@@ -4,6 +4,8 @@
 **Reviewed:** 2026-10-17
 **Current integration:** Sandbox-only PayPal Orders v2 checkout
 
+> **Implementation update (2026-10-19):** The reviewed blockers were implemented in commit `0ead70e9b4ee52886a9265e6311a1b9d5f3ae232`. The repository now contains a gated Sandbox/Live adapter, durable payment schema, idempotent create/capture flow, webhook verification route, and release tests. Live money movement remains fail-closed until the documented production markers and provider-backed acceptance suite are complete.
+
 ## Executive conclusion
 
 The current PayPal integration must not be enabled for Live payments by changing only `PAYPAL_ENVIRONMENT`. The server implementation explicitly rejects every environment other than Sandbox, and the surrounding application lacks the durable payment, webhook, reconciliation, and fulfillment controls required for real-money processing.
