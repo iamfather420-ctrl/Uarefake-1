@@ -34,4 +34,8 @@ test("production readiness fails closed on runtime identity, tenant RLS, and aut
   assert.match(auth, /productionDeployment \? undefined : PREVIEW_CLIENT_ID/);
   assert.match(auth, /productionDeployment \? undefined : PREVIEW_CLIENT_SECRET/);
   assert.match(auth, /configuredGrokIssuer && env\("BETTER_AUTH_SECRET"\) && env\("BETTER_AUTH_URL"\)/);
+  // Auth/session persistence must not use the elevated migration URL.
+  assert.match(auth, /const runtimeDatabaseUrl = env\("DATABASE_RUNTIME_URL"\)/);
+  assert.match(auth, /const databaseUrl = runtimeDatabaseUrl \?\? env\("DATABASE_URL"\)/);
+  assert.match(auth, /runtimeDatabaseUrl \? \{ options: "-c role=solvex_app_runtime" \} : \{\}/);
 });
