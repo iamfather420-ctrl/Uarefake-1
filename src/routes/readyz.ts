@@ -56,14 +56,8 @@ export const Route = createFileRoute("/readyz")({
                     OR r.rolreplication OR r.rolbypassrls
                   FROM pg_roles r WHERE r.rolname = session_user
                 ), true) AS login_role_elevated,
-                EXISTS (
-                  SELECT 1
-                  FROM pg_auth_members am
-                  JOIN pg_roles parent ON parent.oid = am.roleid
-                  JOIN pg_roles member ON member.oid = am.member
-                  WHERE parent.rolname = 'neon_superuser'
-                    AND member.rolname = session_user
-                ) AS login_inherits_neon_superuser,
+                pg_has_role(session_user, 'neon_superuser', 'MEMBER')
+                  AS login_inherits_neon_superuser,
                 (
                   SELECT count(*)::int
                   FROM pg_class c
