@@ -111,3 +111,17 @@ The Neon branch inventory includes `br-bitter-brook-b4i77sma` (`solvex-recovery-
 ### Current disposition
 
 Still blocked: trusted production login/session, runtime login credentials and role verification, transaction-local signed tenant-context propagation, two-tenant application integration tests, production RLS reconciliation, automated snapshot schedule, restore integrity evidence, and fresh live health/readiness capture. Production was not modified.
+
+
+## Latest CI and deployment reconciliation (2026-10-20)
+
+A fresh check after the preceding evidence update found:
+
+- Evidence commit: `6290d69292a31433bf57b2aa2a1bbe71ac1661a1`.
+- GitHub Actions run `39374769720` (run #238) completed successfully. The validate job passed the production build, TypeScript, tests including fulfillment concurrency, and lint.
+- GitHub reported both Vercel status contexts successful for this commit.
+- The corresponding Vercel deployment `dpl_38sxEdVmy77D4rjkbWVW7bxXvk2J` is `READY`, source branch `fix/readyz-enforce-neon-rls-20261020`, commit `6290d69292a31433bf57b2aa2a1bbe71ac1661a1`. This is a preview/candidate deployment, not the current production deployment.
+- The Vercel production deployment list still identifies `dpl_5wMuLFf8h4EJwnf5ssUJTPMYSwdM` on `main`, commit `fdbb5519b18af3660221e418af4aced5195f839b`, as the latest production deployment observed in this check. Do not infer the PR candidate is serving production.
+- Direct HTTP retrieval of `/healthz` and `/readyz` through the available inspection path failed, so no fresh response codes are asserted here.
+
+These successful checks validate candidate CI and deployment creation only. They do not clear the production role/auth/RLS/recovery blockers listed above. PR #33 remains unmerged. No production database, secrets, backup schedule, or payment configuration was changed. PayPal remains intentionally excluded.
