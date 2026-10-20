@@ -9,6 +9,7 @@ test("production readiness fails closed on auth, runtime-role, RLS, and signed-c
   assert.match(source, /current_role !== "solvex_app_runtime"/);
   assert.match(source, /login_role_elevated/);
   assert.match(source, /login_inherits_neon_superuser/);
+  assert.match(source, /pg_has_role/);
   assert.match(source, /unsafe_public_table_count !== 0/);
   assert.match(source, /signed_tenant_context_not_ready/);
   assert.match(source, /migration_metadata_exposed/);
