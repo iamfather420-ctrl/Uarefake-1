@@ -1,8 +1,9 @@
-name: Import and verify pinned Full-Build source
+name: Validate pinned Full-Build source import (read-only)
 
 on:
   push:
     branches:
+      - main
       - integration/full-build-source-import-20261015
       - integration/package-merged-build-20261015
       - integration/complete-source-snapshot-import-20261015
@@ -15,8 +16,24 @@ on:
       - "docs/FULL-BUILD-SOURCE-INTEGRATION.md"
       - "eslint.config.mjs"
 
+  workflow_dispatch:
+    inputs:
+      target_branch:
+        description: "Read-only validation target"
+        required: true
+        type: choice
+        options:
+          - main
+          - integration/full-build-source-import-20261015
+          - integration/package-merged-build-20261015
+          - integration/complete-source-snapshot-import-20261015
+
+concurrency:
+  group: full-build-source-validation-${{ github.workflow }}-${{ github.event.pull_request.number || inputs.target_branch || github.ref }}
+  cancel-in-progress: false
+
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   import-and-verify:
@@ -28,8 +45,25 @@ jobs:
       - name: Checkout canonical target
         uses: actions/checkout@v4
         with:
+          ref: ${{ inputs.target_branch || github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
-          persist-credentials: true
+          persist-credentials: false
+
+      - name: Validate requested target and event
+        shell: bash
+        env:
+          TARGET_BRANCH: ${{ inputs.target_branch || github.base_ref || github.ref_name }}
+          EVENT_NAME: ${{ github.event_name }}
+        run: |
+          set -euo pipefail
+          case "$TARGET_BRANCH" in
+            main|integration/full-build-source-import-20261015|integration/package-merged-build-20261015|integration/complete-source-snapshot-import-20261015) ;;
+            *) echo "Blocked: target branch is not allowlisted: $TARGET_BRANCH"; exit 1 ;;
+          esac
+          if [[ "$EVENT_NAME" == "pull_request" && "$TARGET_BRANCH" != "main" ]]; then
+            echo "Blocked: pull-request validation must target main"
+            exit 1
+          fi
 
       - name: Set up Node
         uses: actions/setup-node@v4
@@ -39,14 +73,14 @@ jobs:
 
       - name: Import pinned Full-Build source without secrets or generated dependencies
         shell: bash
-        env:
-          TARGET_BRANCH: ${{ github.event.pull_request.head.ref || github.ref_name }}
         run: |
           set -euo pipefail
           SOURCE_SHA="a67017fbfe2ac795dfdc635a434ef50b19852ec8"
           TMP_DIR="$(mktemp -d)"
           git clone --filter=blob:none --no-checkout https://github.com/iamfather420-ctrl/Full-Build.git "$TMP_DIR/Full-Build"
           git -C "$TMP_DIR/Full-Build" checkout --detach "$SOURCE_SHA"
+          ACTUAL_SOURCE_SHA="$(git -C "$TMP_DIR/Full-Build" rev-parse HEAD)"
+          test "$ACTUAL_SOURCE_SHA" = "$SOURCE_SHA" || { echo "Pinned Full-Build SHA mismatch"; exit 1; }
           mkdir -p integrated-sources/Full-Build
           rsync -a \
             --exclude='.git/' \
@@ -154,13 +188,8 @@ jobs:
           }
           
           EOF
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add integrated-sources/Full-Build integrations/source-repos eslint.config.mjs
-          if ! git diff --cached --quiet; then
-            git commit -m "build(integration): import pinned Full-Build source with provenance"
-            git push origin "HEAD:${TARGET_BRANCH}"
-          fi
+          # Intentionally do not commit or push from CI. This workflow is read-only;
+          # reviewed source changes must enter through a separate pull request.
 
       - name: Install canonical app dependencies
         run: npm ci
