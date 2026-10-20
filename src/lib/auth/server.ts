@@ -112,7 +112,11 @@ const trustedOrigins: string[] = explicitBaseURL
       ...LOCAL_DEV_ORIGINS,
     ];
 
-const databaseUrl = env("DATABASE_URL");
+// Auth/session persistence must use the same least-privilege runtime login as
+// application SQL. DATABASE_URL is reserved for deploy-time migrations and must
+// never silently become the live auth pool when DATABASE_RUNTIME_URL is absent.
+const runtimeDatabaseUrl = env("DATABASE_RUNTIME_URL");
+const databaseUrl = runtimeDatabaseUrl ?? env("DATABASE_URL");
 
 // Static broker OAuth endpoints (skip OIDC discovery on every sign-in / callback).
 const issuerBase = grokIssuer.replace(/\/+$/, "");
@@ -123,7 +127,10 @@ const grokUserInfoUrl = `${issuerBase}/api/auth/oauth2/userinfo`;
 // Real Postgres when `DATABASE_URL` is set (deployed apps), else the app's
 // embedded PGLite (preview) via a Kysely dialect.
 const database = databaseUrl
-  ? new Pool({ connectionString: secureDatabaseUrl(databaseUrl) })
+  ? new Pool({
+      connectionString: secureDatabaseUrl(databaseUrl),
+      ...(runtimeDatabaseUrl ? { options: "-c role=solvex_app_runtime" } : {}),
+    })
   : { dialect: pgliteDialect(() => getPglite()), type: "postgres" as const };
 
 /** Session token cookie name — also read by the live-preview popup completion page. */
