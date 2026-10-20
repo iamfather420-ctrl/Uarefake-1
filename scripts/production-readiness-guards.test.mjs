@@ -25,7 +25,7 @@ test("production readiness fails closed on runtime identity, tenant RLS, and aut
 
   // The runtime credential must select the non-login app role at connection
   // startup; mere membership does not change current_user.
-  assert.match(db, /options:\s*"\-c role=solvex_app_runtime"/);
+  assert.match(db, /options:\s*"[-]c role=solvex_app_runtime"/);
   assert.match(db, /DATABASE_RUNTIME_URL is required for production application queries/);
   assert.match(db, /process\.env\.VERCEL_ENV === "production"/);
 
