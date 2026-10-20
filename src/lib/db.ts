@@ -114,7 +114,14 @@ function createNeonSql(): Promise<Sql> {
     types.setTypeParser(OID_INTERVAL, identity);
     const applicationDatabaseUrl = runtimeDatabaseUrl ?? databaseUrl;
     if (!applicationDatabaseUrl) throw new Error("[db] No application database URL is configured.");
-    const pool = new Pool({ connectionString: secureDatabaseUrl(applicationDatabaseUrl) });
+    // DATABASE_RUNTIME_URL must assume the non-login application role at
+    // connection startup. Membership alone does not change current_user; without
+    // this, the readiness probe correctly sees the login role and blocks forever.
+    // If the login cannot SET ROLE, connection establishment fails closed.
+    const pool = new Pool({
+      connectionString: secureDatabaseUrl(applicationDatabaseUrl),
+      ...(runtimeDatabaseUrl ? { options: "-c role=solvex_app_runtime" } : {}),
+    });
     return toSql(async <T>(text: string, params: unknown[]) => {
       const res = await pool.query(text, params);
       return res.rows as T[];
