@@ -14,4 +14,7 @@ test("production readiness fails closed on auth, runtime-role, RLS, and signed-c
   assert.match(source, /migration_metadata_exposed/);
   assert.match(source, /status: "not_ready"/);
   assert.match(source, /status: 503/);
+
+  const dbSource = await readFile(new URL("../src/lib/db.ts", import.meta.url), "utf8");
+  assert.match(dbSource, /runtimeDatabaseUrl \? \{ options: "-c role=solvex_app_runtime" \}/);
 });
