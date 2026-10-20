@@ -116,7 +116,16 @@ const trustedOrigins: string[] = explicitBaseURL
 // application SQL. DATABASE_URL is reserved for deploy-time migrations and must
 // never silently become the live auth pool when DATABASE_RUNTIME_URL is absent.
 const runtimeDatabaseUrl = env("DATABASE_RUNTIME_URL");
-const databaseUrl = runtimeDatabaseUrl ?? env("DATABASE_URL");
+// Production auth/session storage must never fall back to the migration credential
+// or ephemeral PGLite. A missing runtime credential is a configuration failure.
+if (productionDeployment && !runtimeDatabaseUrl) {
+  throw new Error(
+    "[auth] DATABASE_RUNTIME_URL is required for production auth; refusing the privileged DATABASE_URL/PGLite fallback.",
+  );
+}
+const databaseUrl = productionDeployment
+  ? runtimeDatabaseUrl
+  : runtimeDatabaseUrl ?? env("DATABASE_URL");
 
 // Static broker OAuth endpoints (skip OIDC discovery on every sign-in / callback).
 const issuerBase = grokIssuer.replace(/\/+$/, "");
