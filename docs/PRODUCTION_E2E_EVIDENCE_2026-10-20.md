@@ -93,3 +93,21 @@ These are **not yet proven**; do not mark them passed until logs/artifacts exist
 ## Acceptance rule
 
 Do not merge this PR or claim production-ready until the runtime-role, trusted-auth, signed-tenant-context, RLS, recovery, and live deployment checks above have evidence. A green CI run or Vercel READY status alone does not satisfy these criteria. Keep payment functionality disabled.
+
+
+## Follow-up validation-branch checks (2026-10-20)
+
+Additional read-only checks were run against Neon branch `br-dark-smoke-b4iu7i2t` (`solvex-tenant-auth-rehearsal-2026-10-16`), not the production branch:
+
+- Catalog audit counted 31 public application base tables (excluding migration metadata); all 31 had RLS enabled and forced. The policy catalog showed a restrictive policy on each of these tables. The payment tables are therefore not uniform across branches: the production observation above remains authoritative for production; this rehearsal branch is safer but is not proof that production matches it.
+- With no tenant context set, `solvex_private.current_claims()` returned NULL. Under the owner connection, three test queries returned 0 rows from `access_requests` and `audit_events`, and 1 row from `tenants`; because the session was `neondb_owner`, this is **not** a valid least-privilege RLS enforcement test.
+- Attempting to run the same query as `solvex_app_runtime` failed because that role has no usable login credentials in the Neon tool connection. No credential was created or changed.
+- The rehearsal branch's RLS catalog is encouraging structural evidence, but no synthetic two-tenant read/write denial test or signed-token propagation test is claimed.
+
+### Recovery evidence clarification
+
+The Neon branch inventory includes `br-bitter-brook-b4i77sma` (`solvex-recovery-drill-2026-10-14`) with provider metadata `restore_status=restored` and `restored_from=snap-late-heart-b4fthcpn`. This establishes that a snapshot restore operation was previously recorded, but this follow-up did not establish the restore's integrity checks or successful application-level recovery. Treat it as a recorded restore event, not a completed verified disaster-recovery rehearsal.
+
+### Current disposition
+
+Still blocked: trusted production login/session, runtime login credentials and role verification, transaction-local signed tenant-context propagation, two-tenant application integration tests, production RLS reconciliation, automated snapshot schedule, restore integrity evidence, and fresh live health/readiness capture. Production was not modified.
