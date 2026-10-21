@@ -30,8 +30,8 @@ test("production readiness fails closed on auth, runtime-role, RLS, and signed-c
   assert.doesNotMatch(authSource, /options:\s*"[-]c role=solvex_app_runtime"/);
 
   const packageJson = JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8"));
-  assert.match(packageJson.scripts.build, /^node scripts\\/migrate\\.mjs && /);
+  assert.match(packageJson.scripts.build, /^node scripts\/migrate\.mjs && /);
   const migrator = await readFile(new URL("../scripts/migrate.mjs", import.meta.url), "utf8");
-  assert.match(migrator, /url\\.searchParams\\.delete\\("options"\\)/);
-  assert.match(migrator, /secureMigrationUrl\\(databaseUrl\\)/);
+  assert.match(migrator, /url\.searchParams\.delete\("options"\)/);
+  assert.match(migrator, /secureMigrationUrl\(databaseUrl\)/);
 });
