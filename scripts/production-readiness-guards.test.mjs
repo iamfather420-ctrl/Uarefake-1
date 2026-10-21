@@ -20,6 +20,8 @@ test("production readiness fails closed on runtime identity, tenant RLS, and aut
   assert.match(readyz, /tenant_rls_probe_failed/);
   assert.match(readyz, /migration_metadata_probe_failed/);
   assert.match(readyz, /signed_tenant_context_probe_failed/);
+  assert.match(readyz, /safeSqlStateCode/);
+  assert.match(readyz, /runtime_identity_probe_sqlstate_/);
   assert.match(readyz, /effective_runtime_role_elevated/);
   assert.match(readyz, /runtime_login_role_elevated/);
   assert.match(readyz, /runtime_login_inherits_neon_superuser/);
