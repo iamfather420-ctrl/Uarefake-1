@@ -32,10 +32,11 @@ BEGIN
     current_ms := extract(epoch FROM clock_timestamp()) * 1000;
   EXCEPTION WHEN OTHERS THEN RETURN NULL;
   END;
-  IF coalesce(claims->>'user_id', '') = '' OR
+  IF issued_ms IS NULL OR expires_ms IS NULL OR
+     coalesce(claims->>'user_id', '') = '' OR
      coalesce(claims->>'tenant_id', '') = '' OR
      coalesce(claims->>'email', '') = '' OR
-     claims->>'role' NOT IN ('OWNER', 'ADMIN', 'VERIFIER', 'CUSTOMER') OR
+     coalesce(claims->>'role', '') NOT IN ('OWNER', 'ADMIN', 'VERIFIER', 'CUSTOMER') OR
      issued_ms > current_ms + 30000 OR expires_ms <= current_ms OR
      expires_ms <= issued_ms OR expires_ms - issued_ms > 900000 THEN RETURN NULL; END IF;
   RETURN claims;
