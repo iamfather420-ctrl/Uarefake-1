@@ -24,6 +24,7 @@ export const Route = createFileRoute("/readyz")({
       GET: async () => {
         const production = process.env.VERCEL_ENV === "production";
         const blockers: string[] = [];
+        let failureCode = "dependency_check_failed";
 
         try {
           if (production) {
@@ -38,10 +39,13 @@ export const Route = createFileRoute("/readyz")({
             }
           }
 
+          failureCode = "database_client_import_failed";
           const { getSql } = await import("@/lib/db");
+          failureCode = "runtime_database_connection_failed";
           const sql = await getSql();
 
           if (production) {
+            failureCode = "runtime_database_security_probe_failed";
             const rows = await sql.query<ProductionReadinessProbe>(`
               SELECT
                 current_user::text AS current_role,
@@ -98,6 +102,7 @@ export const Route = createFileRoute("/readyz")({
               if (!probe.auth_context_ready) blockers.push("signed_tenant_context_not_ready");
             }
           } else {
+            failureCode = "database_probe_failed";
             await sql.query("SELECT 1 AS ready");
           }
 
@@ -116,7 +121,9 @@ export const Route = createFileRoute("/readyz")({
             { status: 200, headers: { "cache-control": "no-store" } },
           );
         } catch {
-          console.error("[readyz] blocked: dependency_check_failed");
+          // Log only a static stage code; never expose raw database/provider errors.
+          blockers.push(failureCode);
+          console.error("[readyz] blocked:", [...new Set(blockers)].join(","));
           return Response.json(
             { status: "not_ready" },
             { status: 503, headers: { "cache-control": "no-store" } },
