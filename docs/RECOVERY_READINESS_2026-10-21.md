@@ -27,7 +27,7 @@ This branch now demonstrates that migration replay and the RLS lockdown can run 
 
 The requested target is 30 days, subject to provider support and cost. Current Neon documentation states that automatic snapshot schedules require a paid plan; the project metadata currently reports the Free plan. Snapshot storage is billed at $0.09/GB-month. Scheduled snapshots can retain up to 35 days, but the production schedule is currently empty.
 
-On 2026-10-21, the existing manual snapshot expiration was extended from `2026-11-13T00:00:00Z` to `2026-11-14T00:00:00Z` to cover at least 30 days from creation; the snapshot list was re-read and confirmed the new expiration. No plan upgrade or automatic schedule change was made. Do not claim 30-day automated backups are active until the owner authorizes a plan/cost decision and the schedule is applied and re-read successfully.
+On 2026-10-21, the existing manual snapshot expiration was extended from `2026-11-13T00:00:00Z` to `2026-11-14T00:00:00Z` to cover at least 30 days from creation; the snapshot list was re-read and confirmed the new expiration. No plan upgrade or automatic schedule change was made. Do not claim 30-day automated backups are active until the owner authorizes a plan/cost decision and the schedule is applied and re-read successfully. A new snapshot request after the security migration was rejected with `snapshots limit exceeded`; no existing snapshot was deleted. The available snapshot predates the 2026-10-21 RLS/grant hardening, though that migration did not change business rows. Capturing the post-hardening state requires either more snapshot capacity or explicit authorization to replace the old snapshot.
 
 ## Required recovery acceptance test
 

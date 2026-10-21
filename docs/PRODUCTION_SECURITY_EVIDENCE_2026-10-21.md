@@ -3,9 +3,9 @@
 ## Runtime database identity
 
 - Repository: `iamfather420-ctrl/Uarefake-1`.
-- Production code commit: `abf186d3b89e3a0d66d4f41e03619d0c2f0ba6db`; GitHub Actions passed and Vercel deployment `dpl_HQrewjW97Lvegt7jHV2zK7LPB2yu` is READY.
+- Security migration commit: `abf186d3b89e3a0d66d4f41e03619d0c2f0ba6db`; GitHub Actions passed and Vercel deployment `dpl_HQrewjW97Lvegt7jHV2zK7LPB2yu` is READY. Follow-up commit `530b5ff639837b57c46471cadf6818dc9888c596` also passed GitHub Actions and deployed READY as `dpl_HgkSDQjza8d1HdPgAYiUD18ZCQZQ`.
 - Production `DATABASE_RUNTIME_URL` was updated to the Neon production branch using login `solvex_runtime_login_v2`; the credential itself is not stored in the repository.
-- `src/lib/db.ts` now strips unsupported PostgreSQL startup options and uses `BEGIN` / `SET LOCAL ROLE solvex_app_runtime` / application query / `COMMIT` on one pinned client transaction. This avoids the Neon pooled-endpoint SQLSTATE `08P01` failure.
+- `src/lib/db.ts` now strips unsupported PostgreSQL startup options and uses `BEGIN` / `SET LOCAL ROLE solvex_app_runtime` / application query / `COMMIT` on one pinned client transaction. This avoids the Neon pooled-endpoint SQLSTATE `08P01` failure. The production build now invokes `scripts/migrate.mjs` before Vite; the migration runner sanitizes the privileged migration URL and the latest deployment completed READY.
 - The production readiness log no longer reports runtime-role elevation, legacy-login identity, migration-metadata access, or incomplete RLS. The old `solvex_runtime_login` role still exists separately and remains privileged; see “Remaining blocker” below.
 
 ## Production RLS and payment-table lockdown
