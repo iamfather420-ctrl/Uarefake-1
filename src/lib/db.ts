@@ -38,6 +38,18 @@ export function secureDatabaseUrl(connectionString: string): string {
 }
 
 /**
+ * Neon transaction-pooled endpoints reject the PostgreSQL startup `options`
+ * parameter (SQLSTATE 08P01). Runtime role switching is handled with
+ * SET LOCAL ROLE inside each pinned transaction, so remove any stale options
+ * parameter from the runtime URL while preserving the other connection fields.
+ */
+export function withoutUnsupportedStartupOptions(connectionString: string): string {
+  const url = new URL(connectionString);
+  url.searchParams.delete("options");
+  return url.toString();
+}
+
+/**
  * Minimal shared SQL surface, satisfied by both Neon and PGLite. Both the
  * tagged-template and `.query()` forms resolve to an array of row objects:
  *
@@ -112,7 +124,9 @@ function createNeonSql(): Promise<Sql> {
     types.setTypeParser(OID_INT8, Number);
     types.setTypeParser(OID_DATE, identity);
     types.setTypeParser(OID_INTERVAL, identity);
-    const applicationDatabaseUrl = runtimeDatabaseUrl ?? databaseUrl;
+    const applicationDatabaseUrl = runtimeDatabaseUrl
+      ? withoutUnsupportedStartupOptions(runtimeDatabaseUrl)
+      : databaseUrl;
     if (!applicationDatabaseUrl) throw new Error("[db] No application database URL is configured.");
     // Do not send a PostgreSQL "options=-c role=..." startup parameter: the
     // Neon pooled endpoint rejects it with SQLSTATE 08P01. Instead, pin each
