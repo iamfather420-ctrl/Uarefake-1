@@ -14,6 +14,7 @@ test("production readiness fails closed on runtime identity, tenant RLS, and aut
   assert.match(readyz, /DATABASE_RUNTIME_URL/);
   assert.match(readyz, /trusted_auth_not_configured/);
   assert.match(readyz, /runtime_role_not_forced/);
+  assert.match(readyz, /unexpected_runtime_login_role/);
   assert.match(readyz, /effective_runtime_role_elevated/);
   assert.match(readyz, /runtime_login_role_elevated/);
   assert.match(readyz, /runtime_login_inherits_neon_superuser/);
