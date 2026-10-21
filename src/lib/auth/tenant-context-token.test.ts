@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { createHmac } from "node:crypto";
 import { readFile } from "node:fs/promises";
 import test from "node:test";
-import { issueTenantContextToken, type TenantContextClaims } from "./tenant-context-token";
+import { issueTenantContextToken, type TenantContextClaims } from "./tenant-context-token.ts";
 
 const secret = "test-only-secret-with-at-least-32-characters";
 const now = Date.now();
