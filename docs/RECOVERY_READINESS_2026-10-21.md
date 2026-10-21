@@ -2,7 +2,7 @@
 
 ## Current state
 
-**Status: BLOCKED — backup automation and a full restore rehearsal are not verified.** These checks were read-only. No production schema, data, credentials, database roles, backup settings, or payment settings were changed.
+**Status: BLOCKED — backup automation and a full restore rehearsal are not verified.** The catalog/schema checks were read-only. No production schema, data, credentials, database roles, automatic backup schedule, or payment settings were changed. The existing manual snapshot's expiration was extended to meet the owner's approximately 30-day retention target.
 
 - Neon project: `flat-unit-34950816` (`SolveX`), region `aws-us-east-2`.
 - Production branch: `br-soft-dawn-b4wkrjox` (`production`).
