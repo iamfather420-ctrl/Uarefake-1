@@ -57,13 +57,12 @@ const env = (key: string): string | undefined => {
   return value ? value : undefined;
 };
 
-// Explicit off-switch. The deployer sets `VITE_AUTH_ENABLED=true` when it
-// provisions auth; set it to "false" to force auth off everywhere (dev user).
-export const authDisabled = env("VITE_AUTH_ENABLED") === "false";
-
-// Deployed apps use per-app credentials. Preview credentials are optional and
-// environment-provided; production never falls back to a shared preview client.
+// Production sign-in is intentionally disabled until the production identity,
+// tenant-isolation, and recovery gates pass. VITE_AUTH_ENABLED only enables
+// non-production testing; it cannot override the production fail-closed gate.
 const productionDeployment = env("VERCEL_ENV") === "production";
+export const authDisabled =
+  productionDeployment || env("VITE_AUTH_ENABLED") === "false";
 const configuredGrokIssuer = env("GROK_AUTH_ISSUER");
 const grokIssuer = configuredGrokIssuer ?? GROK_ISSUER_DEFAULT;
 const grokClientId =
@@ -136,10 +135,7 @@ const grokUserInfoUrl = `${issuerBase}/api/auth/oauth2/userinfo`;
 // Real Postgres when `DATABASE_URL` is set (deployed apps), else the app's
 // embedded PGLite (preview) via a Kysely dialect.
 const database = databaseUrl
-  ? new Pool({
-      connectionString: secureDatabaseUrl(databaseUrl),
-      ...(runtimeDatabaseUrl ? { options: "-c role=solvex_app_runtime" } : {}),
-    })
+  ? new Pool({ connectionString: secureDatabaseUrl(databaseUrl) })
   : { dialect: pgliteDialect(() => getPglite()), type: "postgres" as const };
 
 /** Session token cookie name — also read by the live-preview popup completion page. */
