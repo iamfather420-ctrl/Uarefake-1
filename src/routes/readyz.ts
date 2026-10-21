@@ -1,4 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
+import type { RuntimeRoleSecurityRow } from "@/lib/db-runtime-security";
 
 /**
  * Readiness is stricter than liveness. Production is ready only when the
@@ -30,7 +31,7 @@ export const Route = createFileRoute("/readyz")({
 
           if (isProduction) {
             const { isLeastPrivilegeRuntimeRole } = await import("@/lib/db-runtime-security");
-            const roles = await sql.query(
+            const roles = await sql.query<RuntimeRoleSecurityRow>(
               `SELECT
                 session_user::text AS "session_user",
                 current_user::text AS "current_user",
