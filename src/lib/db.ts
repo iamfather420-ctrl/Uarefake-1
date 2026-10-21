@@ -114,17 +114,37 @@ function createNeonSql(): Promise<Sql> {
     types.setTypeParser(OID_INTERVAL, identity);
     const applicationDatabaseUrl = runtimeDatabaseUrl ?? databaseUrl;
     if (!applicationDatabaseUrl) throw new Error("[db] No application database URL is configured.");
-    // DATABASE_RUNTIME_URL must assume the non-login application role at
-    // connection startup. Membership alone does not change current_user; without
-    // this, the readiness probe correctly sees the login role and blocks forever.
-    // If the login cannot SET ROLE, connection establishment fails closed.
+    // Do not send a PostgreSQL "options=-c role=..." startup parameter: the
+    // Neon pooled endpoint rejects it with SQLSTATE 08P01. Instead, pin each
+    // application statement to one transaction and set the role locally inside
+    // that transaction. This works with transaction pooling and resets the role
+    // automatically at COMMIT/ROLLBACK.
     const pool = new Pool({
       connectionString: secureDatabaseUrl(applicationDatabaseUrl),
-      ...(runtimeDatabaseUrl ? { options: "-c role=solvex_app_runtime" } : {}),
     });
     return toSql(async <T>(text: string, params: unknown[]) => {
-      const res = await pool.query(text, params);
-      return res.rows as T[];
+      const client = await pool.connect();
+      let discardConnection = false;
+      try {
+        await client.query("BEGIN");
+        if (runtimeDatabaseUrl) {
+          await client.query("SET LOCAL ROLE solvex_app_runtime");
+        }
+        const res = await client.query(text, params);
+        await client.query("COMMIT");
+        return res.rows as T[];
+      } catch (error) {
+        try {
+          await client.query("ROLLBACK");
+        } catch {
+          discardConnection = true;
+        }
+        throw error;
+      } finally {
+        client.release(
+          discardConnection ? new Error("Database transaction connection became unusable") : undefined,
+        );
+      }
     });
   })().catch((err) => {
     globalRef.__pgSqlPromise__ = undefined;
