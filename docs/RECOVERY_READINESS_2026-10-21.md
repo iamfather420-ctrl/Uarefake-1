@@ -2,7 +2,7 @@
 
 ## Current state
 
-**Status: BLOCKED — backup automation and a full restore rehearsal are not verified.** The catalog/schema checks were read-only. No production schema, data, credentials, database roles, automatic backup schedule, or payment settings were changed. The existing manual snapshot's expiration was extended to meet the owner's approximately 30-day retention target.
+**Status: BLOCKED — backup automation and a full restore rehearsal are not verified.** Since the initial audit, the production runtime secret was moved to the least-privilege login and migration `0006_tenant_rls_lockdown.sql` was applied. That migration changed RLS policies, grants, and function ACLs, but did not change business rows or PayPal provider settings. The existing manual snapshot's expiration was extended to meet the owner's approximately 30-day retention target.
 
 - Neon project: `flat-unit-34950816` (`SolveX`), region `aws-us-east-2`.
 - Production branch: `br-soft-dawn-b4wkrjox` (`production`).
@@ -13,13 +13,15 @@
 
 ## Restore-branch schema comparison
 
-The existing recovery branch `br-bitter-brook-b4i77sma` (`solvex-recovery-drill-2026-10-14`) reports that it was restored from `snap-late-heart-b4fthcpn`. A read-only schema comparison against current production found that the restored branch does **not** match current production schema:
+The recovery branch `br-bitter-brook-b4i77sma` (`solvex-recovery-drill-2026-10-14`) was restored from `snap-late-heart-b4fthcpn`. The first comparison found that it lacked four payment tables and `solvex_private.auth_context_ready()`. To test migration replay without touching production data, migrations `0004_recovery_target_id_reconcile.sql`, `0005_payments.sql`, and `0006_tenant_rls_lockdown.sql` were applied to that isolated branch.
 
-- The production schema contains `payment_events`, `payment_fulfillments`, `payment_orders`, and `payment_refunds`; those four tables are absent from the recovery branch.
-- The production schema contains `solvex_private.auth_context_ready()`; that function is absent from the recovery branch.
-- The public table-name lists otherwise matched in the catalog result; this is not proof that row contents, indexes, grants, constraints, application behavior, or tenant isolation match.
+After replay, the owner-exception policy count and unsafe-public-table count are both zero on the recovery branch. However, a fresh schema comparison still shows **material payment-table schema drift** between production and the migration-defined recovery schema. Examples include:
 
-This means the existing branch proves that a historical snapshot can be restored into a branch, but it does **not** prove a full restore of the current production schema or application. This is a schema observation only; it does not authorize enabling or using payment processing.
+- Production `payment_events` has legacy fields such as `provider_event_id`, `environment`, `signature_verified`, and `processing_status`; the replayed schema instead has `paypal_order_id`, `status`, and `updated_at`.
+- Production `payment_orders` uses `cart_snapshot` / `catalog_hash` / `amount_minor`; the replayed schema uses `cart_json` / `cart_hash` / `amount_cents`.
+- Production `payment_refunds` uses `amount_minor`, while the replayed migration defines `amount_cents`; timestamp and metadata types also differ.
+
+This branch now demonstrates that migration replay and the RLS lockdown can run in isolation, but it does **not** prove payment schema parity, row integrity, application behavior, or a complete restore. Per the owner's instruction, no payment columns or PayPal provider behavior were reconciled or enabled during this pass. Keep payment schema reconciliation blocked until payment work is explicitly authorized.
 
 ## 30-day retention and plan constraint
 

@@ -28,4 +28,10 @@ test("production readiness fails closed on auth, runtime-role, RLS, and signed-c
   const authSource = await readFile(new URL("../src/lib/auth/server.ts", import.meta.url), "utf8");
   assert.match(authSource, /productionDeployment \|\| env\("VITE_AUTH_ENABLED"\) === "false"/);
   assert.doesNotMatch(authSource, /options:\s*"[-]c role=solvex_app_runtime"/);
+
+  const packageJson = JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8"));
+  assert.match(packageJson.scripts.build, /^node scripts\\/migrate\\.mjs && /);
+  const migrator = await readFile(new URL("../scripts/migrate.mjs", import.meta.url), "utf8");
+  assert.match(migrator, /url\\.searchParams\\.delete\\("options"\\)/);
+  assert.match(migrator, /secureMigrationUrl\\(databaseUrl\\)/);
 });

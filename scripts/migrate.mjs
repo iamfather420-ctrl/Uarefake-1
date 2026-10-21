@@ -26,6 +26,22 @@ if (!databaseUrl) {
   process.exit(0);
 }
 
+function secureMigrationUrl(connectionString) {
+  try {
+    const url = new URL(connectionString);
+    // Neon transaction pooling rejects the startup "options" parameter.
+    // Role changes are applied transaction-locally by the application pool.
+    url.searchParams.delete("options");
+    const sslmode = url.searchParams.get("sslmode");
+    if (sslmode && ["prefer", "require", "verify-ca"].includes(sslmode.toLowerCase())) {
+      url.searchParams.set("sslmode", "verify-full");
+    }
+    return url.toString();
+  } catch {
+    throw new Error("DATABASE_URL must be a valid PostgreSQL connection URL");
+  }
+}
+
 const migrationsDir = join(dirname(fileURLToPath(import.meta.url)), "..", "migrations");
 const authEnabled = process.env.VITE_AUTH_ENABLED === "true";
 const requiredAuthEnvironment = ["GROK_AUTH_CLIENT_ID", "GROK_AUTH_CLIENT_SECRET", "GROK_AUTH_ISSUER", "BETTER_AUTH_SECRET", "BETTER_AUTH_URL"];
@@ -59,7 +75,7 @@ async function main() {
     return;
   }
 
-  const pool = new pg.Pool({ connectionString: databaseUrl, max: 1 });
+  const pool = new pg.Pool({ connectionString: secureMigrationUrl(databaseUrl), max: 1 });
   const client = await pool.connect();
   try {
     await client.query(
