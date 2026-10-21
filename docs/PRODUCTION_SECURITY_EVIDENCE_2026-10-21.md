@@ -44,3 +44,11 @@ The old `solvex_runtime_login` role remains `LOGIN`, `BYPASSRLS`, `CREATEDB`, `C
 ## Remaining recovery decision
 
 The current Neon plan metadata is `free_v3`, history retention is six hours, and the automatic snapshot schedule is empty. The existing manual snapshot expires `2026-11-14T00:00:00Z`. A 30-day automatic schedule is not active; paid-plan approval is still required. See `RECOVERY_READINESS_2026-10-21.md` for the restore-branch schema drift and recovery acceptance checklist.
+
+
+## Signed tenant-context token algorithm — coordinated migration
+
+- Existing SQL verification used a custom `SHA-256(claims || ':' || secret)` construction, which is not HMAC and should not be used as a MAC.
+- The proposed `0007_hmac_signed_tenant_context.sql` migration changes the verifier to HMAC-SHA-256 over the exact base64-encoded claims segment. The paired server-only issuer uses Node's `createHmac('sha256', secret)` and emits the same `base64-claims.hex-signature` format.
+- Issuer tests cover matching signatures, tampering, missing/short secrets, and allowed claim roles/expiry bounds. A migration invariant test ensures the SQL verifier uses `public.hmac` and no longer uses the legacy digest construction.
+- This is a coordinated code change only. It does **not** add `SOLVEX_AUTH_SECRET` to production, insert a secret row, issue live tenant tokens, or enable production authentication. The issuer is a server-only primitive and is not wired to an unverified user-to-tenant mapping. Valid-token tenant isolation remains a release gate.
