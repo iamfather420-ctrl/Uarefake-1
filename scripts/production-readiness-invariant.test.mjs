@@ -22,4 +22,8 @@ test("production readiness fails closed on auth, runtime-role, RLS, and signed-c
   assert.match(dbSource, /client\.query\("BEGIN"\)/);
   assert.match(dbSource, /client\.query\("COMMIT"\)/);
   assert.doesNotMatch(dbSource, /options:\s*"[-]c role=solvex_app_runtime"/);
+
+  const authSource = await readFile(new URL("../src/lib/auth/server.ts", import.meta.url), "utf8");
+  assert.match(authSource, /productionDeployment \|\| env\("VITE_AUTH_ENABLED"\) === "false"/);
+  assert.doesNotMatch(authSource, /options:\s*"[-]c role=solvex_app_runtime"/);
 });
