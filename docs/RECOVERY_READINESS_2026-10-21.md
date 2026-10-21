@@ -9,7 +9,7 @@
 - Current plan metadata: `free_v3`.
 - Project history window: 21,600 seconds (6 hours), not 30 days.
 - Production snapshot schedule: empty (`[]`); no automated schedule is configured.
-- Known manual snapshot: `snap-late-heart-b4fthcpn`, `solvex-production-rls-hardening-2026-10-14`, created `2026-10-14T21:51:03Z`, expiration `2026-11-13T00:00:00Z`, reported full size 34,119,680 bytes.
+- Known manual snapshot: `snap-late-heart-b4fthcpn`, `solvex-production-rls-hardening-2026-10-14`, created `2026-10-14T21:51:03Z`, expiration `2026-11-14T00:00:00Z`, reported full size 34,119,680 bytes.
 
 ## Restore-branch schema comparison
 
@@ -25,7 +25,7 @@ This means the existing branch proves that a historical snapshot can be restored
 
 The requested target is 30 days, subject to provider support and cost. Current Neon documentation states that automatic snapshot schedules require a paid plan; the project metadata currently reports the Free plan. Snapshot storage is billed at $0.09/GB-month. Scheduled snapshots can retain up to 35 days, but the production schedule is currently empty.
 
-No plan upgrade or schedule change was made. Do not claim 30-day automated backups are active until the owner authorizes a plan/cost decision and the schedule is applied and re-read successfully.
+On 2026-10-21, the existing manual snapshot expiration was extended from `2026-11-13T00:00:00Z` to `2026-11-14T00:00:00Z` to cover at least 30 days from creation; the snapshot list was re-read and confirmed the new expiration. No plan upgrade or automatic schedule change was made. Do not claim 30-day automated backups are active until the owner authorizes a plan/cost decision and the schedule is applied and re-read successfully.
 
 ## Required recovery acceptance test
 
