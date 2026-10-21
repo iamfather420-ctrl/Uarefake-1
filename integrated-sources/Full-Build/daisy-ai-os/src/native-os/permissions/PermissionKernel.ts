@@ -1,6 +1,6 @@
 /**
- * AI-OS NATIVE BRANCH — Permissions
- * Fail-closed grants for Daisy system resources.
+ * Daisy native permissions — fail-closed until an authenticated authorization
+ * verifier is injected. A subject label is not proof of identity or consent.
  */
 import type { PermissionGrant } from '../types.ts';
 
@@ -8,18 +8,15 @@ export class PermissionKernel {
   private grants: PermissionGrant[] = [];
 
   request(subject: string, resource: string, action: PermissionGrant['action']): PermissionGrant {
-    const allowed =
-      subject === 'daisy' ||
-      subject === 'trustee' ||
-      subject === 'system' ||
-      (action === 'read' && resource.startsWith('public:'));
-
+    const publicRead = action === 'read' && resource.startsWith('public:');
     const grant: PermissionGrant = {
       subject,
       resource,
       action,
-      granted: allowed,
-      reason: allowed ? 'Daisy native policy allow' : 'Fail-closed: insufficient privilege',
+      granted: publicRead,
+      reason: publicRead
+        ? 'Public read-only resource'
+        : 'BLOCKED: authenticated identity and operation-bound human authorization verifier are not configured',
     };
     this.grants.push(grant);
     return grant;
