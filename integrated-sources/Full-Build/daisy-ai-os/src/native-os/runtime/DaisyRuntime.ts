@@ -1,6 +1,7 @@
 /**
- * AI-OS NATIVE BRANCH — Runtime
- * Boots Daisy core and binds CURRENT MAIN capabilities into the native process space.
+ * Daisy native runtime state.
+ * Activation is denied until an independently verified activation contract
+ * and production dependencies are supplied by the host.
  */
 import type { PlatformTarget, RuntimeState, ClaimScope } from '../types.ts';
 
@@ -21,22 +22,20 @@ export class DaisyRuntime {
   }
 
   static getInstance(platform?: PlatformTarget): DaisyRuntime {
-    if (!DaisyRuntime.instance) {
-      DaisyRuntime.instance = new DaisyRuntime(platform);
-    }
+    if (!DaisyRuntime.instance) DaisyRuntime.instance = new DaisyRuntime(platform);
     return DaisyRuntime.instance;
   }
 
   boot(): RuntimeState {
-    this.state.activation = 'ACTIVE';
+    this.state.activation = 'BLOCKED';
     this.state.uptime_ms = Date.now() - this.startedAt;
     return this.snapshot();
   }
 
-  halt(reason = 'operator'): RuntimeState {
+  halt(_reason = 'operator'): RuntimeState {
     this.state.activation = 'BLOCKED';
     this.state.uptime_ms = Date.now() - this.startedAt;
-    return { ...this.snapshot(), environment: this.state.environment };
+    return this.snapshot();
   }
 
   snapshot(): RuntimeState {
@@ -45,6 +44,6 @@ export class DaisyRuntime {
   }
 
   claimScope(): ClaimScope {
-    return this.state.environment === 'production' ? 'PRODUCTION_VERIFIED' : 'LOCAL_VERIFIED';
+    return 'EXTERNAL_PROVIDER_REQUIRED';
   }
 }
