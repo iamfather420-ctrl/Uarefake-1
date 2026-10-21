@@ -32,9 +32,11 @@ test("production readiness fails closed on runtime identity, tenant RLS, and aut
   assert.match(readyz, /status: "not_ready"/);
   assert.match(readyz, /status: 503/);
 
-  // The runtime credential must select the non-login app role at connection
-  // startup; mere membership does not change current_user.
-  assert.match(db, /options:\s*"[-]c role=solvex_app_runtime"/);
+  // Neon transaction pooling rejects startup role options; role switching must
+  // occur transaction-locally on the same pinned client.
+  assert.match(db, /pool\.connect\(\)/);
+  assert.match(db, /SET LOCAL ROLE solvex_app_runtime/);
+  assert.doesNotMatch(db, /options:\s*"[-]c role=solvex_app_runtime"/);
   assert.match(db, /DATABASE_RUNTIME_URL is required for production application queries/);
   assert.match(db, /process\.env\.VERCEL_ENV === "production"/);
 
@@ -48,5 +50,6 @@ test("production readiness fails closed on runtime identity, tenant RLS, and aut
   assert.match(auth, /productionDeployment && !runtimeDatabaseUrl/);
   assert.match(auth, /DATABASE_RUNTIME_URL is required for production auth/);
   assert.match(auth, /const databaseUrl = productionDeployment\s+\? runtimeDatabaseUrl\s+: runtimeDatabaseUrl \?\? env\("DATABASE_URL"\)/);
-  assert.match(auth, /runtimeDatabaseUrl \? \{ options: "-c role=solvex_app_runtime" \} : \{\}/);
+  assert.doesNotMatch(auth, /options:\s*"[-]c role=solvex_app_runtime"/);
+  assert.match(auth, /productionDeployment \|\| env\("VITE_AUTH_ENABLED"\) === "false"/);
 });
