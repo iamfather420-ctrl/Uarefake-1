@@ -12,6 +12,14 @@ type TenantRlsProbe = { unsafe_public_table_count: number };
 type MigrationMetadataProbe = { migration_metadata_exposed: boolean };
 type SignedContextProbe = { auth_context_ready: boolean };
 
+function safeSqlStateCode(error: unknown): string {
+  if (error && typeof error === "object" && "code" in error) {
+    const code = (error as { code?: unknown }).code;
+    if (typeof code === "string" && /^[0-9A-Z]{5}$/.test(code)) return code;
+  }
+  return "unknown";
+}
+
 /**
  * Production readiness fails closed on auth, runtime identity, tenant RLS,
  * migration metadata exposure, or signed tenant-context failures. Keep blocker
@@ -23,6 +31,7 @@ export const Route = createFileRoute("/readyz")({
       GET: async () => {
         const production = process.env.VERCEL_ENV === "production";
         const blockers: string[] = [];
+        const probeDiagnostics: string[] = [];
         let failureCode = "dependency_check_failed";
 
         try {
@@ -64,8 +73,9 @@ export const Route = createFileRoute("/readyz")({
                     AS login_inherits_neon_superuser
               `);
               identity = rows[0];
-            } catch {
+            } catch (error) {
               blockers.push("runtime_identity_probe_failed");
+              probeDiagnostics.push(`runtime_identity_probe_sqlstate_${safeSqlStateCode(error)}`);
             }
 
             if (!identity) {
@@ -98,8 +108,9 @@ export const Route = createFileRoute("/readyz")({
               `);
               if (!rows[0]) blockers.push("tenant_rls_probe_empty");
               else if (rows[0].unsafe_public_table_count !== 0) blockers.push("tenant_rls_incomplete");
-            } catch {
+            } catch (error) {
               blockers.push("tenant_rls_probe_failed");
+              probeDiagnostics.push(`tenant_rls_probe_sqlstate_${safeSqlStateCode(error)}`);
             }
 
             try {
@@ -113,8 +124,9 @@ export const Route = createFileRoute("/readyz")({
               `);
               if (!rows[0]) blockers.push("migration_metadata_probe_empty");
               else if (rows[0].migration_metadata_exposed) blockers.push("migration_metadata_exposed");
-            } catch {
+            } catch (error) {
               blockers.push("migration_metadata_probe_failed");
+              probeDiagnostics.push(`migration_metadata_probe_sqlstate_${safeSqlStateCode(error)}`);
             }
 
             try {
@@ -123,8 +135,9 @@ export const Route = createFileRoute("/readyz")({
               );
               if (!rows[0]) blockers.push("signed_tenant_context_probe_empty");
               else if (!rows[0].auth_context_ready) blockers.push("signed_tenant_context_not_ready");
-            } catch {
+            } catch (error) {
               blockers.push("signed_tenant_context_probe_failed");
+              probeDiagnostics.push(`signed_tenant_context_probe_sqlstate_${safeSqlStateCode(error)}`);
             }
           } else {
             failureCode = "database_probe_failed";
@@ -132,7 +145,7 @@ export const Route = createFileRoute("/readyz")({
           }
 
           if (blockers.length > 0) {
-            console.error("[readyz] blocked:", [...new Set(blockers)].join(","));
+            console.error("[readyz] blocked:", [...new Set([...blockers, ...probeDiagnostics])].join(","));
             return Response.json(
               { status: "not_ready" },
               { status: 503, headers: { "cache-control": "no-store" } },
