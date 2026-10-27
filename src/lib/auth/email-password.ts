@@ -26,4 +26,6 @@ const productionGate = isSelfHostedAuthProductionReady({
  * for this local credential path.
  */
 export const emailAndPasswordEnabled =
-  passwordAuthEnabled && (!productionDeployment || productionGate);
+  passwordAuthEnabled &&
+  env("VITE_AUTH_ENABLED") !== "false" &&
+  (!productionDeployment || productionGate);
