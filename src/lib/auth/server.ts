@@ -27,6 +27,7 @@ import { emailAndPasswordEnabled } from "./email-password";
 import { GATE_PROVIDER_ID, gateIdentitySessions } from "./gate-session.server";
 import { GROK_PROVIDERS } from "./providers";
 import { pgliteDialect } from "./pglite-dialect";
+import { isSelfHostedAuthProductionReady } from "./self-hosted-auth-gate";
 import {
   GROK_ISSUER_DEFAULT,
   PREVIEW_ALLOWED_HOSTS,
@@ -57,12 +58,11 @@ const env = (key: string): string | undefined => {
   return value ? value : undefined;
 };
 
-// Production sign-in is intentionally disabled until the production identity,
-// tenant-isolation, and recovery gates pass. VITE_AUTH_ENABLED only enables
-// non-production testing; it cannot override the production fail-closed gate.
+// Production authentication remains disabled unless either a complete trusted
+// broker configuration exists or first-party password auth passes every explicit
+// production approval, recovery, tenant-isolation, and restore gate.
 const productionDeployment = env("VERCEL_ENV") === "production";
-export const authDisabled =
-  productionDeployment || env("VITE_AUTH_ENABLED") === "false";
+const runtimeDatabaseUrl = env("DATABASE_RUNTIME_URL");
 const configuredGrokIssuer = env("GROK_AUTH_ISSUER");
 const grokIssuer = configuredGrokIssuer ?? GROK_ISSUER_DEFAULT;
 const grokClientId =
@@ -70,16 +70,30 @@ const grokClientId =
 const grokClientSecret =
   env("GROK_AUTH_CLIENT_SECRET") ??
   (productionDeployment ? undefined : PREVIEW_CLIENT_SECRET);
-
-/** True only when sign-in has explicit production credentials and session secret. */
+const grokOAuthConfigured = Boolean(
+  grokClientId &&
+    grokClientSecret &&
+    (!productionDeployment ||
+      (configuredGrokIssuer && env("BETTER_AUTH_SECRET") && env("BETTER_AUTH_URL") && runtimeDatabaseUrl)),
+);
+const selfHostedProductionReady =
+  productionDeployment &&
+  emailAndPasswordEnabled &&
+  isSelfHostedAuthProductionReady({
+    passwordAuthEnabled: env("SELF_HOSTED_PASSWORD_AUTH_ENABLED") === "true",
+    productionApproved: env("SELF_HOSTED_AUTH_PRODUCTION_APPROVED") === "true",
+    recoveryVerified: env("SELF_HOSTED_AUTH_RECOVERY_VERIFIED") === "true",
+    tenantIsolationVerified: env("SELF_HOSTED_AUTH_TENANT_ISOLATION_VERIFIED") === "true",
+    backupRestoreVerified: env("SELF_HOSTED_AUTH_BACKUP_RESTORE_VERIFIED") === "true",
+    runtimeDatabaseConfigured: Boolean(runtimeDatabaseUrl),
+    signingSecretConfigured: Boolean(env("BETTER_AUTH_SECRET")),
+    canonicalBaseUrlConfigured: Boolean(env("BETTER_AUTH_URL")),
+  });
+export const authDisabled =
+  (productionDeployment && !grokOAuthConfigured && !selfHostedProductionReady) ||
+  env("VITE_AUTH_ENABLED") === "false";
 export const authConfigured =
-  !authDisabled &&
-  Boolean(
-    grokClientId &&
-      grokClientSecret &&
-      (!productionDeployment ||
-        (configuredGrokIssuer && env("BETTER_AUTH_SECRET") && env("BETTER_AUTH_URL"))),
-  );
+  !authDisabled && (emailAndPasswordEnabled || grokOAuthConfigured);
 
 // This app's own Better Auth origin. When deployed the deployer injects the
 // public URL. In sandbox preview, a dynamic host is permitted only through the
@@ -114,7 +128,6 @@ const trustedOrigins: string[] = explicitBaseURL
 // Auth/session persistence must use the same least-privilege runtime login as
 // application SQL. DATABASE_URL is reserved for deploy-time migrations and must
 // never silently become the live auth pool when DATABASE_RUNTIME_URL is absent.
-const runtimeDatabaseUrl = env("DATABASE_RUNTIME_URL");
 // Production auth/session storage must never fall back to the migration credential
 // or ephemeral PGLite. A missing runtime credential is a configuration failure.
 if (productionDeployment && !runtimeDatabaseUrl) {
@@ -141,7 +154,7 @@ const database = databaseUrl
 /** Session token cookie name — also read by the live-preview popup completion page. */
 export const SESSION_TOKEN_COOKIE = "__Host-grok-auth.session_token";
 
-const grokOAuthPlugin = authConfigured
+const grokOAuthPlugin = grokOAuthConfigured && !authDisabled
   ? genericOAuth({
       config: GROK_PROVIDERS.map(({ providerId, idp }) => ({
         providerId,
