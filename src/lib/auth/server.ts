@@ -83,6 +83,7 @@ const selfHostedProductionReady =
     passwordAuthEnabled: env("SELF_HOSTED_PASSWORD_AUTH_ENABLED") === "true",
     productionApproved: env("SELF_HOSTED_AUTH_PRODUCTION_APPROVED") === "true",
     recoveryVerified: env("SELF_HOSTED_AUTH_RECOVERY_VERIFIED") === "true",
+    emailVerificationVerified: env("SELF_HOSTED_AUTH_EMAIL_VERIFICATION_VERIFIED") === "true",
     tenantIsolationVerified: env("SELF_HOSTED_AUTH_TENANT_ISOLATION_VERIFIED") === "true",
     backupRestoreVerified: env("SELF_HOSTED_AUTH_BACKUP_RESTORE_VERIFIED") === "true",
     runtimeDatabaseConfigured: Boolean(runtimeDatabaseUrl),
@@ -183,7 +184,7 @@ export const auth = betterAuth({
     },
   },
   session: { cookieCache: { enabled: true, maxAge: 300 } },
-  ...(emailAndPasswordEnabled ? { emailAndPassword: { enabled: true, minPasswordLength: 12, maxPasswordLength: 128 } } : {}),
+  ...(emailAndPasswordEnabled ? { emailAndPassword: { enabled: true, minPasswordLength: 12, maxPasswordLength: 128, requireEmailVerification: productionDeployment } } : {}),
   advanced: {
     useSecureCookies: false,
     defaultCookieAttributes: { secure: true, sameSite: "lax", path: "/" },
