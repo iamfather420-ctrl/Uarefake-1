@@ -12,6 +12,7 @@ const productionGate = isSelfHostedAuthProductionReady({
   passwordAuthEnabled,
   productionApproved: env("SELF_HOSTED_AUTH_PRODUCTION_APPROVED") === "true",
   recoveryVerified: env("SELF_HOSTED_AUTH_RECOVERY_VERIFIED") === "true",
+  emailVerificationVerified: env("SELF_HOSTED_AUTH_EMAIL_VERIFICATION_VERIFIED") === "true",
   tenantIsolationVerified: env("SELF_HOSTED_AUTH_TENANT_ISOLATION_VERIFIED") === "true",
   backupRestoreVerified: env("SELF_HOSTED_AUTH_BACKUP_RESTORE_VERIFIED") === "true",
   runtimeDatabaseConfigured: Boolean(env("DATABASE_RUNTIME_URL")),
