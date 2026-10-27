@@ -183,7 +183,7 @@ export const auth = betterAuth({
     },
   },
   session: { cookieCache: { enabled: true, maxAge: 300 } },
-  ...(emailAndPasswordEnabled ? { emailAndPassword: { enabled: true } } : {}),
+  ...(emailAndPasswordEnabled ? { emailAndPassword: { enabled: true, minPasswordLength: 12, maxPasswordLength: 128 } } : {}),
   advanced: {
     useSecureCookies: false,
     defaultCookieAttributes: { secure: true, sameSite: "lax", path: "/" },
