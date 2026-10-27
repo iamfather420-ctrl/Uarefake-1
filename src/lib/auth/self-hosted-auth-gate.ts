@@ -2,6 +2,7 @@ export type SelfHostedAuthProductionGate = {
   passwordAuthEnabled: boolean;
   productionApproved: boolean;
   recoveryVerified: boolean;
+  emailVerificationVerified: boolean;
   tenantIsolationVerified: boolean;
   backupRestoreVerified: boolean;
   runtimeDatabaseConfigured: boolean;
