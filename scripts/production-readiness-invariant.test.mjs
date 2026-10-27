@@ -5,9 +5,7 @@ import { readFile } from "node:fs/promises";
 test("production readiness fails closed on auth, runtime-role, RLS, and signed-context blockers", async () => {
   const source = await readFile(new URL("../src/routes/readyz.ts", import.meta.url), "utf8");
   assert.match(source, /DATABASE_RUNTIME_URL/);
-  assert.match(source, /authDisabled assert.match(authSource, /const selfHostedProductionReady =/);
-  assert.match(authSource, /productionDeployment && !grokOAuthConfigured && !selfHostedProductionReady/);
-  assert.match(authSource, /env\("VITE_AUTH_ENABLED"\) === "false"/);|\| !authConfigured/);
+  assert.match(source, /authDisabled \|\| !authConfigured/);
   assert.match(source, /current_role !== "solvex_app_runtime"/);
   assert.match(source, /login_role_elevated/);
   assert.match(source, /login_inherits_neon_superuser/);
@@ -28,7 +26,9 @@ test("production readiness fails closed on auth, runtime-role, RLS, and signed-c
   assert.match(dbSource, /url\.searchParams\.delete\("options"\)/);
 
   const authSource = await readFile(new URL("../src/lib/auth/server.ts", import.meta.url), "utf8");
-  assert.match(authSource, /productionDeployment \|\| env\("VITE_AUTH_ENABLED"\) === "false"/);
+  assert.match(authSource, /const selfHostedProductionReady =/);
+  assert.match(authSource, /productionDeployment && !grokOAuthConfigured && !selfHostedProductionReady/);
+  assert.match(authSource, /env\("VITE_AUTH_ENABLED"\) === "false"/);
   assert.doesNotMatch(authSource, /options:\s*"[-]c role=solvex_app_runtime"/);
 
   const packageJson = JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8"));
